@@ -27,25 +27,30 @@ Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the gr
 │         │<---- TX ---->│  RS232   │<----- TX ----->│ ESP32/  │
 │   PIP   │<---- RX ---->│  to TTL  │<----- GND ---->│ ESP8266 │
 │         │<---- GND --->│  module  │<-- 3.3V VCC -->│         │
-│         │              │          │                │         │
-└─────────┘              └──────────┘                └─────────┘
+│         │              └──────────┘                │         │
+│         │              ┌──────────┐                │         │
+│         │<---- 12V --> │ Buck     │<-- 3.3V VCC -->│         │
+└─────────┘              │ Converter│                │         │
+                         └──────────┘                └─────────┘
 
 ```
 
 ### PIP RJ45 jack
 
-| Pin     | Purpose      | RS232-to-TTL pin  |
-| :-----: | :----------- | :---------------- |
-|    1    | TX           | TX &#8592;        |
-|    2    | RX           | RX &#8594;        |
-|    3    |              |                   |
-|    4    |              |                   |
-|    5    |              |                   |
-|    6    |              |                   |
-|    7    |              |                   |
-|    8    | GND          | GND               |
+| Pin     | Purpose      | RS232-to-TTL pin  | Color T-568B |
+| :-----: | :----------- | :---------------- | :------------|
+|    1    | TX           | TX &#8592;        | White-Orange |
+|    2    | RX           | RX &#8594;        | Orange       |
+|    3    |              |                   |              |
+|    4    | VCC 12V (?)  | -                 | Blue         |
+|    5    |              |                   |              |
+|    6    |              |                   |              |
+|    7    | VCC 12V      | -                 | White-Brown  |
+|    8    | GND          | GND               | Brown        |
 
 Please be aware of the different RJ45 pinout colors ([T-568A vs. T-568B](images/rj45-colors-t568a-vs-t568.png)).
+
+The [source for the pinout is here](http://forums.aeva.asn.au/viewtopic.php?p=86195&sid=c245a43518551da7b32959e4ff969688#p86195).
 
 ## Installation
 
