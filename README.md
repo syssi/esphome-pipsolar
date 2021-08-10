@@ -52,7 +52,7 @@ Please be aware of the different RJ45 pinout colors ([T-568A vs. T-568B](images/
 
 The inverter provides +12V on pin 4 or 7 depending on the model. You can use a cheap DC-DC converter to power the ESP with 3.3V.
 
-The [source for the pinout is here](http://forums.aeva.asn.au/viewtopic.php?p=86195&sid=c245a43518551da7b32959e4ff969688#p86195).
+The [source for the pinout is here](docs/HS_MS_MSX%20RS232%20Protocol.pdf).
 
 ## Installation
 
