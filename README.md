@@ -69,7 +69,7 @@ or just use the `esp32-example.yaml` as proof of concept:
 pip3 install esphome
 
 # Clone this external component
-git clone git@github.com:syssi/esphome-pipsolar.git
+git clone https://github.com/syssi/esphome-pipsolar.git
 cd esphome-pipsolar
 
 # Create a secret.yaml containing some setup specific secrets
