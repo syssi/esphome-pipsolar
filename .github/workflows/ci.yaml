@@ -160,6 +160,9 @@ jobs:
       - run: |
           sed -i 's#source: github://syssi/esphome-pipsolar@main#source: components#' esp32-example.yaml
           esphome config esp32-example.yaml
+      - run: |
+          sed -i 's#source: github://syssi/esphome-pipsolar@main#source: components#' esp8266-example.yaml
+          esphome config esp8266-example.yaml
 
   esphome-compile:
     runs-on: ubuntu-latest
@@ -199,3 +202,6 @@ jobs:
       - run: |
           sed -i 's#source: github://syssi/esphome-pipsolar@main#source: components#' esp32-example.yaml
           esphome compile esp32-example.yaml
+      - run: |
+          sed -i 's#source: github://syssi/esphome-pipsolar@main#source: components#' esp8266-example.yaml
+          esphome compile esp8266-example.yaml

@@ -62,7 +62,7 @@ external_components:
   - source: github://syssi/esphome-pipsolar@main
 ```
 
-or just use the `esp32-example.yaml` as proof of concept:
+or just use the `esp32-example.yaml` / `esp8266-example.yaml` as proof of concept:
 
 ```bash
 # Install esphome
@@ -83,7 +83,7 @@ wifi_password: MY_WIFI_PASSWORD
 EOF
 
 # Validate the configuration, create a binary, upload it, and start logs
-# If you want to use a esp8266 the `esphome:` and `uart:` section must be adapted.
+# If you use a esp8266 run the esp8266-examle.yaml
 esphome run esp32-example.yaml
 
 ```
