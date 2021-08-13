@@ -2,7 +2,7 @@
 
 ESPHome component to monitor and control a pipsolar inverter via RS232
 
-:mega: This is a short-lived fork of https://github.com/esphome/esphome/pull/1664. Please use the official component as soon it's merged! :mega:
+:mega: This is a short-lived fork of https://github.com/esphome/esphome/pull/1664. Please use the official component as soon Esphome 1.21.0 is released! :mega:
 
 Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the great work!
 
