@@ -1,8 +1,6 @@
 # esphome-pipsolar
 
-ESPHome component to monitor and control a pipsolar inverter via RS232
-
-:mega: This is a short-lived fork of https://github.com/esphome/esphome/pull/1664. Please use the official component as soon Esphome 1.21.0 is released! :mega:
+ESPHome example configuration to monitor and control a pipsolar inverter via RS232
 
 Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the great work!
 
@@ -13,7 +11,7 @@ Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the gr
 
 ## Requirements
 
-* [ESPHome 1.18.0 or higher](https://github.com/esphome/esphome/releases).
+* [ESPHome 2021.8.0 or higher](https://github.com/esphome/esphome/releases).
 * One half of an ethernet cable with RJ45 connector
 * RS232-to-TTL module (`MAX3232CSE` f.e.)
 * Generic ESP32 or ESP8266 board
@@ -56,13 +54,7 @@ The [source for the pinout is here](docs/HS_MS_MSX%20RS232%20Protocol.pdf).
 
 ## Installation
 
-You can install this component with [ESPHome external components feature](https://esphome.io/components/external_components.html) like this:
-```yaml
-external_components:
-  - source: github://syssi/esphome-pipsolar@main
-```
-
-or just use the `esp32-example.yaml` / `esp8266-example.yaml` as proof of concept:
+Use the `esp32-example.yaml` / `esp8266-example.yaml` as proof of concept:
 
 ```bash
 # Install esphome
