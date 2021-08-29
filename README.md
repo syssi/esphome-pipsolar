@@ -1,5 +1,11 @@
 # esphome-pipsolar
 
+![GitHub actions](https://github.com/syssi/esphome-pipsolar/actions/workflows/ci.yaml/badge.svg)
+![GitHub stars](https://img.shields.io/github/stars/syssi/esphome-pipsolar)
+![GitHub forks](https://img.shields.io/github/forks/syssi/esphome-pipsolar)
+![GitHub watchers](https://img.shields.io/github/watchers/syssi/esphome-pipsolar)
+[!["Buy Me A Coffee"](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/syssi)
+
 ESPHome example configuration to monitor and control a pipsolar inverter via RS232
 
 Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the great work!
