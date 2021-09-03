@@ -454,14 +454,14 @@ void Pipsolar::loop() {
         sscanf(                                                                                                  // NOLINT
             tmp,                                                                                                 // NOLINT
             "(%f %f %f %f %d %d %d %d %f %d %d %d %d %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d",      // NOLINT
-            // 225.8                               |                |              |               |       1     // NOLINT
-            //   49.9                              |                |              |               |       2     // NOLINT
-            //      225.8                          |                |              |               |       3     // NOLINT
-            //         49.9                        |                |              |               |       4     // NOLINT
-            //            0609                     |                |              |               |       5     // NOLINT
-            //               0565                  |                |              |               |       6     // NOLINT
-            //                  020                |                |              |               |       7     // NOLINT
-            //                     427             |                |              |               |       8     // NOLINT
+            // 225.8   |              |            |                |              |               |       1     // NOLINT
+            //   49.9  |              |            |                |              |               |       2     // NOLINT
+            //      225.8             |            |                |              |               |       3     // NOLINT
+            //         49.9           |            |                |              |               |       4     // NOLINT
+            //            0609        |            |                |              |               |       5     // NOLINT
+            //               0565     |            |                |              |               |       6     // NOLINT
+            //                  020   |            |                |              |               |       7     // NOLINT
+            //                     427|            |                |              |               |       8     // NOLINT
             //                        27.00        |                |              |               |       9     // NOLINT
             //                           005       |                |              |               |      10     // NOLINT
             //                              100    |                |              |               |      11     // NOLINT
