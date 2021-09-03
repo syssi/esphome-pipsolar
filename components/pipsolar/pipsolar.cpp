@@ -453,7 +453,7 @@ void Pipsolar::loop() {
         // 225.8 49.9 225.8 49.9 0609 0565 020 427 27.00 005 100 0035 02.2 259.9 00.00 00000 10010110 00 00 00590 110
         sscanf(                                                                                                  // NOLINT
             tmp,                                                                                                 // NOLINT
-            "(%f %f %f %f %d %d %d %d %f %d %d %d %d %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d",      // NOLINT
+            "(%f %f %f %f %d %d %d %d %f %d %d %d %f %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d",      // NOLINT
             // 225.8   |              |            |                |              |               |       1     // NOLINT
             //   49.9  |              |            |                |              |               |       2     // NOLINT
             //      225.8             |            |                |              |               |       3     // NOLINT
