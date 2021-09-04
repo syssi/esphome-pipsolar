@@ -1,3 +1,4 @@
+# 2021-09-04: Caveat! Today you can only run half the sensors, see https://github.com/esphome/issues/issues/855 for details
 substitutions:
   name: pipsolar
 
