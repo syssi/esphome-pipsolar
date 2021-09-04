@@ -33,11 +33,7 @@ Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the gr
 │         │<---- GND --->│  module  │<-- 3.3V VCC -->│         │
 │         │              └──────────┘                │         │
 │         │              ┌──────────┐                │         │
-<<<<<<< HEAD
 │         │----- 12V --> │ Buck     │--- 3.3V VCC -->│         │
-=======
-│         │<---- 12V --> │ Buck     │<-- 3.3V VCC -->│         │
->>>>>>> e3e5272 (added hardware description)
 └─────────┘              │ Converter│                │         │
                          └──────────┘                └─────────┘
 
@@ -58,13 +54,7 @@ Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the gr
 
 Please be aware of the different RJ45 pinout colors ([T-568A vs. T-568B](images/rj45-colors-t568a-vs-t568.png)).
 
-<<<<<<< HEAD
 The inverter provides +12V on pin 4 or 7 depending on the model. You can use a cheap DC-DC converter to power the ESP with 3.3V.
-=======
-The [source for the pinout is here](http://forums.aeva.asn.au/viewtopic.php?p=86195&sid=c245a43518551da7b32959e4ff969688#p86195).
-
-## Installation
->>>>>>> e3e5272 (added hardware description)
 
 The [source for the pinout is here](docs/HS_MS_MSX%20RS232%20Protocol.pdf).
 
