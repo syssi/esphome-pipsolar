@@ -1,3 +1,11 @@
+# Warning:
+#
+# If you configure a lot of the possible sensors etc. it could be that you run
+# out of memory (on esp8266). If you configure nearly all sensors etc. you run
+# in a stack-size issue. In this case you have to increase stack size!
+#
+#  https://github.com/esphome/issues/issues/855
+
 substitutions:
   name: pipsolar
 
@@ -35,56 +43,56 @@ sensor:
   - platform: pipsolar
     pipsolar_id: inverter0
     # QPIRI
-    grid_rating_voltage:
-      name: "${name} grid_rating_voltage"
-    grid_rating_current:
-      name: "${name} grid_rating_current"
-    ac_output_rating_voltage:
-      name: "${name} ac_output_rating_voltage"
-    ac_output_rating_frequency:
-      name: "${name} ac_output_rating_frequency"
-    ac_output_rating_current:
-      name: "${name} ac_output_rating_current"
-    ac_output_rating_apparent_power:
-      name: "${name} ac_output_rating_apparent_power"
-    ac_output_rating_active_power:
-      name: "${name} ac_output_rating_active_power"
-    battery_rating_voltage:
-      name: "${name} battery_rating_voltage"
-    battery_recharge_voltage:
-      name: "${name} battery_recharge_voltage"
-    battery_under_voltage:
-      name: "${name} battery_under_voltage"
-    battery_bulk_voltage:
-      name: "${name} battery_bulk_voltage"
-    battery_float_voltage:
-      name: "${name} battery_float_voltage"
-    battery_type:
-      name: "${name} battery_type"
-    current_max_ac_charging_current:
-      name: "${name} current_max_ac_charging_current"
-    current_max_charging_current:
-      name: "${name} current_max_charging_current"
-    input_voltage_range:
-      name: "${name} input_voltage_range"
-    output_source_priority:
-      name: "${name} output_source_priority"
-    charger_source_priority:
-      name: "${name} charger_source_priority"
-    parallel_max_num:
-      name: "${name} parallel_max_num"
-    machine_type:
-      name: "${name} machine_type"
-    topology:
-      name: "${name} topology"
-    output_mode:
-      name: "${name} output_mode"
-    battery_redischarge_voltage:
-      name: "${name} battery_redischarge_voltage"
-    pv_ok_condition_for_parallel:
-      name: "${name} pv_ok_condition_for_parallel"
-    pv_power_balance:
-      name: "${name} pv_power_balance"
+#    grid_rating_voltage:
+#      name: "${name} grid_rating_voltage"
+#    grid_rating_current:
+#      name: "${name} grid_rating_current"
+#    ac_output_rating_voltage:
+#      name: "${name} ac_output_rating_voltage"
+#    ac_output_rating_frequency:
+#      name: "${name} ac_output_rating_frequency"
+#    ac_output_rating_current:
+#      name: "${name} ac_output_rating_current"
+#    ac_output_rating_apparent_power:
+#      name: "${name} ac_output_rating_apparent_power"
+#    ac_output_rating_active_power:
+#      name: "${name} ac_output_rating_active_power"
+#    battery_rating_voltage:
+#      name: "${name} battery_rating_voltage"
+#    battery_recharge_voltage:
+#      name: "${name} battery_recharge_voltage"
+#    battery_under_voltage:
+#      name: "${name} battery_under_voltage"
+#    battery_bulk_voltage:
+#      name: "${name} battery_bulk_voltage"
+#    battery_float_voltage:
+#      name: "${name} battery_float_voltage"
+#    battery_type:
+#      name: "${name} battery_type"
+#    current_max_ac_charging_current:
+#      name: "${name} current_max_ac_charging_current"
+#    current_max_charging_current:
+#      name: "${name} current_max_charging_current"
+#    input_voltage_range:
+#      name: "${name} input_voltage_range"
+#    output_source_priority:
+#      name: "${name} output_source_priority"
+#    charger_source_priority:
+#      name: "${name} charger_source_priority"
+#    parallel_max_num:
+#      name: "${name} parallel_max_num"
+#    machine_type:
+#      name: "${name} machine_type"
+#    topology:
+#      name: "${name} topology"
+#    output_mode:
+#      name: "${name} output_mode"
+#    battery_redischarge_voltage:
+#      name: "${name} battery_redischarge_voltage"
+#    pv_ok_condition_for_parallel:
+#      name: "${name} pv_ok_condition_for_parallel"
+#    pv_power_balance:
+#      name: "${name} pv_power_balance"
 
     # QPIGS
     grid_voltage:
@@ -121,8 +129,8 @@ sensor:
       name: "${name} battery_discharge_current"
     battery_voltage_offset_for_fans_on:
       name: "${name} battery_voltage_offset_for_fans_on"
-    eeprom_version:
-      name: "${name} eeprom_version"
+#    eeprom_version:
+#      name: "${name} eeprom_version"
     pv_charging_power:
       name: "${name} pv_charging_power"
 
@@ -131,14 +139,14 @@ text_sensor:
     pipsolar_id: inverter0
     device_mode:
       name: "${name} device_mode"
-    last_qpigs:
-      name: "${name} last_qpigs"
-    last_qpiri:
-      name: "${name} last_qpiri"
-    last_qmod:
-      name: "${name} last_qmod"
-    last_qflag:
-      name: "${name} last_qflag"
+#    last_qpigs:
+#      name: "${name} last_qpigs"
+#    last_qpiri:
+#      name: "${name} last_qpiri"
+#    last_qmod:
+#      name: "${name} last_qmod"
+#    last_qflag:
+#      name: "${name} last_qflag"
 
 binary_sensor:
   - platform: pipsolar
@@ -147,8 +155,8 @@ binary_sensor:
       name: "${name} add_sbu_priority_version"
     configuration_status:
       name: "${name} configuration_status"
-    scc_firmware_version:
-      name: "${name} scc_firmware_version"
+#    scc_firmware_version:
+#      name: "${name} scc_firmware_version"
     load_status:
       name: "${name} load_status"
     battery_voltage_to_steady_while_charging:
@@ -163,8 +171,8 @@ binary_sensor:
       name: "${name} charging_to_floating_mode"
     switch_on:
       name: "${name} switch_on"
-    dustproof_installed:
-      name: "${name} dustproof_installed"
+#    dustproof_installed:
+#      name: "${name} dustproof_installed"
     silence_buzzer_open_buzzer:
       name: "${name} silence_buzzer_open_buzzer"
     overload_bypass_function:
@@ -175,8 +183,8 @@ binary_sensor:
       name: "${name} overload_restart_function"
     over_temperature_restart_function:
       name: "${name} over_temperature_restart_function"
-    backlight_on:
-      name: "${name} backlight_on"
+#    backlight_on:
+#      name: "${name} backlight_on"
 
 switch:
   - platform: pipsolar
