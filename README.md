@@ -86,6 +86,14 @@ esphome run esp32-example.yaml
 
 ```
 
+Take a look at the [official documentation of the component](https://esphome.io/components/pipsolar.html) for additional details.
+
+## Known issues
+
+1. All functionality is working fine on esp8266 and esp32 chips. If you configure a lot of the possible sensors etc. from below it could be that you run out of memory (on esp8266). If you configure more than one if this devices with nearly all sensors etc. you run in a stack-size issue. In this case you have to increase stack size.
+
+https://github.com/esphome/issues/issues/855
+
 ## References
 
 * https://github.com/esphome/esphome/pull/1664
