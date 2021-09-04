@@ -71,7 +71,7 @@ git clone https://github.com/syssi/esphome-pipsolar.git
 cd esphome-pipsolar
 
 # Create a secret.yaml containing some setup specific secrets
-cat > secret.yaml <<EOF
+cat > secrets.yaml <<EOF
 mqtt_host: MY_MQTT_HOST
 mqtt_username: MY_MQTT_USERNAME
 mqtt_password: MY_MQTT_PASSWORD
