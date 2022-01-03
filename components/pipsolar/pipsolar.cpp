@@ -446,22 +446,74 @@ void Pipsolar::loop() {
         break;
       case POLLING_QPIGS:
         ESP_LOGD(TAG, "Decode QPIGS");
-        sscanf(                                                                                              // NOLINT
-            tmp,                                                                                             // NOLINT
-            "(%f %f %f %f %d %d %d %d %f %d %d %d %d %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d",  // NOLINT
-            &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_,                         // NOLINT
-            &value_ac_output_frequency_,                                                                     // NOLINT
-            &value_ac_output_apparent_power_, &value_ac_output_active_power_, &value_output_load_percent_,   // NOLINT
-            &value_bus_voltage_, &value_battery_voltage_, &value_battery_charging_current_,                  // NOLINT
-            &value_battery_capacity_percent_, &value_inverter_heat_sink_temperature_,                        // NOLINT
-            &value_pv_input_current_for_battery_, &value_pv_input_voltage_, &value_battery_voltage_scc_,     // NOLINT
-            &value_battery_discharge_current_, &value_add_sbu_priority_version_,                             // NOLINT
-            &value_configuration_status_, &value_scc_firmware_version_, &value_load_status_,                 // NOLINT
-            &value_battery_voltage_to_steady_while_charging_, &value_charging_status_,                       // NOLINT
-            &value_scc_charging_status_, &value_ac_charging_status_,                                         // NOLINT
-            &value_battery_voltage_offset_for_fans_on_, &value_eeprom_version_, &value_pv_charging_power_,   // NOLINT
-            &value_charging_to_floating_mode_, &value_switch_on_,                                            // NOLINT
-            &value_dustproof_installed_);                                                                    // NOLINT
+        // Response examples of the HMS 3K-24V
+        // 001.0 00.0 229.0 50.0 0000 0000 000 415 27.29 000 100 0479 0000 000.0 00.00 00001 10010000 00 04 00000 000
+        // 001.0 00.0 229.0 50.0 0000 0000 000 413 27.23 000 100 0672 0000 000.0 00.00 00001 10010000 00 04 00000 000
+        sscanf(                                                                                                  // NOLINT
+            tmp,                                                                                                 // NOLINT
+            "(%f %f %f %f %d %d %d %d %f %d %d %d %d %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d",      // NOLINT
+            // 001.0   |              |            |                |              |               |       1     // NOLINT
+            //   00.0  |              |            |                |              |               |       2     // NOLINT
+            //      229.0             |            |                |              |               |       3     // NOLINT
+            //         50.0           |            |                |              |               |       4     // NOLINT
+            //            0000        |            |                |              |               |       5     // NOLINT
+            //               0000     |            |                |              |               |       6     // NOLINT
+            //                  000   |            |                |              |               |       7     // NOLINT
+            //                     413|            |                |              |               |       8     // NOLINT
+            //                        27.23        |                |              |               |       9     // NOLINT
+            //                           000       |                |              |               |      10     // NOLINT
+            //                              100    |                |              |               |      11     // NOLINT
+            //                                 0672|                |              |               |      12     // NOLINT
+            //                                     0000             |              |               |      13     // NOLINT
+            //                                       000.0          |              |               |      14     // NOLINT
+            //                                          00.00       |              |               |      15     // NOLINT
+            //                                             00001    |              |               |      16     // NOLINT
+            //                                                1     |              |               |      17     // NOLINT
+            //                                                   0  |              |               |      18     // NOLINT
+            //                                                      0              |               |      19     // NOLINT
+            //                                                         1           |               |      20     // NOLINT
+            //                                                            0        |               |      21     // NOLINT
+            //                                                               0     |               |      22     // NOLINT
+            //                                                                  0  |               |      23     // NOLINT
+            //                                                                     0               |      24     // NOLINT
+            //                                                                         00          |      25     // NOLINT
+            //                                                                            04       |      26     // NOLINT
+            //                                                                               00000 |      27     // NOLINT
+            //                                                                                  0  |      28     // NOLINT
+            //                                                                                     0      29     // NOLINT
+            //                                                                                        0   30     // NOLINT
+            //                                                                                                   // NOLINT
+            &value_grid_voltage_,                                                             //           1     // NOLINT
+            &value_grid_frequency_,                                                           //           2     // NOLINT
+            &value_ac_output_voltage_,                                                        //           3     // NOLINT
+            &value_ac_output_frequency_,                                                      //           4     // NOLINT
+            &value_ac_output_apparent_power_,                                                 //           5     // NOLINT
+            &value_ac_output_active_power_,                                                   //           6     // NOLINT
+            &value_output_load_percent_,                                                      //           7     // NOLINT
+            &value_bus_voltage_,                                                              //           8     // NOLINT
+            &value_battery_voltage_,                                                          //           9     // NOLINT
+            &value_battery_charging_current_,                                                 //          10     // NOLINT
+            &value_battery_capacity_percent_,                                                 //          11     // NOLINT
+            &value_inverter_heat_sink_temperature_,                                           //          12     // NOLINT
+            &value_pv_input_current_for_battery_,                                             //          13     // NOLINT
+            &value_pv_input_voltage_,                                                         //          14     // NOLINT
+            &value_battery_voltage_scc_,                                                      //          15     // NOLINT
+            &value_battery_discharge_current_,                                                //          16     // NOLINT
+            &value_add_sbu_priority_version_,                                                 //          17     // NOLINT
+            &value_configuration_status_,                                                     //          18     // NOLINT
+            &value_scc_firmware_version_,                                                     //          19     // NOLINT
+            &value_load_status_,                                                              //          20     // NOLINT
+            &value_battery_voltage_to_steady_while_charging_,                                 //          21     // NOLINT
+            &value_charging_status_,                                                          //          22     // NOLINT
+            &value_scc_charging_status_,                                                      //          23     // NOLINT
+            &value_ac_charging_status_,                                                       //          24     // NOLINT
+            &value_battery_voltage_offset_for_fans_on_,                                       //          25     // NOLINT
+            &value_eeprom_version_,                                                           //          26     // NOLINT
+            &value_pv_charging_power_,                                                        //          27     // NOLINT
+            &value_charging_to_floating_mode_,                                                //          28     // NOLINT
+            &value_switch_on_,                                                                //          29     // NOLINT
+            &value_dustproof_installed_                                                       //          30     // NOLINT
+        );
         if (this->last_qpigs_) {
           this->last_qpigs_->publish_state(tmp);
         }
