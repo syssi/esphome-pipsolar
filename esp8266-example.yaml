@@ -14,6 +14,10 @@ esphome:
   platform: ESP8266
   board: d1_mini
 
+external_components:
+  - source: github://syssi/esphome-pipsolar@hms-3k-24v
+    refresh: 0s
+
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
