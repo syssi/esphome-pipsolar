@@ -15,7 +15,7 @@ esphome:
   board: esp-wrover-kit
 
 external_components:
-  - source: github://syssi/esphome-pipsolar@pip8084
+  - source: github://syssi/esphome-pipsolar@pip8048
     refresh: 0s
 
 wifi:
