@@ -14,11 +14,12 @@ namespace pipsolar {
 enum ENUMPollingCommand {
   POLLING_QPIRI = 0,
   POLLING_QPIGS = 1,
-  POLLING_QMOD = 2,
-  POLLING_QFLAG = 3,
-  POLLING_QPIWS = 4,
-  POLLING_QT = 5,
-  POLLING_QMN = 6,
+  POLLING_QPIGS2 = 2,
+  POLLING_QMOD = 3,
+  POLLING_QFLAG = 4,
+  POLLING_QPIWS = 5,
+  POLLING_QT = 6,
+  POLLING_QMN = 7,
 };
 struct PollingCommand {
   uint8_t *command;
@@ -65,8 +66,8 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SENSOR(battery_charging_current, QPIGS, int)
   PIPSOLAR_SENSOR(battery_capacity_percent, QPIGS, int)
   PIPSOLAR_SENSOR(inverter_heat_sink_temperature, QPIGS, int)
-  PIPSOLAR_SENSOR(pv_input_current_for_battery, QPIGS, float)
-  PIPSOLAR_SENSOR(pv_input_voltage, QPIGS, float)
+  PIPSOLAR_SENSOR(pv1_input_current, QPIGS, float)
+  PIPSOLAR_SENSOR(pv1_input_voltage, QPIGS, float)
   PIPSOLAR_SENSOR(battery_voltage_scc, QPIGS, float)
   PIPSOLAR_SENSOR(battery_discharge_current, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(add_sbu_priority_version, QPIGS, int)
@@ -79,10 +80,16 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(ac_charging_status, QPIGS, int)
   PIPSOLAR_SENSOR(battery_voltage_offset_for_fans_on, QPIGS, int)  //.1 scale
   PIPSOLAR_SENSOR(eeprom_version, QPIGS, int)
-  PIPSOLAR_SENSOR(pv_charging_power, QPIGS, int)
+  PIPSOLAR_SENSOR(pv1_charging_power, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(charging_to_floating_mode, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(switch_on, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(dustproof_installed, QPIGS, int)
+
+  // QPIGS2 values
+
+  PIPSOLAR_SENSOR(pv2_input_current, QPIGS2, float)
+  PIPSOLAR_SENSOR(pv2_input_voltage, QPIGS2, float)
+  PIPSOLAR_SENSOR(pv2_charging_power, QPIGS2, int)
 
   // QPIRI values
   PIPSOLAR_SENSOR(grid_rating_voltage, QPIRI, float)
@@ -164,6 +171,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(warning_battery_equalization, QPIWS, bool)
 
   PIPSOLAR_TEXT_SENSOR(last_qpigs, QPIGS)
+  PIPSOLAR_TEXT_SENSOR(last_qpigs2, QPIGS2)
   PIPSOLAR_TEXT_SENSOR(last_qpiri, QPIRI)
   PIPSOLAR_TEXT_SENSOR(last_qmod, QMOD)
   PIPSOLAR_TEXT_SENSOR(last_qflag, QFLAG)

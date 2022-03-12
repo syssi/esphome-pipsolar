@@ -2,12 +2,14 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import text_sensor
 from esphome.const import CONF_ID
+
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
 
 DEPENDENCIES = ["uart"]
 
 CONF_DEVICE_MODE = "device_mode"
 CONF_LAST_QPIGS = "last_qpigs"
+CONF_LAST_QPIGS2 = "last_qpigs2"
 CONF_LAST_QPIRI = "last_qpiri"
 CONF_LAST_QMOD = "last_qmod"
 CONF_LAST_QFLAG = "last_qflag"
@@ -22,6 +24,7 @@ PipsolarTextSensor = pipsolar_ns.class_(
 TYPES = [
     CONF_DEVICE_MODE,
     CONF_LAST_QPIGS,
+    CONF_LAST_QPIGS2,
     CONF_LAST_QPIRI,
     CONF_LAST_QMOD,
     CONF_LAST_QFLAG,
