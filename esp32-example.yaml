@@ -123,10 +123,14 @@ sensor:
       name: "${name} battery_capacity_percent"
     inverter_heat_sink_temperature:
       name: "${name} inverter_heat_sink_temperature"
-    pv_input_current_for_battery:
-      name: "${name} pv_input_current_for_battery"
-    pv_input_voltage:
-      name: "${name} pv_input_voltage"
+    pv1_input_current_for_battery:
+      name: "${name} pv1_input_current_for_battery"
+    pv1_input_voltage:
+      name: "${name} pv1_input_voltage"
+    pv2_input_current_for_battery:
+      name: "${name} pv2_input_current_for_battery"
+    pv2_input_voltage:
+      name: "${name} pv2_input_voltage"
     battery_voltage_scc:
       name: "${name} battery_voltage_scc"
     battery_discharge_current:
@@ -135,8 +139,10 @@ sensor:
       name: "${name} battery_voltage_offset_for_fans_on"
 #    eeprom_version:
 #      name: "${name} eeprom_version"
-    pv_charging_power:
-      name: "${name} pv_charging_power"
+    pv1_charging_power:
+      name: "${name} pv1_charging_power"
+    pv2_charging_power:
+      name: "${name} pv2_charging_power"
 
 text_sensor:
   - platform: pipsolar
@@ -211,3 +217,8 @@ output:
     pipsolar_id: inverter0
     battery_recharge_voltage:
       id: inverter0_battery_recharge_voltage_out
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    battery_bulk_voltage:
+      id: inverter0_battery_bulk_voltage_out
