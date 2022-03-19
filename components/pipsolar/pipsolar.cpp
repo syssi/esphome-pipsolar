@@ -915,28 +915,41 @@ void Pipsolar::add_polling_command_(const char *command, ENUMPollingCommand poll
   }
 }
 
-uint16_t Pipsolar::calc_crc_(uint8_t *msg, int n) {
-  // Initial value. xmodem uses 0xFFFF but this example
-  // requires an initial value of zero.
-  uint16_t x = 0;
-  while (n--) {
-    x = crc_xmodem_update_(x, (uint16_t) *msg++);
-  }
-  return (x);
-}
+uint16_t Pipsolar::calc_crc_(uint8_t *msg, uint8_t len) {
+  uint16_t crc;
 
-// See bottom of this page: http://www.nongnu.org/avr-libc/user-manual/group__util__crc.html
-// Polynomial: x^16 + x^12 + x^5 + 1 (0x1021)
-uint16_t Pipsolar::crc_xmodem_update_(uint16_t crc, uint8_t data) {
-  int i;
-  crc = crc ^ ((uint16_t) data << 8);
-  for (i = 0; i < 8; i++) {
-    if (crc & 0x8000)
-      crc = (crc << 1) ^ 0x1021;  //(polynomial = 0x1021)
-    else
-      crc <<= 1;
+  uint8_t da;
+  uint8_t *ptr;
+  uint8_t bCRCHign;
+  uint8_t bCRCLow;
+
+  uint16_t crc_ta[16] = {0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
+                         0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef};
+
+  ptr = msg;
+  crc = 0;
+
+  while (len-- != 0) {
+    da = ((uint8_t)(crc >> 8)) >> 4;
+    crc <<= 4;
+    crc ^= crc_ta[da ^ (*ptr >> 4)];
+    da = ((uint8_t)(crc >> 8)) >> 4;
+    crc <<= 4;
+    crc ^= crc_ta[da ^ (*ptr & 0x0f)];
+    ptr++;
   }
-  return crc;
+
+  bCRCLow = crc;
+  bCRCHign = (uint8_t)(crc >> 8);
+
+  if (bCRCLow == 0x28 || bCRCLow == 0x0d || bCRCLow == 0x0a)
+    bCRCLow++;
+  if (bCRCHign == 0x28 || bCRCHign == 0x0d || bCRCHign == 0x0a)
+    bCRCHign++;
+
+  crc = ((uint16_t) bCRCHign) << 8;
+  crc += bCRCLow;
+  return (crc);
 }
 
 }  // namespace pipsolar
