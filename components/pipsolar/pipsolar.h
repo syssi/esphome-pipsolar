@@ -3,6 +3,8 @@
 #include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/switch/switch.h"
+#include "esphome/components/select/select.h"
+#include "esphome/components/pipsolar/select/pipsolar_select.h"
 #include "esphome/components/text_sensor/text_sensor.h"
 #include "esphome/components/uart/uart.h"
 #include "esphome/core/automation.h"
@@ -10,6 +12,7 @@
 
 namespace esphome {
 namespace pipsolar {
+class PipsolarSelect;
 
 enum ENUMPollingCommand {
   POLLING_QPIRI = 0,
@@ -46,6 +49,7 @@ struct PollingCommand {
 #define PIPSOLAR_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(sensor::Sensor, name, polling_command, value_type)
 #define PIPSOLAR_SWITCH(name, polling_command) PIPSOLAR_ENTITY_(switch_::Switch, name, polling_command)
+#define PIPSOLAR_SELECT(name, polling_command) PIPSOLAR_ENTITY_(pipsolar::PipsolarSelect, name, polling_command)
 #define PIPSOLAR_BINARY_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(binary_sensor::BinarySensor, name, polling_command, value_type)
 #define PIPSOLAR_VALUED_TEXT_SENSOR(name, polling_command, value_type) \
@@ -186,6 +190,8 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SWITCH(pv_ok_condition_for_parallel_switch, QPIRI)
   PIPSOLAR_SWITCH(pv_power_balance_switch, QPIRI)
 
+  PIPSOLAR_SELECT(output_source_priority_select, QPIRI)
+
   void switch_command(const std::string &command);
   void setup() override;
   void loop() override;
@@ -193,6 +199,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void update() override;
 
  protected:
+  friend class PipsolarSelect;
   static const size_t PIPSOLAR_READ_BUFFER_LENGTH = 110;  // maximum supported answer length
   static const size_t COMMAND_QUEUE_LENGTH = 10;
   static const size_t COMMAND_TIMEOUT = 5000;

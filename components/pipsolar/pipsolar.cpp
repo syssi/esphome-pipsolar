@@ -125,6 +125,11 @@ void Pipsolar::loop() {
         if (this->output_source_priority_) {
           this->output_source_priority_->publish_state(value_output_source_priority_);
         }
+        // special for output source priority select
+        if (this->output_source_priority_select_) {
+          std::string value = std::to_string(value_output_source_priority_);
+          this->output_source_priority_select_->map_and_publish(value);
+        }
         // special for output source priority switches
         if (this->output_source_priority_utility_switch_) {
           this->output_source_priority_utility_switch_->publish_state(value_output_source_priority_ == 0);
