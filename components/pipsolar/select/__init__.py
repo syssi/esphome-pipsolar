@@ -2,7 +2,6 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import select
 from esphome.const import CONF_ID, CONF_OPTIMISTIC
-from esphome.jsonschema import jschema_composite
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
 
@@ -17,7 +16,6 @@ CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
 PipsolarSelect = pipsolar_ns.class_("PipsolarSelect", cg.Component, select.Select)
 
 
-@jschema_composite
 def ensure_option_map():
     def validator(value):
         cv.check_not_templatable(value)
