@@ -39,7 +39,5 @@ async def to_code(config):
     for type in TYPES:
         if type in config:
             conf = config[type]
-            var = cg.new_Pvariable(conf[CONF_ID])
-            await text_sensor.register_text_sensor(var, conf)
-            await cg.register_component(var, conf)
+            var = await text_sensor.new_text_sensor(conf)
             cg.add(getattr(paren, f"set_{type}")(var))

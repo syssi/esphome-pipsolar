@@ -1,6 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import binary_sensor
+
 from .. import PIPSOLAR_COMPONENT_SCHEMA, CONF_PIPSOLAR_ID
 
 DEPENDENCIES = ["uart"]
