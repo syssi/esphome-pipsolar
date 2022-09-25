@@ -30,19 +30,24 @@ uart:
       - lambda: UARTDebug::log_string(direction, bytes);
 
 interval:
-  - interval: 10s
+  - interval: 30s
     then:
       # PI16
       - uart.write: "QPI\r"
+      - delay: 2s
 
       # PI17
       - uart.write: "^P003PI\r"
+      - delay: 2s
 
       # PI18
       - uart.write: "^P005PIq\x8b\r"
+      - delay: 2s
 
       # PI30/PI30MAX/PI30REVO
       - uart.write: "QPI\xbe\xac\r"
+      - delay: 2s
 
       # PI41
       - uart.write: "QDIq\x1b\r"
+      - delay: 2s
