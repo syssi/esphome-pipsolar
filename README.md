@@ -99,6 +99,8 @@ If this component doesn't work out of the box for your device please update your
 ```
 logger:
   level: DEBUG
+  # Don't write log messages to UART0 (GPIO1/GPIO3) if the inverter is connected to GPIO1/GPIO3
+  baud_rate: 0
 
 uart:
   id: uart0
