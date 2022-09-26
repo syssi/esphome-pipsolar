@@ -92,6 +92,30 @@ Take a look at the [official documentation of the component](https://esphome.io/
 
 1. If you configure a lot of the possible sensors etc. it could be that you run out of memory (on esp32). If you configure nearly all sensors etc. you run in a stack-size issue. In this case you have to increase stack size: https://github.com/esphome/issues/issues/855
 
+## Debugging
+
+If this component doesn't work out of the box for your device please update your configuration to enable the debug output of the UART component and increase the log level to the see outgoing and incoming serial traffic:
+
+```
+logger:
+  level: DEBUG
+
+uart:
+  id: uart0
+  baud_rate: 2400
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  debug:
+    direction: BOTH
+    dummy_receiver: true
+    after:
+      delimiter: "\r"
+    sequence:
+      - lambda: UARTDebug::log_string(direction, bytes);
+```
+
+If you don't know the protocol of your inverter please use [this configuration](tests/esp8266-test-protocols.yaml) and try to identify to which request (`>>>`) your inverter responds (`<<<`). `NAK` is a negative response f.e. if the command isn't supported. If you have trouble to interpret the log please create an issue and provide your ESPHome log.
+
 ## References
 
 * https://github.com/esphome/esphome/pull/1664
