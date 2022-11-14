@@ -51,3 +51,10 @@ interval:
       # PI41
       - uart.write: "QDIq\x1b\r"
       - delay: 2s
+      - uart.write: "QPIRI\xF8T\r"
+      - delay: 2s
+      - uart.write: "QPIGS\xB7\xA9\r"
+      - delay: 2s
+      - uart.write: "QMODI\xC1\r"
+      - delay: 2s
+      - uart.write: "QFLAG\x98t\r"
