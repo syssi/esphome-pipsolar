@@ -109,7 +109,7 @@ uart:
   rx_pin: GPIO3
   debug:
     direction: BOTH
-    dummy_receiver: true
+    dummy_receiver: false
     after:
       delimiter: "\r"
     sequence:
