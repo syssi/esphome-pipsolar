@@ -34,6 +34,13 @@ uart:
   baud_rate: 2400
   tx_pin: GPIO1
   rx_pin: GPIO3
+#  debug:
+#    direction: BOTH
+#    dummy_receiver: false
+#    after:
+#      delimiter: "\r"
+#    sequence:
+#      - lambda: UARTDebug::log_string(direction, bytes);
 
 pipsolar:
   uart_id: uart0
