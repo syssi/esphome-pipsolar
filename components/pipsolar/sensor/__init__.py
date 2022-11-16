@@ -174,7 +174,9 @@ TYPES = {
         accuracy_decimals=1,
     ),
     CONF_BATTERY_REDISCHARGE_VOLTAGE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
     ),
     CONF_PV_OK_CONDITION_FOR_PARALLEL: sensor.sensor_schema(
         accuracy_decimals=1,
