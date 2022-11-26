@@ -68,6 +68,15 @@ CONF_WARNING_HIGH_AC_INPUT_DURING_BUS_SOFT_START = (
 )
 CONF_WARNING_BATTERY_EQUALIZATION = "warning_battery_equalization"
 
+# QBATCD sensors
+
+CONF_DISCHARGE_ONOFF = "discharge_onoff"
+CONF_DISCHARGE_WITH_STANDBY_ONOFF = "discharge_with_standby_onoff
+COND_CHARGE_ONOFF = "charge_onoff"
+
+
+
+
 TYPES = [
     CONF_ADD_SBU_PRIORITY_VERSION,
     CONF_CONFIGURATION_STATUS,
