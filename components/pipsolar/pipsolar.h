@@ -176,9 +176,9 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(warning_battery_equalization, QPIWS, bool)
   
   // QBATCD values
-  PIPSOLAR_BINARY_SENSOR(warnings_present, QBATCD, bool)
-  PIPSOLAR_BINARY_SENSOR(faults_present, QBATCD, bool)
-  PIPSOLAR_BINARY_SENSOR(warning_power_loss, QBATCD, bool)
+  PIPSOLAR_BINARY_SENSOR(discharge_onoff, QBATCD, bool)
+  PIPSOLAR_BINARY_SENSOR(discharge_with_standby_onoff, QBATCD, bool)
+  PIPSOLAR_BINARY_SENSOR(charge_onoff, QBATCD, bool)
 
 
   PIPSOLAR_TEXT_SENSOR(last_qpigs, QPIGS)
