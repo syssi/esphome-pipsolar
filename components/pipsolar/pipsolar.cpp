@@ -436,7 +436,7 @@ void Pipsolar::loop() {
         if (this->discharge_with_standby_onoff_) {
           this->discharge_with_standby_onoff_->publish_state(value_discharge_with_standby_onoff_);
         }
-        if (this-charge_onoff_) {
+        if (this->charge_onoff_) {
           this->charge_onoff_->publish_state(value_charge_onoff_);
         }
         // special for output source priority select
