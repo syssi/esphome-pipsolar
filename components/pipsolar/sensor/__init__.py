@@ -78,6 +78,12 @@ CONF_PV2_INPUT_CURRENT = "pv2_input_current"
 CONF_PV2_INPUT_VOLTAGE = "pv2_input_voltage"
 CONF_PV2_CHARGING_POWER = "pv2_charging_power"
 
+# QBATCD sensors
+
+CONF_DISCHARGE_ONOFF = "discharge_onoff"
+CONF_DISCHARGE_WITH_STANDBY_ONOFF = "discharge_with_standby_onoff
+COND_CHARGE_ONOFF = "charge_onoff"
+
 
 TYPES = {
     CONF_GRID_RATING_VOLTAGE: sensor.sensor_schema(
@@ -288,6 +294,15 @@ TYPES = {
         unit_of_measurement=UNIT_WATT,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_POWER,
+    ),
+    CONF_DISCHARGE_ONOFF: sensor.sensor_schema(
+        accuracy_decimals=1,
+    ),
+    CONF_DISCHARGE_WITH_STANDBY_ONOFF: sensor.sensor_schema(
+        accuracy_decimals=1,
+    ),
+    CONF_CHARGE_ONOFF: sensor.sensor_schema(
+        accuracy_decimals=1,
     ),
 }
 
