@@ -750,7 +750,7 @@ void Pipsolar::loop() {
               this->value_discharge_with_standby_onoff_ = enabled;
               break;
             case 3:
-              this->value_charge_onoff_ = enabled
+              this->value_charge_onoff_ = enabled;
               break;  
           }
         }
