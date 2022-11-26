@@ -290,15 +290,6 @@ TYPES = {
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_POWER,
     ),
-    CONF_DISCHARGE_ONOFF: sensor.sensor_schema(
-        accuracy_decimals=1,
-    ),
-    CONF_DISCHARGE_WITH_STANDBY_ONOFF: sensor.sensor_schema(
-        accuracy_decimals=1,
-    ),
-    CONF_CHARGE_ONOFF: sensor.sensor_schema(
-        accuracy_decimals=1,
-    ),
 }
 
 CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
