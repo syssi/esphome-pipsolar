@@ -23,6 +23,7 @@ enum ENUMPollingCommand {
   POLLING_QPIWS = 5,
   POLLING_QT = 6,
   POLLING_QMN = 7,
+  POLLING_QBATCD = 8;
 };
 struct PollingCommand {
   uint8_t *command;
@@ -173,6 +174,12 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(warnung_low_pv_energy, QPIWS, bool)
   PIPSOLAR_BINARY_SENSOR(warning_high_ac_input_during_bus_soft_start, QPIWS, bool)
   PIPSOLAR_BINARY_SENSOR(warning_battery_equalization, QPIWS, bool)
+  
+  // QBATCD values
+  PIPSOLAR_BINARY_SENSOR(warnings_present, QBATCD, bool)
+  PIPSOLAR_BINARY_SENSOR(faults_present, QBATCD, bool)
+  PIPSOLAR_BINARY_SENSOR(warning_power_loss, QBATCD, bool)
+
 
   PIPSOLAR_TEXT_SENSOR(last_qpigs, QPIGS)
   PIPSOLAR_TEXT_SENSOR(last_qpigs2, QPIGS2)
@@ -191,7 +198,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SWITCH(pv_power_balance_switch, QPIRI)
 
   PIPSOLAR_SELECT(output_source_priority_select, QPIRI)
-  PIPSOLAR_SELECT(charging_discharging_controls_select, QPIRI)
+  PIPSOLAR_SELECT(charging_discharging_controls_select, QBATCD)
 
   void switch_command(const std::string &command);
   void setup() override;
