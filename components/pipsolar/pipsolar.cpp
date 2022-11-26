@@ -130,11 +130,6 @@ void Pipsolar::loop() {
           std::string value = esphome::to_string(value_output_source_priority_);
           this->output_source_priority_select_->map_and_publish(value);
         }
-         // special for output source priority select
-        if (this->charging_discharging_controls_select_) {
-          std::string value = esphome::to_string(value_charging_discharging_controls_);
-          this->charging_discharging_controls_select_->map_and_publish(value);
-        }
         // special for output source priority switches
         if (this->output_source_priority_utility_switch_) {
           this->output_source_priority_utility_switch_->publish_state(value_output_source_priority_ == 0);
@@ -434,6 +429,24 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_IDLE;
         break;
+      case POLLING_QBATCD:
+        if (this->discharge_onoff_) {
+          this->discharge_onoff_->publish_state(value_discharge_onoff_);
+        }
+        if (this->discharge_with_standby_onoff_) {
+          this->discharge_with_standby_onoff_->publish_state(value_discharge_with_standby_onoff_);
+        }
+        if (this-charge_onoff_) {
+          this->charge_onoff_->publish_state(value_charge_onoff_);
+        }
+        // special for output source priority select
+        if (this->charging_discharging_controls_select_) {
+          std::string value = esphome::to_string(value_charging_discharging_controls_);
+          this->charging_discharging_controls_select_->map_and_publish(value);
+        }
+ 
+        this->state_ = STATE_IDLE;
+        break;
       case POLLING_QT:
       case POLLING_QMN:
         this->state_ = STATE_IDLE;
@@ -719,6 +732,30 @@ void Pipsolar::loop() {
         ESP_LOGD(TAG, "Decode QMN");
         if (this->last_qmn_) {
           this->last_qmn_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QBATCD:
+        ESP_LOGD(TAG, "Decode QBACD");
+        // '(000'
+        // iterate over all available flag (as not all models have all flags, but at least in the same order)
+       
+        for (size_t i = 1; i < strlen(tmp); i++) {
+          enabled = tmp[i] == '1';
+          switch (i) {
+            case 1:
+              this->value_discharge_onoff_ = enabled;
+              break;
+            case 2:
+              this->value_discharge_with_standby_onoff_ = enabled;
+              break;
+            case 3:
+              this->value_charge_onoff_ = enabled
+              break;  
+          }
+        }
+        if (this->last_qbatcd_) {
+          this->last_qbatcd_->publish_state(tmp);
         }
         this->state_ = STATE_POLL_DECODED;
         break;
