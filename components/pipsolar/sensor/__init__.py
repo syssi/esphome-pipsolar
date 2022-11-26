@@ -78,11 +78,6 @@ CONF_PV2_INPUT_CURRENT = "pv2_input_current"
 CONF_PV2_INPUT_VOLTAGE = "pv2_input_voltage"
 CONF_PV2_CHARGING_POWER = "pv2_charging_power"
 
-# QBATCD sensors
-
-CONF_DISCHARGE_ONOFF = "discharge_onoff"
-CONF_DISCHARGE_WITH_STANDBY_ONOFF = "discharge_with_standby_onoff
-COND_CHARGE_ONOFF = "charge_onoff"
 
 
 TYPES = {
