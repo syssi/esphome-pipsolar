@@ -440,10 +440,12 @@ void Pipsolar::loop() {
           this->charge_onoff_->publish_state(value_charge_onoff_);
         }
         // special for output source priority select
+        /*
         if (this->charging_discharging_controls_select_) {
           std::string value = esphome::to_string(value_charging_discharging_controls_);
           this->charging_discharging_controls_select_->map_and_publish(value);
         }
+        */
  
         this->state_ = STATE_IDLE;
         break;
