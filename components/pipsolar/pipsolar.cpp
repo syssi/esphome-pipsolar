@@ -442,7 +442,6 @@ void Pipsolar::loop() {
         if (this->charging_discharging_control_select_) {
           this->charging_discharging_control_select_->map_and_publish(value_charging_discharging_control_select_);
         }
-
         this->state_ = STATE_IDLE;
         break;
       case POLLING_QT:
@@ -736,8 +735,6 @@ void Pipsolar::loop() {
       case POLLING_QBATCD:
         ESP_LOGD(TAG, "Decode QBATCD");
         // '(000'
-        // iterate over all available flag (as not all models have all flags, but at least in the same order)
-
         for (size_t i = 1; i < strlen(tmp); i++) {
           enabled = tmp[i] == '1';
           switch (i) {
