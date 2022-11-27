@@ -51,6 +51,8 @@ struct PollingCommand {
   PIPSOLAR_VALUED_ENTITY_(sensor::Sensor, name, polling_command, value_type)
 #define PIPSOLAR_SWITCH(name, polling_command) PIPSOLAR_ENTITY_(switch_::Switch, name, polling_command)
 #define PIPSOLAR_SELECT(name, polling_command) PIPSOLAR_ENTITY_(pipsolar::PipsolarSelect, name, polling_command)
+#define PIPSOLAR_VALUED_SELECT(name, polling_command, value_type) \
+  PIPSOLAR_VALUED_ENTITY_(pipsolar::PipsolarSelect, name, polling_command, value_type)
 #define PIPSOLAR_BINARY_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(binary_sensor::BinarySensor, name, polling_command, value_type)
 #define PIPSOLAR_VALUED_TEXT_SENSOR(name, polling_command, value_type) \
@@ -174,12 +176,11 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(warnung_low_pv_energy, QPIWS, bool)
   PIPSOLAR_BINARY_SENSOR(warning_high_ac_input_during_bus_soft_start, QPIWS, bool)
   PIPSOLAR_BINARY_SENSOR(warning_battery_equalization, QPIWS, bool)
-  
+
   // QBATCD values
   PIPSOLAR_BINARY_SENSOR(discharge_onoff, QBATCD, bool)
   PIPSOLAR_BINARY_SENSOR(discharge_with_standby_onoff, QBATCD, bool)
   PIPSOLAR_BINARY_SENSOR(charge_onoff, QBATCD, bool)
-
 
   PIPSOLAR_TEXT_SENSOR(last_qpigs, QPIGS)
   PIPSOLAR_TEXT_SENSOR(last_qpigs2, QPIGS2)
@@ -199,7 +200,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SWITCH(pv_power_balance_switch, QPIRI)
 
   PIPSOLAR_SELECT(output_source_priority_select, QPIRI)
-  PIPSOLAR_SELECT(charging_discharging_controls_select, QBATCD)
+  PIPSOLAR_VALUED_SELECT(charging_discharging_control_select, QBATCD, std::string)
 
   void switch_command(const std::string &command);
   void setup() override;

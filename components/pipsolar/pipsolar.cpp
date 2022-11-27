@@ -439,14 +439,10 @@ void Pipsolar::loop() {
         if (this->charge_onoff_) {
           this->charge_onoff_->publish_state(value_charge_onoff_);
         }
-        // special for output source priority select
-        /*
-        if (this->charging_discharging_controls_select_) {
-          std::string value = esphome::to_string(value_charging_discharging_controls_);
-          this->charging_discharging_controls_select_->map_and_publish(value);
+        if (this->charging_discharging_control_select_) {
+          this->charging_discharging_control_select_->map_and_publish(value_charging_discharging_control_select_);
         }
-        */
- 
+
         this->state_ = STATE_IDLE;
         break;
       case POLLING_QT:
@@ -738,10 +734,10 @@ void Pipsolar::loop() {
         this->state_ = STATE_POLL_DECODED;
         break;
       case POLLING_QBATCD:
-        ESP_LOGD(TAG, "Decode QBACD");
+        ESP_LOGD(TAG, "Decode QBATCD");
         // '(000'
         // iterate over all available flag (as not all models have all flags, but at least in the same order)
-       
+
         for (size_t i = 1; i < strlen(tmp); i++) {
           enabled = tmp[i] == '1';
           switch (i) {
@@ -753,9 +749,11 @@ void Pipsolar::loop() {
               break;
             case 3:
               this->value_charge_onoff_ = enabled;
-              break;  
+              break;
           }
         }
+        this->value_charging_discharging_control_select_ = tmp;
+
         if (this->last_qbatcd_) {
           this->last_qbatcd_->publish_state(tmp);
         }
