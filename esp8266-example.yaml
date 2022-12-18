@@ -211,3 +211,47 @@ output:
     pipsolar_id: inverter0
     battery_recharge_voltage:
       id: inverter0_battery_recharge_voltage_out
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    battery_bulk_voltage:
+      id: inverter0_battery_bulk_voltage_out
+
+select:
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    output_source_priority:
+      id: inverter0_output_source_priority_select
+      name: inverter0_output_source_priority_select
+      optionsmap:
+        "Utility first": "POP00"
+        "Solar only": "POP01"
+        "Solar Battery Utility": "POP02"
+      statusmap:
+        "0": "Utility first"
+        "1": "Solar only"
+        "2": "Solar Battery Utility"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    charging_discharging_control:
+      # See MAX_Communication_Protocol_20200526.pdf page 18
+      name: "${name} charging discharging control"
+      optionsmap:
+        "111": "PBATCD111"
+        "011": "PBATCD011"
+        "101": "PBATCD101"
+        "110": "PBATCD110"
+        "010": "PBATCD010"
+        "100": "PBATCD100"
+        "001": "PBATCD001"
+        "000": "PBATCD000"
+      statusmap:
+        "111": "111"
+        "011": "011"
+        "101": "101"
+        "110": "110"
+        "010": "010"
+        "100": "100"
+        "001": "001"
+        "000": "000"
