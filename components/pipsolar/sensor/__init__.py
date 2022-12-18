@@ -2,6 +2,8 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
 from esphome.const import (
+    CONF_BATTERY_VOLTAGE,
+    CONF_BUS_VOLTAGE,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
@@ -14,10 +16,9 @@ from esphome.const import (
     UNIT_VOLT,
     UNIT_VOLT_AMPS,
     UNIT_WATT,
-    CONF_BUS_VOLTAGE,
-    CONF_BATTERY_VOLTAGE,
 )
-from .. import PIPSOLAR_COMPONENT_SCHEMA, CONF_PIPSOLAR_ID
+
+from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
 
 DEPENDENCIES = ["uart"]
 
@@ -48,6 +49,8 @@ CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
 CONF_PV_OK_CONDITION_FOR_PARALLEL = "pv_ok_condition_for_parallel"
 CONF_PV_POWER_BALANCE = "pv_power_balance"
 
+# QPIGS sensors
+
 CONF_GRID_VOLTAGE = "grid_voltage"
 CONF_GRID_FREQUENCY = "grid_frequency"
 CONF_AC_OUTPUT_VOLTAGE = "ac_output_voltage"
@@ -68,6 +71,7 @@ CONF_SCC_FIRMWARE_VERSION = "scc_firmware_version"
 CONF_BATTERY_VOLTAGE_OFFSET_FOR_FANS_ON = "battery_voltage_offset_for_fans_on"
 CONF_EEPROM_VERSION = "eeprom_version"
 CONF_PV_CHARGING_POWER = "pv_charging_power"
+
 
 TYPES = {
     CONF_GRID_RATING_VOLTAGE: sensor.sensor_schema(
@@ -139,7 +143,7 @@ TYPES = {
     ),
     CONF_CURRENT_MAX_CHARGING_CURRENT: sensor.sensor_schema(
         unit_of_measurement=UNIT_AMPERE,
-        accuracy_decimals=1,
+        accuracy_decimals=0,
         device_class=DEVICE_CLASS_CURRENT,
     ),
     CONF_INPUT_VOLTAGE_RANGE: sensor.sensor_schema(
@@ -164,7 +168,9 @@ TYPES = {
         accuracy_decimals=1,
     ),
     CONF_BATTERY_REDISCHARGE_VOLTAGE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
     ),
     CONF_PV_OK_CONDITION_FOR_PARALLEL: sensor.sensor_schema(
         accuracy_decimals=1,

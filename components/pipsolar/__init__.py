@@ -1,11 +1,11 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.const import CONF_ID
 from esphome.components import uart
+from esphome.const import CONF_ID
 
 DEPENDENCIES = ["uart"]
 CODEOWNERS = ["@andreashergert1984"]
-AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "output"]
+AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "output", "select"]
 MULTI_CONF = True
 
 CONF_PIPSOLAR_ID = "pipsolar_id"

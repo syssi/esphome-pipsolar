@@ -125,6 +125,11 @@ void Pipsolar::loop() {
         if (this->output_source_priority_) {
           this->output_source_priority_->publish_state(value_output_source_priority_);
         }
+        // special for output source priority select
+        if (this->output_source_priority_select_) {
+          std::string value = esphome::to_string(value_output_source_priority_);
+          this->output_source_priority_select_->map_and_publish(value);
+        }
         // special for output source priority switches
         if (this->output_source_priority_utility_switch_) {
           this->output_source_priority_utility_switch_->publish_state(value_output_source_priority_ == 0);
@@ -409,6 +414,21 @@ void Pipsolar::loop() {
         }
         if (this->warning_battery_equalization_) {
           this->warning_battery_equalization_->publish_state(value_warning_battery_equalization_);
+        }
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QBATCD:
+        if (this->discharge_onoff_) {
+          this->discharge_onoff_->publish_state(value_discharge_onoff_);
+        }
+        if (this->discharge_with_standby_onoff_) {
+          this->discharge_with_standby_onoff_->publish_state(value_discharge_with_standby_onoff_);
+        }
+        if (this->charge_onoff_) {
+          this->charge_onoff_->publish_state(value_charge_onoff_);
+        }
+        if (this->charging_discharging_control_select_) {
+          this->charging_discharging_control_select_->map_and_publish(value_charging_discharging_control_select_);
         }
         this->state_ = STATE_IDLE;
         break;
@@ -739,6 +759,30 @@ void Pipsolar::loop() {
         ESP_LOGD(TAG, "Decode QMN");
         if (this->last_qmn_) {
           this->last_qmn_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QBATCD:
+        ESP_LOGD(TAG, "Decode QBATCD");
+        // '(000'
+        for (size_t i = 1; i < strlen(tmp); i++) {
+          enabled = tmp[i] == '1';
+          switch (i) {
+            case 1:
+              this->value_discharge_onoff_ = enabled;
+              break;
+            case 2:
+              this->value_discharge_with_standby_onoff_ = enabled;
+              break;
+            case 3:
+              this->value_charge_onoff_ = enabled;
+              break;
+          }
+        }
+        this->value_charging_discharging_control_select_ = tmp;
+
+        if (this->last_qbatcd_) {
+          this->last_qbatcd_->publish_state(tmp);
         }
         this->state_ = STATE_POLL_DECODED;
         break;

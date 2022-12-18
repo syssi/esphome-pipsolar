@@ -1,6 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import text_sensor
+
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
 
 DEPENDENCIES = ["uart"]
@@ -13,6 +14,7 @@ CONF_LAST_QFLAG = "last_qflag"
 CONF_LAST_QPIWS = "last_qpiws"
 CONF_LAST_QT = "last_qt"
 CONF_LAST_QMN = "last_qmn"
+CONF_LAST_QBATCD = "last_qbatcd"
 
 TYPES = [
     CONF_DEVICE_MODE,
@@ -23,6 +25,7 @@ TYPES = [
     CONF_LAST_QPIWS,
     CONF_LAST_QT,
     CONF_LAST_QMN,
+    CONF_LAST_QBATCD,
 ]
 
 CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
