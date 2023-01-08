@@ -143,6 +143,11 @@ void Pipsolar::loop() {
         if (this->charger_source_priority_) {
           this->charger_source_priority_->publish_state(value_charger_source_priority_);
         }
+        // special for output source priority select
+        if (this->charger_source_priority_select_) {
+          std::string value = esphome::to_string(value_charger_source_priority_);
+          this->output_charger_priority_select_->map_and_publish(value);
+        }
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
         }
