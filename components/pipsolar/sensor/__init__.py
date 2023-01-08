@@ -159,7 +159,7 @@ TYPES = {
         accuracy_decimals=1,
     ),
     CONF_CHARGER_SOURCE_PRIORITY: sensor.sensor_schema(
-        accuracy_decimals=1,
+        accuracy_decimals=0,
     ),
     CONF_PARALLEL_MAX_NUM: sensor.sensor_schema(
         accuracy_decimals=1,
