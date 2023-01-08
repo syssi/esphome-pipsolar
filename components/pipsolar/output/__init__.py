@@ -79,7 +79,6 @@ CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
     }
 )
 
-
 async def to_code(config):
     paren = await cg.get_variable(config[CONF_PIPSOLAR_ID])
 
