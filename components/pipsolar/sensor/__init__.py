@@ -9,6 +9,7 @@ from esphome.const import (
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
     ICON_CURRENT_AC,
+    ICON_CURRENT_DC,
     UNIT_AMPERE,
     UNIT_CELSIUS,
     UNIT_HERTZ,
