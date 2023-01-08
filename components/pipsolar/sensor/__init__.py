@@ -9,7 +9,6 @@ from esphome.const import (
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
     ICON_CURRENT_AC,
-    ICON_CURRENT_DC,
     UNIT_AMPERE,
     UNIT_CELSIUS,
     UNIT_HERTZ,
@@ -145,13 +144,11 @@ TYPES = {
     ),
     CONF_CURRENT_MAX_AC_CHARGING_CURRENT: sensor.sensor_schema(
         unit_of_measurement=UNIT_AMPERE,
-        icon=ICON_CURRENT_DC,
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_CURRENT,
     ),
     CONF_CURRENT_MAX_CHARGING_CURRENT: sensor.sensor_schema(
         unit_of_measurement=UNIT_AMPERE,
-        icon=ICON_CURRENT_DC,
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_CURRENT,
     ),
