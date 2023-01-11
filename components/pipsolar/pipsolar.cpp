@@ -471,6 +471,24 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_IDLE;
         break;
+      case POLLING_MUCHGC:
+        if (this->current_max_ac_charging_current_) {
+          this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
+        }
+        if (this->current_max_ac_charging_current_select_) {
+          this->current_max_ac_charging_current_select_->map_and_publish(value_current_max_ac_charging_current_select_);
+        }
+        this->state_ = STATE_IDLE;
+        break;  
+      case POLLING_MCHGC:
+        if (this->current_max_charging_current_) {
+          this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
+        }
+        if (this->current_max_charging_current_select_) {
+          this->current_max_charging_current_select_->map_and_publish(value_current_max_charging_current_select_);
+        }
+        this->state_ = STATE_IDLE;
+        break;   
       case POLLING_QT:
       case POLLING_QMN:
         this->state_ = STATE_IDLE;
@@ -501,8 +519,10 @@ void Pipsolar::loop() {
         if (this->last_qpiri_) {
           this->last_qpiri_->publish_state(tmp);
         }
+        /*
         this-value_current_max_ac_charging_current_select_ = value_current_max_ac_charging_current_;
         this-value_current_max_charging_current_select_ = value_current_max_charging_current_;
+        */
         this->state_ = STATE_POLL_DECODED;
         break;
       case POLLING_QPIGS:
@@ -779,12 +799,38 @@ void Pipsolar::loop() {
           }
         }
         this->value_charging_discharging_control_select_ = tmp;
-
         if (this->last_qbatcd_) {
           this->last_qbatcd_->publish_state(tmp);
         }
         this->state_ = STATE_POLL_DECODED;
         break;
+        
+      case POLLING_MUCHGC:
+        ESP_LOGD(TAG, "Decode MUCHGC");
+        sscanf(                                                                                 // NOLINT
+            tmp,                                                                                // NOLINT
+            "(%d",                                                                              // NOLINT
+            &value_current_max_ac_charging_current_);                                           // NOLINT
+        this->value_current_max_ac_charging_current_select = value_current_max_ac_charging_current_;
+        if (this->last_muchgc_) {
+          this->last_muchgc_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+        
+      case POLLING_MCHGC:
+        ESP_LOGD(TAG, "Decode MCHGC");
+        sscanf(                                                                                 // NOLINT
+            tmp,                                                                                // NOLINT
+            "(%d",                                                                              // NOLINT
+            &value_current_max_charging_current_);                                              // NOLINT
+        this->value_current_max_charging_current_select = value_current_max_charging_current_;
+        if (this->last_mchgc_) {
+          this->last_mchgc_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;  
+        
       default:
         this->state_ = STATE_IDLE;
         break;
