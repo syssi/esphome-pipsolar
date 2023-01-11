@@ -14,8 +14,8 @@ CONF_STATUSMAP = "statusmap"
 CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
 CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_CHARGING_DISCHARGING_CONTROL = "charging_discharging_control"
-CONF_CURRENT_MAX_CHARGING_CURRENT_SELECT = "current_max_charging_current"
-CONF_CURRENT_MAX_AC_CHARGING_CURRENT_SELECT = "current_max_ac_charging_current"
+CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current_select"
+CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
 
 
 PipsolarSelect = pipsolar_ns.class_("PipsolarSelect", cg.Component, select.Select)
@@ -80,8 +80,8 @@ TYPES = {
     CONF_OUTPUT_SOURCE_PRIORITY: ("POP00", None),
     CONF_CHARGER_SOURCE_PRIORITY: ("PCP03", None),
     CONF_CHARGING_DISCHARGING_CONTROL: ("PBATCD111", None),
-    CONF_CURRENT_MAX_CHARGING_CURRENT_SELECT: ("MCHGC010", None),
-    CONF_CURRENT_MAX_AC_CHARGING_CURRENT_SELECT: ("MUCHGC0002", None),
+    CONF_CURRENT_MAX_CHARGING_CURRENT: ("MCHGC010", None),
+    CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ("MUCHGC0002", None),
 }
 
 
