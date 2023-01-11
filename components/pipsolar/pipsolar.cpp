@@ -112,12 +112,12 @@ void Pipsolar::loop() {
         if (this->current_max_ac_charging_current_) {
           this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
         }
-        /*  select for current_max_ac_charging_current
+        //  select for current_max_ac_charging_current
         if (this-current_max_ac_charging_current_select_) {
           std::string value = esphome::to_string(value_current_max_ac_charging_current_);
           this->current_max_ac_charging_current_select_->map_and_publish(value);
         }
-        */
+        
         /*
         if (this->>current_max_ac_charging_current_select_) {
           this->>current_max_ac_charging_current_select_->map_and_publish(value_>current_max_ac_charging_current_select_);
@@ -127,12 +127,12 @@ void Pipsolar::loop() {
         if (this->current_max_charging_current_) {
           this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
         }
-        /* select for current_max_charging_current
+         //select for current_max_charging_current
         if (this-current_max_charging_current_select_) {
           std::string value = esphome::to_string(value_current_max_charging_current_);
           this->current_max_charging_current_select_->map_and_publish(value);
         }
-        */
+        
         /*
          if (this->>current_max_charging_current_select_) {
           this->>current_max_charging_current_select_->map_and_publish(value_>current_max_charging_current_select_);
@@ -524,10 +524,10 @@ void Pipsolar::loop() {
         if (this->last_qpiri_) {
           this->last_qpiri_->publish_state(tmp);
         }
-        /*
+        
         this-value_current_max_ac_charging_current_select_ = value_current_max_ac_charging_current_;
         this-value_current_max_charging_current_select_ = value_current_max_charging_current_;
-        */
+        
         this->state_ = STATE_POLL_DECODED;
         break;
       case POLLING_QPIGS:
