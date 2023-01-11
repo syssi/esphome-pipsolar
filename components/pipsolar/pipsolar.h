@@ -24,6 +24,10 @@ enum ENUMPollingCommand {
   POLLING_QT = 6,
   POLLING_QMN = 7,
   POLLING_QBATCD = 8,
+/*  
+  POLLING_MUCHGC = 9;
+  POLLING_MCHGC = 10;
+*/  
 };
 struct PollingCommand {
   uint8_t *command;
