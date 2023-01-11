@@ -112,8 +112,18 @@ void Pipsolar::loop() {
         if (this->current_max_ac_charging_current_) {
           this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
         }
+        // select for current_max_ac_charging_current
+        if (this-value_current_max_ac_charging_current_) {
+          std::string value = esphome::to_string(value_current_max_ac_charging_current_);
+          this->value_current_max_ac_charging_current_->map_and_publish(value);
+        }
         if (this->current_max_charging_current_) {
           this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
+        }
+        // select for current_max_charging_current
+        if (this-value_current_max_charging_current_) {
+          std::string value = esphome::to_string(value_current_max_charging_current_);
+          this->value_current_max_charging_current_->map_and_publish(value);
         }
         if (this->input_voltage_range_) {
           this->input_voltage_range_->publish_state(value_input_voltage_range_);
