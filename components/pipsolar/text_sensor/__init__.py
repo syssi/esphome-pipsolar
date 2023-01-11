@@ -16,8 +16,6 @@ CONF_LAST_QPIWS = "last_qpiws"
 CONF_LAST_QT = "last_qt"
 CONF_LAST_QMN = "last_qmn"
 CONF_LAST_QBATCD = "last_qbatcd"
-#CONF_LAST_MUCHGC = "last_muchgc"
-#CONF_LAST_MCHGC = "last_mchgc"
 
 TYPES = [
     CONF_DEVICE_MODE,
