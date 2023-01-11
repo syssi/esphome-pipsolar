@@ -16,8 +16,8 @@ CONF_LAST_QPIWS = "last_qpiws"
 CONF_LAST_QT = "last_qt"
 CONF_LAST_QMN = "last_qmn"
 CONF_LAST_QBATCD = "last_qbatcd"
-CONF_LAST_MUCHGC = "last_muchgc"
-CONF_LAST_MCHGC = "last_mchgc"
+#CONF_LAST_MUCHGC = "last_muchgc"
+#CONF_LAST_MCHGC = "last_mchgc"
 
 TYPES = [
     CONF_DEVICE_MODE,
@@ -30,8 +30,8 @@ TYPES = [
     CONF_LAST_QT,
     CONF_LAST_QMN,
     CONF_LAST_QBATCD,
-    CONF_LAST_MUCHGC,
-    CONF_LAST_MCHGC,
+#    CONF_LAST_MUCHGC,
+#    CONF_LAST_MCHGC,
 ]
 
 CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
