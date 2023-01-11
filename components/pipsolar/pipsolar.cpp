@@ -525,8 +525,8 @@ void Pipsolar::loop() {
           this->last_qpiri_->publish_state(tmp);
         }
         
-        this->value_current_max_ac_charging_current_select_ = value_current_max_ac_charging_current_;
-        this->value_current_max_charging_current_select_ = value_current_max_charging_current_;
+        this->current_max_ac_charging_current_select_ = value_current_max_ac_charging_current_;
+        this->current_max_charging_current_select_ = value_current_max_charging_current_;
         
         this->state_ = STATE_POLL_DECODED;
         break;
