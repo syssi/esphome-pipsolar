@@ -24,10 +24,6 @@ enum ENUMPollingCommand {
   POLLING_QT = 6,
   POLLING_QMN = 7,
   POLLING_QBATCD = 8,
-/*  
-  POLLING_MUCHGC = 9;
-  POLLING_MCHGC = 10;
-*/  
 };
 struct PollingCommand {
   uint8_t *command;
@@ -208,10 +204,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   
   PIPSOLAR_SELECT(current_max_ac_charging_current_select, QPIRI)
   PIPSOLAR_SELECT(current_max_charging_current_select, QPIRI)
-  /*
-  PIPSOLAR_VALUED_SELECT(current_max_ac_charging_current_select, MUCHGC, std::string)
-  PIPSOLAR_VALUED_SELECT(current_max_charging_current_select, MCHGC, std::string)
-  */
+  
   PIPSOLAR_VALUED_SELECT(charging_discharging_control_select, QBATCD, std::string)
 
   void switch_command(const std::string &command);
