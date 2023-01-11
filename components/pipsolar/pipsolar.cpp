@@ -118,12 +118,6 @@ void Pipsolar::loop() {
           this->current_max_ac_charging_current_select_->map_and_publish(value);
         }
         
-        /*
-        if (this->>current_max_ac_charging_current_select_) {
-          this->>current_max_ac_charging_current_select_->map_and_publish(value_>current_max_ac_charging_current_select_);
-        }
-        */
-        
         if (this->current_max_charging_current_) {
           this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
         }
@@ -132,12 +126,7 @@ void Pipsolar::loop() {
           std::string value = esphome::to_string(value_current_max_charging_current_);
           this->current_max_charging_current_select_->map_and_publish(value);
         }
-        
-        /*
-         if (this->>current_max_charging_current_select_) {
-          this->>current_max_charging_current_select_->map_and_publish(value_>current_max_charging_current_select_);
-        }
-        */
+
         if (this->input_voltage_range_) {
           this->input_voltage_range_->publish_state(value_input_voltage_range_);
         }
@@ -171,7 +160,6 @@ void Pipsolar::loop() {
           std::string value = esphome::to_string(value_charger_source_priority_);
           this->charger_source_priority_select_->map_and_publish(value);
         }
-        
         
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
@@ -473,27 +461,7 @@ void Pipsolar::loop() {
           this->charging_discharging_control_select_->map_and_publish(value_charging_discharging_control_select_);
         }
         this->state_ = STATE_IDLE;
-        break;
-/*        
-      case POLLING_MUCHGC:
-        if (this->current_max_ac_charging_current_) {
-          this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
-        }
-        if (this->current_max_ac_charging_current_select_) {
-          this->current_max_ac_charging_current_select_->map_and_publish(value_current_max_ac_charging_current_select_);
-        }
-        this->state_ = STATE_IDLE;
-        break;  
-      case POLLING_MCHGC:
-        if (this->current_max_charging_current_) {
-          this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
-        }
-        if (this->current_max_charging_current_select_) {
-          this->current_max_charging_current_select_->map_and_publish(value_current_max_charging_current_select_);
-        }
-        this->state_ = STATE_IDLE;
-        break;
-*/        
+        break;   
       case POLLING_QT:
       case POLLING_QMN:
         this->state_ = STATE_IDLE;
@@ -809,33 +777,6 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_POLL_DECODED;
         break;
-/*        
-      case POLLING_MUCHGC:
-        ESP_LOGD(TAG, "Decode MUCHGC");
-        sscanf(                                                                                 // NOLINT
-            tmp,                                                                                // NOLINT
-            "(%d",                                                                              // NOLINT
-            &value_current_max_ac_charging_current_);                                           // NOLINT
-        this->value_current_max_ac_charging_current_select = value_current_max_ac_charging_current_;
-        if (this->last_muchgc_) {
-          this->last_muchgc_->publish_state(tmp);
-        }
-        this->state_ = STATE_POLL_DECODED;
-        break;
-        
-      case POLLING_MCHGC:
-        ESP_LOGD(TAG, "Decode MCHGC");
-        sscanf(                                                                                 // NOLINT
-            tmp,                                                                                // NOLINT
-            "(%d",                                                                              // NOLINT
-            &value_current_max_charging_current_);                                              // NOLINT
-        this->value_current_max_charging_current_select = value_current_max_charging_current_;
-        if (this->last_mchgc_) {
-          this->last_mchgc_->publish_state(tmp);
-        }
-        this->state_ = STATE_POLL_DECODED;
-        break;  
-  */      
       default:
         this->state_ = STATE_IDLE;
         break;
