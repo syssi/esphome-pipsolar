@@ -113,7 +113,7 @@ void Pipsolar::loop() {
           this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
         }
         //  select for current_max_ac_charging_current
-        if (this-current_max_ac_charging_current_select_) {
+        if (this->current_max_ac_charging_current_select_) {
           std::string value = esphome::to_string(value_current_max_ac_charging_current_);
           this->current_max_ac_charging_current_select_->map_and_publish(value);
         }
@@ -128,7 +128,7 @@ void Pipsolar::loop() {
           this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
         }
          //select for current_max_charging_current
-        if (this-current_max_charging_current_select_) {
+        if (this->current_max_charging_current_select_) {
           std::string value = esphome::to_string(value_current_max_charging_current_);
           this->current_max_charging_current_select_->map_and_publish(value);
         }
