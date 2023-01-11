@@ -261,3 +261,82 @@ select:
         "100": "100"
         "001": "001"
         "000": "000"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    charger_source_priority:
+      name: ${name} charger_source_priority_select
+      optionsmap:
+#        "Utility first": "PCP00"
+        "Solar first": "PCP01"
+        "Solar and utility": "PCP02"
+        "Solar charging only": "PCP03"
+      statusmap:
+ #       "0": "Utility first"
+        "1": "Solar first"
+        "2": "Solar and utility"
+        "3": "Solar charging only"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    current_max_ac_charging_current:
+      name: ${name} current_max_ac_charging_current_select
+      optionsmap:
+        "2A": "MUCHGC0002"
+        "10A": "MUCHGC0010"
+        "20A": "MUCHGC0020"
+        "30A": "MUCHGC0030"
+        "40A": "MUCHGC0040"
+        "50A": "MUCHGC0050"
+        "60A": "MUCHGC0060"
+        "70A": "MUCHGC0070"
+        "80A": "MUCHGC0080"
+        "90A": "MUCHGC0090"
+        "100A": "MUCHGC0100"
+        "110A": "MUCHGC0110"
+        "120A": "MUCHGC0120"
+      statusmap:
+        "2": "2A"
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"       
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+        "90": "90A"
+        "100": "100A"
+        "110": "110A"
+        "120": "120A"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    current_max_charging_current: 
+      name: ${name} current_max_charging_current_select
+      optionsmap:
+        "10A": "MCHGC010"
+        "20A": "MCHGC020"
+        "30A": "MCHGC030"
+        "40A": "MCHGC040"
+        "50A": "MCHGC050"
+        "60A": "MCHGC060"
+        "70A": "MCHGC070"
+        "80A": "MCHGC080"
+        "90A": "MCHGC090"
+        "100A": "MCHGC100"
+        "110A": "MCHGC110"
+        "120A": "MCHGC120"
+      statusmap:
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"       
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+        "90": "90A"
+        "100": "100A"
+        "110": "110A"
+        "120": "120A"    
