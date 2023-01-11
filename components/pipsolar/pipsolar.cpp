@@ -471,6 +471,7 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_IDLE;
         break;
+/*        
       case POLLING_MUCHGC:
         if (this->current_max_ac_charging_current_) {
           this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
@@ -488,7 +489,8 @@ void Pipsolar::loop() {
           this->current_max_charging_current_select_->map_and_publish(value_current_max_charging_current_select_);
         }
         this->state_ = STATE_IDLE;
-        break;   
+        break;
+*/        
       case POLLING_QT:
       case POLLING_QMN:
         this->state_ = STATE_IDLE;
@@ -804,7 +806,7 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_POLL_DECODED;
         break;
-        
+/*        
       case POLLING_MUCHGC:
         ESP_LOGD(TAG, "Decode MUCHGC");
         sscanf(                                                                                 // NOLINT
@@ -830,7 +832,7 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_POLL_DECODED;
         break;  
-        
+  */      
       default:
         this->state_ = STATE_IDLE;
         break;
