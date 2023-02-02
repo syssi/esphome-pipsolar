@@ -299,7 +299,7 @@ select:
         "2": "2A"
         "10": "10A"
         "20": "20A"
-        "30": "30A"       
+        "30": "30A"
         "40": "40A"
         "50": "50A"
         "60": "60A"
@@ -312,7 +312,7 @@ select:
 
   - platform: pipsolar
     pipsolar_id: inverter0
-    current_max_charging_current: 
+    current_max_charging_current:
       name: ${name} current_max_charging_current_select
       optionsmap:
         "10A": "MCHGC010"
@@ -330,7 +330,7 @@ select:
       statusmap:
         "10": "10A"
         "20": "20A"
-        "30": "30A"       
+        "30": "30A"
         "40": "40A"
         "50": "50A"
         "60": "60A"
@@ -339,4 +339,4 @@ select:
         "90": "90A"
         "100": "100A"
         "110": "110A"
-        "120": "120A"    
+        "120": "120A"
