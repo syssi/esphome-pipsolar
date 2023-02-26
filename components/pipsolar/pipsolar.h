@@ -215,7 +215,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
 
  protected:
   friend class PipsolarSelect;
-  static const size_t PIPSOLAR_READ_BUFFER_LENGTH = 110;  // maximum supported answer length
+  static const size_t PIPSOLAR_READ_BUFFER_LENGTH = 130;  // maximum supported answer length
   static const size_t COMMAND_QUEUE_LENGTH = 10;
   static const size_t COMMAND_TIMEOUT = 5000;
   uint32_t last_poll_ = 0;
