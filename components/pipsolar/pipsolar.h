@@ -12,7 +12,7 @@ namespace esphome {
 namespace pipsolar {
 
 enum ENUMPollingCommand {
-  POLLING_QPIRI = 0,
+  POLLING_P007PIRI = 0,
   POLLING_QPIGS = 1,
   POLLING_QMOD = 2,
   POLLING_QFLAG = 3,
@@ -39,7 +39,7 @@ struct PollingCommand {
  public: \
   void set_##name(type *name) { /* NOLINT */ \
     this->name##_ = name; \
-    this->add_polling_command_(#polling_command, POLLING_##polling_command); \
+    this->add_polling_command_("^"#polling_command, POLLING_##polling_command); \
   }
 
 #define PIPSOLAR_SENSOR(name, polling_command, value_type) \
@@ -84,32 +84,32 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(switch_on, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(dustproof_installed, QPIGS, int)
 
-  // QPIRI values
-  PIPSOLAR_SENSOR(grid_rating_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(grid_rating_current, QPIRI, float)
-  PIPSOLAR_SENSOR(ac_output_rating_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(ac_output_rating_frequency, QPIRI, float)
-  PIPSOLAR_SENSOR(ac_output_rating_current, QPIRI, float)
-  PIPSOLAR_SENSOR(ac_output_rating_apparent_power, QPIRI, int)
-  PIPSOLAR_SENSOR(ac_output_rating_active_power, QPIRI, int)
-  PIPSOLAR_SENSOR(battery_rating_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(battery_recharge_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(battery_under_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(battery_bulk_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(battery_float_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(battery_type, QPIRI, int)
-  PIPSOLAR_SENSOR(current_max_ac_charging_current, QPIRI, int)
-  PIPSOLAR_SENSOR(current_max_charging_current, QPIRI, int)
-  PIPSOLAR_SENSOR(input_voltage_range, QPIRI, int)
-  PIPSOLAR_SENSOR(output_source_priority, QPIRI, int)
-  PIPSOLAR_SENSOR(charger_source_priority, QPIRI, int)
-  PIPSOLAR_SENSOR(parallel_max_num, QPIRI, int)
-  PIPSOLAR_SENSOR(machine_type, QPIRI, int)
-  PIPSOLAR_SENSOR(topology, QPIRI, int)
-  PIPSOLAR_SENSOR(output_mode, QPIRI, int)
-  PIPSOLAR_SENSOR(battery_redischarge_voltage, QPIRI, float)
-  PIPSOLAR_SENSOR(pv_ok_condition_for_parallel, QPIRI, int)
-  PIPSOLAR_SENSOR(pv_power_balance, QPIRI, int)
+  // P007PIRI values
+  PIPSOLAR_SENSOR(grid_rating_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(grid_rating_current, P007PIRI, float)
+  PIPSOLAR_SENSOR(ac_output_rating_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(ac_output_rating_frequency, P007PIRI, float)
+  PIPSOLAR_SENSOR(ac_output_rating_current, P007PIRI, float)
+  PIPSOLAR_SENSOR(ac_output_rating_apparent_power, P007PIRI, int)
+  PIPSOLAR_SENSOR(ac_output_rating_active_power, P007PIRI, int)
+  PIPSOLAR_SENSOR(battery_rating_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(battery_recharge_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(battery_under_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(battery_bulk_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(battery_float_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(battery_type, P007PIRI, int)
+  PIPSOLAR_SENSOR(current_max_ac_charging_current, P007PIRI, int)
+  PIPSOLAR_SENSOR(current_max_charging_current, P007PIRI, int)
+  PIPSOLAR_SENSOR(input_voltage_range, P007PIRI, int)
+  PIPSOLAR_SENSOR(output_source_priority, P007PIRI, int)
+  PIPSOLAR_SENSOR(charger_source_priority, P007PIRI, int)
+  PIPSOLAR_SENSOR(parallel_max_num, P007PIRI, int)
+  PIPSOLAR_SENSOR(machine_type, P007PIRI, int)
+  PIPSOLAR_SENSOR(topology, P007PIRI, int)
+  PIPSOLAR_SENSOR(output_mode, P007PIRI, int)
+  PIPSOLAR_SENSOR(battery_redischarge_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(pv_ok_condition_for_parallel, P007PIRI, int)
+  PIPSOLAR_SENSOR(pv_power_balance, P007PIRI, int)
 
   // QMOD values
   PIPSOLAR_VALUED_TEXT_SENSOR(device_mode, QMOD, char)
@@ -164,19 +164,19 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(warning_battery_equalization, QPIWS, bool)
 
   PIPSOLAR_TEXT_SENSOR(last_qpigs, QPIGS)
-  PIPSOLAR_TEXT_SENSOR(last_qpiri, QPIRI)
+  PIPSOLAR_TEXT_SENSOR(last_qpiri, P007PIRI)
   PIPSOLAR_TEXT_SENSOR(last_qmod, QMOD)
   PIPSOLAR_TEXT_SENSOR(last_qflag, QFLAG)
   PIPSOLAR_TEXT_SENSOR(last_qpiws, QPIWS)
   PIPSOLAR_TEXT_SENSOR(last_qt, QT)
   PIPSOLAR_TEXT_SENSOR(last_qmn, QMN)
 
-  PIPSOLAR_SWITCH(output_source_priority_utility_switch, QPIRI)
-  PIPSOLAR_SWITCH(output_source_priority_solar_switch, QPIRI)
-  PIPSOLAR_SWITCH(output_source_priority_battery_switch, QPIRI)
-  PIPSOLAR_SWITCH(input_voltage_range_switch, QPIRI)
-  PIPSOLAR_SWITCH(pv_ok_condition_for_parallel_switch, QPIRI)
-  PIPSOLAR_SWITCH(pv_power_balance_switch, QPIRI)
+  PIPSOLAR_SWITCH(output_source_priority_utility_switch, P007PIRI)
+  PIPSOLAR_SWITCH(output_source_priority_solar_switch, P007PIRI)
+  PIPSOLAR_SWITCH(output_source_priority_battery_switch, P007PIRI)
+  PIPSOLAR_SWITCH(input_voltage_range_switch, P007PIRI)
+  PIPSOLAR_SWITCH(pv_ok_condition_for_parallel_switch, P007PIRI)
+  PIPSOLAR_SWITCH(pv_power_balance_switch, P007PIRI)
 
   void switch_command(const std::string &command);
   void setup() override;

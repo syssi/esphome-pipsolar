@@ -69,7 +69,7 @@ void Pipsolar::loop() {
   if (this->state_ == STATE_POLL_DECODED) {
     std::string mode;
     switch (this->used_polling_commands_[this->last_polling_command_].identifier) {
-      case POLLING_QPIRI:
+      case POLLING_P007PIRI:
         if (this->grid_rating_voltage_) {
           this->grid_rating_voltage_->publish_state(value_grid_rating_voltage_);
         }
@@ -425,9 +425,9 @@ void Pipsolar::loop() {
     char tmp[PIPSOLAR_READ_BUFFER_LENGTH];
     sprintf(tmp, "%s", this->read_buffer_);
     switch (this->used_polling_commands_[this->last_polling_command_].identifier) {
-      case POLLING_QPIRI:
-        ESP_LOGD(TAG, "Decode QPIRI");
-        sscanf(tmp, "(%f %f %f %f %f %d %d %f %f %f %f %f %d %d %d %d %d %d %d %d %d %d %f %d %d",          // NOLINT
+      case POLLING_P007PIRI:
+        ESP_LOGD(TAG, "Decode P007PIRI");
+        sscanf(tmp, "^D0882300,%f,%f,%f,%f,%f,%d,%d,%f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%d,%d",          // NOLINT
                &value_grid_rating_voltage_, &value_grid_rating_current_, &value_ac_output_rating_voltage_,  // NOLINT
                &value_ac_output_rating_frequency_, &value_ac_output_rating_current_,                        // NOLINT
                &value_ac_output_rating_apparent_power_, &value_ac_output_rating_active_power_,              // NOLINT
@@ -767,20 +767,22 @@ uint8_t Pipsolar::check_incoming_length_(uint8_t length) {
 }
 
 uint8_t Pipsolar::check_incoming_crc_() {
-  uint16_t crc16;
-  crc16 = cal_crc_half_(read_buffer_, read_pos_ - 3);
-  ESP_LOGD(TAG, "checking crc on incoming message");
-  if (((uint8_t)((crc16) >> 8)) == read_buffer_[read_pos_ - 3] &&
-      ((uint8_t)((crc16) &0xff)) == read_buffer_[read_pos_ - 2]) {
-    ESP_LOGD(TAG, "CRC OK");
-    read_buffer_[read_pos_ - 1] = 0;
-    read_buffer_[read_pos_ - 2] = 0;
-    read_buffer_[read_pos_ - 3] = 0;
-    return 1;
-  }
-  ESP_LOGD(TAG, "CRC NOK expected: %X %X but got: %X %X", ((uint8_t)((crc16) >> 8)), ((uint8_t)((crc16) &0xff)),
-           read_buffer_[read_pos_ - 3], read_buffer_[read_pos_ - 2]);
-  return 0;
+  return 1;
+
+//  uint16_t crc16;
+//  crc16 = cal_crc_half_(read_buffer_, read_pos_ - 3);
+//  ESP_LOGD(TAG, "checking crc on incoming message");
+//  if (((uint8_t)((crc16) >> 8)) == read_buffer_[read_pos_ - 3] &&
+//      ((uint8_t)((crc16) &0xff)) == read_buffer_[read_pos_ - 2]) {
+//    ESP_LOGD(TAG, "CRC OK");
+//    read_buffer_[read_pos_ - 1] = 0;
+//    read_buffer_[read_pos_ - 2] = 0;
+//    read_buffer_[read_pos_ - 3] = 0;
+//    return 1;
+//  }
+//  ESP_LOGD(TAG, "CRC NOK expected: %X %X but got: %X %X", ((uint8_t)((crc16) >> 8)), ((uint8_t)((crc16) &0xff)),
+//           read_buffer_[read_pos_ - 3], read_buffer_[read_pos_ - 2]);
+//  return 0;
 }
 
 // send next command used
