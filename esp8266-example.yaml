@@ -8,6 +8,7 @@
 
 substitutions:
   name: pipsolar
+  external_components_source: github://syssi/esphome-pipsolar@pi18
   tx_pin: GPIO4
   rx_pin: GPIO5
 
@@ -17,7 +18,7 @@ esphome:
   board: d1_mini
 
 external_components:
-  - source: github://syssi/esphome-pipsolar@pi18
+  - source: ${external_components_source}
     refresh: 0s
 
 wifi:
