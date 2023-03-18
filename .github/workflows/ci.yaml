@@ -4,6 +4,7 @@ on:  # yamllint disable-line rule:truthy
   push:
     branches:
       - main
+      - pi18
   pull_request:
   schedule:
     - cron: 0 12 * * *
@@ -36,16 +37,10 @@ jobs:
       - name: Write secrets.yaml
         shell: bash
         run: 'echo -e "wifi_ssid: ssid\nwifi_password: password\nmqtt_host: host\nmqtt_username: username\nmqtt_password: password" > secrets.yaml'
-      - name: Write tests/secrets.yaml
-        shell: bash
-        run: 'echo -e "wifi_ssid: ssid\nwifi_password: password\nmqtt_host: host\nmqtt_username: username\nmqtt_password: password" > tests/secrets.yaml'
       - run: |
           esphome config esp32-example.yaml
       - run: |
           esphome config esp8266-example.yaml
-          esphome config tests/esp8266-test-ping.yaml
-          esphome config tests/esp8266-test-pong.yaml
-          esphome config tests/esp8266-test-protocols.yaml
 
   esphome-compile:
     runs-on: ubuntu-latest

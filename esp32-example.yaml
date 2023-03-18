@@ -8,11 +8,18 @@
 
 substitutions:
   name: pipsolar
+  external_components_source: github://syssi/esphome-pipsolar@pi18
+  tx_pin: GPIO1
+  rx_pin: GPIO3
 
 esphome:
   name: ${name}
   platform: ESP32
   board: esp-wrover-kit
+
+external_components:
+  - source: ${external_components_source}
+    refresh: 0s
 
 wifi:
   ssid: !secret wifi_ssid
@@ -32,8 +39,8 @@ mqtt:
 uart:
   - id: uart0
     baud_rate: 2400
-    tx_pin: GPIO1
-    rx_pin: GPIO3
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
 #    debug:
 #      direction: BOTH
 #      dummy_receiver: false
