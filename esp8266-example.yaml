@@ -108,7 +108,7 @@ sensor:
       name: "${name} solar_power_priority"
     mppt_string:
       name: "${name} mppt_string"
-    #P005GS
+    # P005GS
     grid_voltage:
       name: "${name} grid_voltage"
     grid_frequency:
@@ -162,7 +162,7 @@ sensor:
     fault_code:
       name: "${name} wfs fault_code"
     local_parallel_id:
-      name: "${name} local_parallel_id" 
+      name: "${name} local_parallel_id"
 
     # P007PGS0
     total_ac_output_apparent_power:
@@ -182,7 +182,7 @@ binary_sensor:
     pipsolar_id: inverter0
     # P007GS
     setting_value_configuration_state:
-      name: "${name} setting_value_configuration_state"    
+      name: "${name} setting_value_configuration_state"
     load_connection:
       name: "${name} load_connection"
     # # P007FLAG
@@ -203,8 +203,8 @@ binary_sensor:
     # fault_code_record:
     #   name: "${name} flag fault_code_record"
     # power_saving:
-    #   name: "${name} flag power_saving" 
-    # P005FWS    
+    #   name: "${name} flag power_saving"
+    # P005FWS
     warning_line_fail:
       name: "${name} wfs warning_line_fail"
     warning_output_circuit_short:
@@ -236,13 +236,14 @@ binary_sensor:
     scc1_battery_too_low_to_charge:
       name: "${name} wfs scc1_battery_too_low_to_charge"
     # scc2_battery_too_low_to_charge:
-    #   name: "${name} wfs scc2_battery_too_low_to_charge"  
+    #   name: "${name} wfs scc2_battery_too_low_to_charge"
 
 text_sensor:
- - platform: pipsolar
-   pipsolar_id: inverter0
-   device_mode:
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    device_mode:
       name: "${name} device_mode"
+
 switch:
   - platform: pipsolar
     pipsolar_id: inverter0
