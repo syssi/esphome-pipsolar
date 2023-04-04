@@ -6,23 +6,23 @@ from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
 DEPENDENCIES = ["uart"]
 
 CONF_DEVICE_MODE = "device_mode"
-CONF_LAST_QPIGS = "last_qpigs"
-CONF_LAST_QPIRI = "last_qpiri"
-CONF_LAST_QMOD = "last_qmod"
-CONF_LAST_QFLAG = "last_qflag"
-CONF_LAST_QPIWS = "last_qpiws"
-CONF_LAST_QT = "last_qt"
-CONF_LAST_QMN = "last_qmn"
+# CONF_LAST_QPIGS = "last_qpigs"
+# CONF_LAST_QPIRI = "last_qpiri"
+# CONF_LAST_QMOD = "last_qmod"
+# CONF_LAST_QFLAG = "last_qflag"
+# CONF_LAST_QPIWS = "last_qpiws"
+# CONF_LAST_QT = "last_qt"
+# CONF_LAST_QMN = "last_qmn"
 
 TYPES = [
     CONF_DEVICE_MODE,
-    CONF_LAST_QPIGS,
-    CONF_LAST_QPIRI,
-    CONF_LAST_QMOD,
-    CONF_LAST_QFLAG,
-    CONF_LAST_QPIWS,
-    CONF_LAST_QT,
-    CONF_LAST_QMN,
+    #    CONF_LAST_QPIGS,
+    #    CONF_LAST_QPIRI,
+    #    CONF_LAST_QMOD,
+    #    CONF_LAST_QFLAG,
+    #    CONF_LAST_QPIWS,
+    #    CONF_LAST_QT,
+    #    CONF_LAST_QMN,
 ]
 
 CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
