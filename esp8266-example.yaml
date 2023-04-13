@@ -13,7 +13,8 @@ substitutions:
 
 esphome:
   name: ${name}
-  platform: ESP8266
+
+esp8266:
   board: d1_mini
 
 wifi:
@@ -24,6 +25,9 @@ ota:
 
 logger:
   baud_rate: 0
+
+# If you use Home Assistant please remove this `mqtt` section and uncomment the native `api` component!
+# api:
 
 mqtt:
   broker: !secret mqtt_host

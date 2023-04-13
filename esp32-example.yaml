@@ -13,8 +13,9 @@ substitutions:
 
 esphome:
   name: ${name}
-  platform: ESP32
-  board: esp-wrover-kit
+
+esp32:
+  board: wemos_d1_mini32
 
 wifi:
   ssid: !secret wifi_ssid
@@ -24,6 +25,9 @@ ota:
 
 logger:
   baud_rate: 0
+
+# If you use Home Assistant please remove this `mqtt` section and uncomment the native `api` component!
+# api:
 
 mqtt:
   broker: !secret mqtt_host
