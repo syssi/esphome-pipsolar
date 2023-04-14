@@ -93,12 +93,12 @@ cd esphome-pipsolar
 
 # Create a secret.yaml containing some setup specific secrets
 cat > secrets.yaml <<EOF
+wifi_ssid: MY_WIFI_SSID
+wifi_password: MY_WIFI_PASSWORD
+
 mqtt_host: MY_MQTT_HOST
 mqtt_username: MY_MQTT_USERNAME
 mqtt_password: MY_MQTT_PASSWORD
-
-wifi_ssid: MY_WIFI_SSID
-wifi_password: MY_WIFI_PASSWORD
 EOF
 
 # Validate the configuration, create a binary, upload it, and start logs
