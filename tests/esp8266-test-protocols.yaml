@@ -35,7 +35,7 @@ uart:
       - lambda: UARTDebug::log_string(direction, bytes);
 
 interval:
-  - interval: 40s
+  - interval: 46s
     then:
       # PI30/PI30MAX/PI30REVO/PI41
       - logger.log:
@@ -61,6 +61,17 @@ interval:
       - uart.write: [0x51, 0x50, 0x49, 0x57, 0x53, 0xB4, 0xDA, 0x0D]  # QPIWS\xb4\xda\r
       - delay: 2s
       - uart.write: [0x51, 0x54, 0x27, 0xFF, 0x0D]  # QT'\xff\r
+      - delay: 2s
+
+      # PI41 split phase
+      - logger.log:
+          level: INFO
+          format: "Testing PI41 split phase / multiple strings commands..."
+      - uart.write: [0x51, 0x50, 0x49, 0x47, 0x53, 0x32, 0x68, 0x2D, 0x0D]  # QPIGS2h-\r
+      - delay: 2s
+      - uart.write: [0x51, 0x50, 0x32, 0x47, 0x53, 0x30, 0x14, 0x05, 0x0D]  # QP2GS0\x14\x05\r
+      - delay: 2s
+      - uart.write: [0x51, 0x50, 0x32, 0x47, 0x53, 0x31, 0x04, 0x24, 0x0D]  # QP2GS1\x04$\r
       - delay: 2s
 
       # PI18
