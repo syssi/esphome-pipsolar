@@ -28,6 +28,7 @@ CONF_BACKLIGHT_ON = "backlight_on"
 CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
 CONF_FAULT_CODE_RECORD = "fault_code_record"
 CONF_POWER_SAVING = "power_saving"
+CONF_SOLAR_FEED_TO_GRID_STATUS="solar_feed_to_grid_status"
 
 CONF_WARNINGS_PRESENT = "warnings_present"
 CONF_FAULTS_PRESENT = "faults_present"
@@ -74,6 +75,22 @@ CONF_DISCHARGE_ONOFF = "discharge_onoff"
 CONF_DISCHARGE_WITH_STANDBY_ONOFF = "discharge_with_standby_onoff"
 CONF_CHARGE_ONOFF = "charge_onoff"
 
+# QPGS0 binary sensors
+CONF_PARALLEL_NUM_0                   = "parallel_num_0"
+CONF_INVERTER_STATUS_SCC_0            = "inverter_status_scc_0"
+CONF_INVERTER_STATUS_AC_CHARGING_0    = "inverter_status_ac_charging_0"
+CONF_INVERTER_STATUS_SCC_CHARGING_0   = "inverter_status_scc_charging_0"
+CONF_INVERTER_STATUS_LINE_0           = "inverter_status_line_0"
+CONF_INVERTER_STATUS_LOAD_0           = "inverter_status_load_0"
+CONF_INVERTER_STATUS_CONFIGURATION_0  = "inverter_status_configuration_0"
+
+#Q1
+CONF_SCC_FLAG               = "scc_flag"
+CONF_ALLOW_SCC_ON           = "allow_scc_on"
+CONF_FAN_LOCK_STATUS        = "fan_lock_status"
+CONF_PARALLEL_WARNING       = "parallel_warning"
+CONF_INVERTER_CHARGE_STATUS = "inverter_charge_status"
+    
 TYPES = [
     CONF_ADD_SBU_PRIORITY_VERSION,
     CONF_CONFIGURATION_STATUS,
@@ -95,6 +112,7 @@ TYPES = [
     CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT,
     CONF_FAULT_CODE_RECORD,
     CONF_POWER_SAVING,
+    CONF_SOLAR_FEED_TO_GRID_STATUS,
     CONF_WARNINGS_PRESENT,
     CONF_FAULTS_PRESENT,
     CONF_WARNING_POWER_LOSS,
@@ -134,6 +152,17 @@ TYPES = [
     CONF_DISCHARGE_ONOFF,
     CONF_DISCHARGE_WITH_STANDBY_ONOFF,
     CONF_CHARGE_ONOFF,
+    CONF_PARALLEL_NUM_0,
+    CONF_INVERTER_STATUS_SCC_0,
+    CONF_INVERTER_STATUS_AC_CHARGING_0,
+    CONF_INVERTER_STATUS_SCC_CHARGING_0,
+    CONF_INVERTER_STATUS_LINE_0,
+    CONF_INVERTER_STATUS_LOAD_0,
+    CONF_INVERTER_STATUS_CONFIGURATION_0,
+    CONF_SCC_FLAG,
+    CONF_ALLOW_SCC_ON,
+    CONF_FAN_LOCK_STATUS,
+    CONF_PARALLEL_WARNING,
 ]
 
 CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(

@@ -17,6 +17,16 @@ CONF_CHARGING_DISCHARGING_CONTROL = "charging_discharging_control"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
 
+CONF_BATTERY_TYPE                   = "battery_type"
+CONF_MAX_DISCHARGING_CURRENT        = "max_discharging_current"
+CONF_BATTERY_RECHARGE_VOLTAGE       = "battery_recharge_voltage"
+CONF_BATTERY_REDISCHARGE_VOLTAGE    = "battery_redischarge_voltage"
+CONF_BATTERY_CUTOFF_VOLTAGE         = "battery_cutoff_voltage"
+CONF_BATTERY_BULK_VOLTAGE           = "battery_bulk_voltage"
+CONF_BATTERY_FLOAT_VOLTAGE          = "battery_float_voltage"
+CONF_BATTERY_MAX_BULK_CHARGING_TIME = "battery_max_bulk_charging_time"
+
+CONF_PBMS                           = "bms_values"
 
 PipsolarSelect = pipsolar_ns.class_("PipsolarSelect", cg.Component, select.Select)
 
@@ -81,7 +91,16 @@ TYPES = {
     CONF_CHARGER_SOURCE_PRIORITY: ("PCP03", None),
     CONF_CHARGING_DISCHARGING_CONTROL: ("PBATCD111", None),
     CONF_CURRENT_MAX_CHARGING_CURRENT: ("MCHGC010", None),
-    CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ("MUCHGC0002", None),
+    CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ("MUCHGC002", None),
+    CONF_MAX_DISCHARGING_CURRENT: ("PBATMAXDISC000", None),
+    CONF_BATTERY_TYPE: ("PBT09", None),
+    CONF_BATTERY_RECHARGE_VOLTAGE: ("PBCV44.0", None),
+    CONF_BATTERY_REDISCHARGE_VOLTAGE: ("PBDV48.0", None),
+    CONF_BATTERY_CUTOFF_VOLTAGE: ("PSDV42.0", None),
+    CONF_BATTERY_BULK_VOLTAGE: ("PSDV57.6", None),
+    CONF_BATTERY_FLOAT_VOLTAGE: ("PBFT57.6", None),
+    CONF_BATTERY_MAX_BULK_CHARGING_TIME: ("PCVT240", None),
+    CONF_PBMS: ("PBMS1 100 0 1 1 560 560 480 500 500", None),
 }
 
 
