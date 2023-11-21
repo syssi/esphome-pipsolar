@@ -137,6 +137,8 @@ CONF_FAN_PWM_SPEED              = "fan_pwm_speed"
 CONF_SCC_CHARGE_POWER           = "scc_charge_power"
 CONF_SYNC_FREQUENCY             = "sync_frequency"
 
+CONF_FAULT_CODE = "fault_code"
+
 TYPES = {
     CONF_GRID_RATING_VOLTAGE: sensor.sensor_schema(
         unit_of_measurement=UNIT_VOLT,
@@ -549,6 +551,9 @@ TYPES = {
         unit_of_measurement=UNIT_HERTZ,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_FREQUENCY,
+    ),
+    CONF_FAULT_CODE: sensor.sensor_schema(
+        accuracy_decimals=0,
     ),
 }
 

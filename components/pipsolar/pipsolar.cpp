@@ -592,8 +592,8 @@ void Pipsolar::loop() {
         if (this->fault_code_) {
           this->fault_code_->publish_state(value_fault_code_);
         }
-        if (this->warnung_low_pv_energy_) {
-          this->warnung_low_pv_energy_->publish_state(value_warnung_low_pv_energy_);
+        if (this->warning_battery_weak_) {
+          this->warning_battery_weak_->publish_state(value_warning_battery_weak_);
         }
         if (this->warning_high_ac_input_during_bus_soft_start_) {
           this->warning_high_ac_input_during_bus_soft_start_->publish_state(
@@ -787,6 +787,7 @@ void Pipsolar::loop() {
         ESP_LOGD(TAG, "Decode QPGS0");
         // (A BBBBBBBBBBBBBB C DD EEE.E FF.FF GGG.G HH.HH IIII JJJJ KKK LL.L MMM NNN OOO.O PPP QQQQQ RRRRR SSS b7b6b5b4b3b2b1b0 T U VVV WWW ZZ  XX YYY OOO.O XX
         // (0 92932210103877 L 00 233.5 49.99 233.5 49.99 0747 0641 010 28.4 000 000 000.0 000 00747 00641 008  0 1 0  02 0 1 0 0 3 060 120 002 00 000 000.0 00
+        // (0 92932210103877 L 00 235.2 50.02 235.2 50.02 1246 1186 017 54.3 030 095 334.9 030 01246 01186 016  1 1 1  00 0 1 0 0 3 050 080  02 02 000 344.2 02
         sscanf(                                                                                              // NOLINT
             tmp,                                                                                             // NOLINT
             "(%d %ld %c %d %f %f %f %f %d %d %d %f %d %d %f %d %d %d %d %1d%1d%1d%2d%1d%1d%1d %d %d %d %d %d %d %f %d",  // NOLINT
@@ -888,6 +889,7 @@ void Pipsolar::loop() {
       case POLLING_QPIWS:
         ESP_LOGD(TAG, "Decode QPIWS");
         // '(00000000000000000000000000000000'
+        // '(000000000000000000000000000000000000<\x8e\r'
         // iterate over all available flag (as not all models have all flags, but at least in the same order)
         this->value_warnings_present_ = false;
         this->value_faults_present_ = true;
@@ -896,6 +898,7 @@ void Pipsolar::loop() {
           enabled = tmp[i] == '1';
           switch (i) {
             case 1:
+              // a0
               this->value_warning_power_loss_ = enabled;
               this->value_warnings_present_ += enabled;
               break;
@@ -1016,19 +1019,23 @@ void Pipsolar::loop() {
               this->value_faults_present_ += enabled;
               break;
             case 32:
+              // a31
+              this->value_warning_battery_weak_ = enabled;
+              this->value_warnings_present_ += enabled;
+              break;
+            case 33:
+              // a32 && a33
               fc = tmp[i];
               fc += tmp[i + 1];
               this->value_fault_code_ = parse_number<int>(fc).value_or(0);
               break;
-            case 34:
-              this->value_warnung_low_pv_energy_ = enabled;
-              this->value_warnings_present_ += enabled;
-              break;
             case 35:
+              // a34 
               this->value_warning_high_ac_input_during_bus_soft_start_ = enabled;
               this->value_warnings_present_ += enabled;
               break;
             case 36:
+              // a35
               this->value_warning_battery_equalization_ = enabled;
               this->value_warnings_present_ += enabled;
               break;
