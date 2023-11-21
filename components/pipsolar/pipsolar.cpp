@@ -43,9 +43,9 @@ void Pipsolar::loop() {
       if (this->check_incoming_crc_()) {
         // crc ok
         if (this->read_buffer_[1] == 'A' && this->read_buffer_[2] == 'C' && this->read_buffer_[3] == 'K') {
-          ESP_LOGD(TAG, "command successful");
+          ESP_LOGD(TAG, "command successful: %s", this->command_queue_[this->command_queue_position_].c_str());
         } else {
-          ESP_LOGD(TAG, "command not successful");
+          ESP_LOGD(TAG, "command not successful: %s", this->command_queue_[this->command_queue_position_].c_str());
         }
         this->command_queue_[this->command_queue_position_] = std::string("");
         this->command_queue_position_ = (command_queue_position_ + 1) % COMMAND_QUEUE_LENGTH;
@@ -53,6 +53,7 @@ void Pipsolar::loop() {
 
       } else {
         // crc failed
+        ESP_LOGD(TAG, "crc failed: %s", this->command_queue_[this->command_queue_position_].c_str());
         this->command_queue_[this->command_queue_position_] = std::string("");
         this->command_queue_position_ = (command_queue_position_ + 1) % COMMAND_QUEUE_LENGTH;
         this->state_ = STATE_IDLE;
@@ -97,17 +98,37 @@ void Pipsolar::loop() {
         if (this->battery_recharge_voltage_) {
           this->battery_recharge_voltage_->publish_state(value_battery_recharge_voltage_);
         }
+        if (this->battery_recharge_voltage_select_) {
+          std::string value = str_snprintf("%.1f", 32, value_battery_recharge_voltage_);
+          this->battery_recharge_voltage_select_->map_and_publish(value);
+        }
         if (this->battery_under_voltage_) {
           this->battery_under_voltage_->publish_state(value_battery_under_voltage_);
+        }
+        if (this->battery_cutoff_voltage_select_) {
+          std::string value = str_snprintf("%.1f", 32, value_battery_under_voltage_);
+          this->battery_cutoff_voltage_select_->map_and_publish(value);
         }
         if (this->battery_bulk_voltage_) {
           this->battery_bulk_voltage_->publish_state(value_battery_bulk_voltage_);
         }
+        if (this->battery_bulk_voltage_select_) {
+          std::string value = str_snprintf("%.1f", 32, value_battery_bulk_voltage_);
+          this->battery_bulk_voltage_select_->map_and_publish(value);
+        }
         if (this->battery_float_voltage_) {
           this->battery_float_voltage_->publish_state(value_battery_float_voltage_);
         }
+        if (this->battery_float_voltage_select_) {
+          std::string value = str_snprintf("%.1f", 32, value_battery_float_voltage_);
+          this->battery_float_voltage_select_->map_and_publish(value);
+        }
         if (this->battery_type_) {
           this->battery_type_->publish_state(value_battery_type_);
+        }
+        if (this->battery_type_select_) {
+          std::string value = esphome::to_string(value_battery_type_);
+          this->battery_type_select_->map_and_publish(value);
         }
         if (this->current_max_ac_charging_current_) {
           this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
@@ -176,6 +197,10 @@ void Pipsolar::loop() {
         if (this->battery_redischarge_voltage_) {
           this->battery_redischarge_voltage_->publish_state(value_battery_redischarge_voltage_);
         }
+        if (this->battery_redischarge_voltage_select_) {
+          std::string value = str_snprintf("%.1f", 32, value_battery_redischarge_voltage_);
+          this->battery_redischarge_voltage_select_->map_and_publish(value);
+        }
         if (this->pv_ok_condition_for_parallel_) {
           this->pv_ok_condition_for_parallel_->publish_state(value_pv_ok_condition_for_parallel_);
         }
@@ -189,6 +214,19 @@ void Pipsolar::loop() {
         // special for power balance switch
         if (this->pv_power_balance_switch_) {
           this->pv_power_balance_switch_->publish_state(value_pv_power_balance_ == 1);
+        }
+        if (this->max_charging_time_at_cv_stage_) {
+          this->max_charging_time_at_cv_stage_->publish_state(value_max_charging_time_at_cv_stage_);
+        }
+        if (this->operation_logic_) {
+          this->operation_logic_->publish_state(value_operation_logic_);
+        }
+        if (this->max_discharging_current_) {
+          this->max_discharging_current_->publish_state(value_max_discharging_current_);
+        }
+        if (this->max_discharging_current_select_) {
+          std::string value = esphome::to_string(value_max_discharging_current_);
+          this->max_discharging_current_select_->map_and_publish(value);
         }
         this->state_ = STATE_IDLE;
         break;
@@ -284,6 +322,15 @@ void Pipsolar::loop() {
         if (this->dustproof_installed_) {
           this->dustproof_installed_->publish_state(value_dustproof_installed_);
         }
+        if (this->solar_feed_to_grid_status_) {
+          this->solar_feed_to_grid_status_->publish_state(value_solar_feed_to_grid_status_);
+        }
+        if (this->country_customized_regulation_) {
+          this->country_customized_regulation_->publish_state(value_country_customized_regulation_);
+        }
+        if (this->solar_feed_to_grid_power_) {
+          this->solar_feed_to_grid_power_->publish_state(value_solar_feed_to_grid_power_);
+        }
         this->state_ = STATE_IDLE;
         break;
       case POLLING_QPIGS2:
@@ -296,6 +343,116 @@ void Pipsolar::loop() {
         if (this->pv2_charging_power_) {
           this->pv2_charging_power_->publish_state(value_pv2_charging_power_);
         }
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QPGS0:
+        if (this->parallel_num_0_) {
+          this->parallel_num_0_->publish_state(value_parallel_num_0_);
+        }
+        if (this->serial_number_0_) {
+          this->serial_number_0_->publish_state(value_serial_number_0_);
+        }
+        if (this->work_mode_0_) {
+          mode = value_work_mode_0_;
+          this->work_mode_0_->publish_state(mode);
+        }
+        if (this->fault_code_0_) {
+          this->fault_code_0_->publish_state(value_fault_code_0_);
+        }
+        if (this->grid_voltage_0_) {
+          this->grid_voltage_0_->publish_state(value_grid_voltage_0_);
+        }
+        if (this->grid_frequency_0_) {
+          this->grid_frequency_0_->publish_state(value_grid_frequency_0_);
+        }
+        if (this->ac_output_voltage_0_) {
+          this->ac_output_voltage_0_->publish_state(value_ac_output_voltage_0_);
+        }
+        if (this->ac_output_frequency_0_) {
+          this->ac_output_frequency_0_->publish_state(value_ac_output_frequency_0_);
+        }
+        if (this->ac_output_apparent_power_0_) {
+          this->ac_output_apparent_power_0_->publish_state(value_ac_output_apparent_power_0_);
+        }
+        if (this->ac_output_active_power_0_) {
+          this->ac_output_active_power_0_->publish_state(value_ac_output_active_power_0_);
+        }
+        if (this->load_percent_0_) {
+          this->load_percent_0_->publish_state(value_load_percent_0_);
+        }
+        if (this->battery_voltage_0_) {
+          this->battery_voltage_0_->publish_state(value_battery_voltage_0_);
+        }
+        if (this->battery_charging_current_0_) {
+          this->battery_charging_current_0_->publish_state(value_battery_charging_current_0_);
+        }
+        if (this->battery_capacity_0_) {
+          this->battery_capacity_0_->publish_state(value_battery_capacity_0_);
+        }
+        if (this->pv1_input_voltage_0_) {
+          this->pv1_input_voltage_0_->publish_state(value_pv1_input_voltage_0_);
+        }
+        if (this->total_charging_current_0_) {
+          this->total_charging_current_0_->publish_state(value_total_charging_current_0_);
+        }
+        if (this->total_ac_output_apparent_power_0_) {
+          this->total_ac_output_apparent_power_0_->publish_state(value_total_ac_output_apparent_power_0_);
+        }
+        if (this->total_output_active_power_0_) {
+          this->total_output_active_power_0_->publish_state(value_total_output_active_power_0_);
+        }
+        if (this->total_ac_output_percentage_0_) {
+          this->total_ac_output_percentage_0_->publish_state(value_total_ac_output_percentage_0_);
+        }
+        if (this->inverter_status_scc_0_) {
+          this->inverter_status_scc_0_->publish_state(value_inverter_status_scc_0_);
+        }
+        if (this->inverter_status_ac_charging_0_) {
+          this->inverter_status_ac_charging_0_->publish_state(value_inverter_status_ac_charging_0_);
+        }
+        if (this->inverter_status_scc_charging_0_) {
+          this->inverter_status_scc_charging_0_->publish_state(value_inverter_status_scc_charging_0_);
+        }
+        if (this->inverter_status_battery_0_) {
+          this->inverter_status_battery_0_->publish_state(value_inverter_status_battery_0_);
+        }
+        if (this->inverter_status_line_0_) {
+          this->inverter_status_line_0_->publish_state(value_inverter_status_line_0_);
+        }
+        if (this->inverter_status_load_0_) {
+          this->inverter_status_load_0_->publish_state(value_inverter_status_load_0_);
+        }
+        if (this->inverter_status_configuration_0_) {
+          this->inverter_status_configuration_0_->publish_state(value_inverter_status_configuration_0_);
+        }
+        if (this->output_mode_0_) {
+          this->output_mode_0_->publish_state(value_output_mode_0_);
+        }
+        if (this->charger_source_priority_0_) {
+          this->charger_source_priority_0_->publish_state(value_charger_source_priority_0_);
+        }
+        if (this->max_charger_current_0_) {
+          this->max_charger_current_0_->publish_state(value_max_charger_current_0_);
+        }
+        if (this->max_charger_range_0_) {
+          this->max_charger_range_0_->publish_state(value_max_charger_range_0_);
+        }
+        if (this->max_ac_charger_current_0_) {
+          this->max_ac_charger_current_0_->publish_state(value_max_ac_charger_current_0_);
+        }
+        if (this->pv1_input_current_0_) {
+          this->pv1_input_current_0_->publish_state(value_pv1_input_current_0_);
+        }
+        if (this->battery_discharge_current_0_) {
+          this->battery_discharge_current_0_->publish_state(value_battery_discharge_current_0_);
+        }
+        if (this->pv2_input_voltage_0_) {
+          this->pv2_input_voltage_0_->publish_state(value_pv2_input_voltage_0_);
+        }
+        if (this->pv2_input_current_0_) {
+          this->pv2_input_current_0_->publish_state(value_pv2_input_current_0_);
+        }
+
         this->state_ = STATE_IDLE;
         break;
       case POLLING_QMOD:
@@ -435,8 +592,8 @@ void Pipsolar::loop() {
         if (this->fault_code_) {
           this->fault_code_->publish_state(value_fault_code_);
         }
-        if (this->warnung_low_pv_energy_) {
-          this->warnung_low_pv_energy_->publish_state(value_warnung_low_pv_energy_);
+        if (this->warning_battery_weak_) {
+          this->warning_battery_weak_->publish_state(value_warning_battery_weak_);
         }
         if (this->warning_high_ac_input_during_bus_soft_start_) {
           this->warning_high_ac_input_during_bus_soft_start_->publish_state(
@@ -458,12 +615,96 @@ void Pipsolar::loop() {
           this->charge_onoff_->publish_state(value_charge_onoff_);
         }
         if (this->charging_discharging_control_select_) {
+          std::string value = str_snprintf("%d%d%d", 32, value_discharge_onoff_, value_discharge_with_standby_onoff_, value_charge_onoff_);
           this->charging_discharging_control_select_->map_and_publish(value_charging_discharging_control_select_);
         }
         this->state_ = STATE_IDLE;
         break;   
       case POLLING_QT:
+        if (this->inverter_date_) {
+          this->inverter_date_->publish_state(value_inverter_date_);
+        }
+        if (this->inverter_time_) {
+          this->inverter_time_->publish_state(value_inverter_time_);
+        }
       case POLLING_QMN:
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_Q1:
+        if (this->time_until_absorb_charging_) {
+          this->time_until_absorb_charging_->publish_state(value_time_until_absorb_charging_);
+        }
+        if (this->time_until_float_charging_) {
+          this->time_until_float_charging_->publish_state(value_time_until_float_charging_);
+        }
+        if (this->scc_flag_) {
+          this->scc_flag_->publish_state(value_scc_flag_);
+        }
+        if (this->allow_scc_on_) {
+          this->allow_scc_on_->publish_state(value_allow_scc_on_);
+        }
+        if (this->charge_average_current_) {
+          this->charge_average_current_->publish_state(value_charge_average_current_);
+        }
+        if (this->scc_pwm_temperature_) {
+          this->scc_pwm_temperature_->publish_state(value_scc_pwm_temperature_);
+        }
+        if (this->inverter_temperature_) {
+          this->inverter_temperature_->publish_state(value_inverter_temperature_);
+        }
+        if (this->battery_temperature_) {
+          this->battery_temperature_->publish_state(value_battery_temperature_);
+        }
+        if (this->transformer_temperature_) {
+          this->transformer_temperature_->publish_state(value_transformer_temperature_);
+        }
+        if (this->fan_lock_status_) {
+          this->fan_lock_status_->publish_state(value_fan_lock_status_);
+        }
+        if (this->fan_pwm_speed_) {
+          this->fan_pwm_speed_->publish_state(value_fan_pwm_speed_);
+        }
+        if (this->scc_charge_power_) {
+          this->scc_charge_power_->publish_state(value_scc_charge_power_);
+        }
+        if (this->parallel_warning_) {
+          this->parallel_warning_->publish_state(value_parallel_warning_);
+        }
+        if (this->sync_frequency_) {
+          this->sync_frequency_->publish_state(value_sync_frequency_);
+        }
+        if (this->inverter_charge_status_) {
+          this->inverter_charge_status_->publish_state(value_inverter_charge_status_);
+        }
+
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QBMS:
+        // special for bms_values select
+        if (this->bms_values_select_) {
+          std::string value = last_qbms_->state;
+          this->bms_values_select_->map_and_publish(value);
+        }
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QET:
+        // total_pv_generated_energy
+        if (this->total_pv_generated_energy_) {
+          this->total_pv_generated_energy_->publish_state(value_total_pv_generated_energy_);
+        }
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QLT:
+        // total_output_load_energy
+        if (this->total_output_load_energy_) {
+          this->total_output_load_energy_->publish_state(value_total_output_load_energy_);
+        }
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QMCHGCR:
+        this->state_ = STATE_IDLE;
+        break;
+      case POLLING_QMUCHGCR:
         this->state_ = STATE_IDLE;
         break;
     }
@@ -476,8 +717,11 @@ void Pipsolar::loop() {
     sprintf(tmp, "%s", this->read_buffer_);
     switch (this->used_polling_commands_[this->last_polling_command_].identifier) {
       case POLLING_QPIRI:
+        // (230.0 31.3 230.0 50.0 31.3 7200 7200 48.0 46.0 44.0 56.4 54.0 0 002 060 0 1 3 9 01 0 0 54.0 0 1 480 0 000
+        // (BBB.B CC.C DDD.D EE.E FF.F HHHH IIII JJ.J KK.K JJ.J KK.K LL.L O  PP QQ0 O P Q R SS T U VV.V W X YYY Z CCC
         ESP_LOGD(TAG, "Decode QPIRI");
-        sscanf(tmp, "(%f %f %f %f %f %d %d %f %f %f %f %f %d %d %d %d %d %d %d %d %d %d %f %d %d",          // NOLINT
+        int operation_logic;
+        sscanf(tmp, "(%f %f %f %f %f %d %d %f %f %f %f %f %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d %d", // NOLINT
                &value_grid_rating_voltage_, &value_grid_rating_current_, &value_ac_output_rating_voltage_,  // NOLINT
                &value_ac_output_rating_frequency_, &value_ac_output_rating_current_,                        // NOLINT
                &value_ac_output_rating_apparent_power_, &value_ac_output_rating_active_power_,              // NOLINT
@@ -488,7 +732,11 @@ void Pipsolar::loop() {
                &value_output_source_priority_, &value_charger_source_priority_, &value_parallel_max_num_,   // NOLINT
                &value_machine_type_, &value_topology_, &value_output_mode_,                                 // NOLINT
                &value_battery_redischarge_voltage_, &value_pv_ok_condition_for_parallel_,                   // NOLINT
-               &value_pv_power_balance_);                                                                   // NOLINT
+               &value_pv_power_balance_, &value_max_charging_time_at_cv_stage_, &operation_logic,           // NOLINT
+               &value_max_discharging_current_);                                                            // NOLINT
+        //ESP_LOGD(TAG, "operation_logic: %d", operation_logic);
+        value_operation_logic_ = operation_logic + '0';
+        //ESP_LOGD(TAG, "operation_logic: %c", value_operation_logic_);
         if (this->last_qpiri_) {
           this->last_qpiri_->publish_state(tmp);
         }
@@ -500,9 +748,10 @@ void Pipsolar::loop() {
         break;
       case POLLING_QPIGS:
         ESP_LOGD(TAG, "Decode QPIGS");
+        // (BBB.B CC.C DDD.D EE.E FFFF GGGG HHH III JJ.JJ KKK OOO TTTT EE.E UUU.U WW.WW PPPPP b7b6b5b4b3b2b1b0 QQ VV MMMMM b10b9b8 Y ZZ AAAA
         sscanf(                                                                                              // NOLINT
             tmp,                                                                                             // NOLINT
-            "(%f %f %f %f %d %d %d %d %f %d %d %d %f %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d",  // NOLINT
+            "(%f %f %f %f %d %d %d %d %f %d %d %d %f %f %f %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %1d%1d%1d %d %d %d",  // NOLINT
             &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_,                         // NOLINT
             &value_ac_output_frequency_,                                                                     // NOLINT
             &value_ac_output_apparent_power_, &value_ac_output_active_power_, &value_output_load_percent_,   // NOLINT
@@ -515,7 +764,9 @@ void Pipsolar::loop() {
             &value_scc_charging_status_, &value_ac_charging_status_,                                         // NOLINT
             &value_battery_voltage_offset_for_fans_on_, &value_eeprom_version_, &value_pv1_charging_power_,  // NOLINT
             &value_charging_to_floating_mode_, &value_switch_on_,                                            // NOLINT
-            &value_dustproof_installed_);                                                                    // NOLINT
+            &value_dustproof_installed_, &value_solar_feed_to_grid_status_,                                  // NOLINT
+            &value_country_customized_regulation_, &value_solar_feed_to_grid_power_                          // NOLINT
+            );                                                                                               // NOLINT
         if (this->last_qpigs_) {
           this->last_qpigs_->publish_state(tmp);
         }
@@ -529,6 +780,55 @@ void Pipsolar::loop() {
             &value_pv2_input_current_, &value_pv2_input_voltage_, &value_pv2_charging_power_);  // NOLINT
         if (this->last_qpigs2_) {
           this->last_qpigs2_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QPGS0:
+        ESP_LOGD(TAG, "Decode QPGS0");
+        // (A BBBBBBBBBBBBBB C DD EEE.E FF.FF GGG.G HH.HH IIII JJJJ KKK LL.L MMM NNN OOO.O PPP QQQQQ RRRRR SSS b7b6b5b4b3b2b1b0 T U VVV WWW ZZ  XX YYY OOO.O XX
+        // (0 92932210103877 L 00 233.5 49.99 233.5 49.99 0747 0641 010 28.4 000 000 000.0 000 00747 00641 008  0 1 0  02 0 1 0 0 3 060 120 002 00 000 000.0 00
+        // (0 92932210103877 L 00 235.2 50.02 235.2 50.02 1246 1186 017 54.3 030 095 334.9 030 01246 01186 016  1 1 1  00 0 1 0 0 3 050 080  02 02 000 344.2 02
+        sscanf(                                                                                              // NOLINT
+            tmp,                                                                                             // NOLINT
+            "(%d %ld %c %d %f %f %f %f %d %d %d %f %d %d %f %d %d %d %d %1d%1d%1d%2d%1d%1d%1d %d %d %d %d %d %d %f %d",  // NOLINT
+            &value_parallel_num_0_,                                                                          // NOLINT  A
+            &value_serial_number_0_,                                                                         // NOLINT  BBBBBBBBBBBBBB
+            &value_work_mode_0_,                                                                             // NOLINT  C
+            &value_fault_code_0_,                                                                            // NOLINT  DD
+            &value_grid_voltage_0_,                                                                          // NOLINT  EEE.E
+            &value_grid_frequency_0_,                                                                        // NOLINT  FF.FF
+            &value_ac_output_voltage_0_,                                                                     // NOLINT  GGG.G
+            &value_ac_output_frequency_0_,                                                                   // NOLINT  HH.HH
+            &value_ac_output_apparent_power_0_,                                                              // NOLINT  IIII
+            &value_ac_output_active_power_0_,                                                                // NOLINT  JJJJ
+            &value_load_percent_0_,                                                                          // NOLINT  KKK
+            &value_battery_voltage_0_,                                                                       // NOLINT  LL.L
+            &value_battery_charging_current_0_,                                                              // NOLINT  MMM
+            &value_battery_capacity_0_,                                                                      // NOLINT  NNN
+            &value_pv1_input_voltage_0_,                                                                     // NOLINT  OOO.O
+            &value_total_charging_current_0_,                                                                // NOLINT  PPP
+            &value_total_ac_output_apparent_power_0_,                                                        // NOLINT  QQQQQ
+            &value_total_output_active_power_0_,                                                             // NOLINT  RRRRR 
+            &value_total_ac_output_percentage_0_,                                                            // NOLINT  SSS
+            &value_inverter_status_scc_0_,                                                                   // NOLINT  b7
+            &value_inverter_status_ac_charging_0_,                                                           // NOLINT  b6
+            &value_inverter_status_scc_charging_0_,                                                          // NOLINT  b5
+            &value_inverter_status_battery_0_,                                                               // NOLINT  b4b3
+            &value_inverter_status_line_0_,                                                                  // NOLINT  b2
+            &value_inverter_status_load_0_,                                                                  // NOLINT  b1
+            &value_inverter_status_configuration_0_,                                                         // NOLINT  b0
+            &value_output_mode_0_,                                                                           // NOLINT  T
+            &value_charger_source_priority_0_,                                                               // NOLINT  U
+            &value_max_charger_current_0_,                                                                   // NOLINT  VVV
+            &value_max_charger_range_0_,                                                                     // NOLINT  WWW
+            &value_max_ac_charger_current_0_,                                                                // NOLINT  ZZ 
+            &value_pv1_input_current_0_,                                                                     // NOLINT  XX 
+            &value_battery_discharge_current_0_,                                                             // NOLINT  YYY 
+            &value_pv2_input_voltage_0_,                                                                     // NOLINT  OOO.O 
+            &value_pv2_input_current_0_                                                                      // NOLINT  XX
+            );                                                                                               // NOLINT
+        if (this->last_qpgs0_) {
+          this->last_qpgs0_->publish_state(tmp);
         }
         this->state_ = STATE_POLL_DECODED;
         break;
@@ -589,6 +889,7 @@ void Pipsolar::loop() {
       case POLLING_QPIWS:
         ESP_LOGD(TAG, "Decode QPIWS");
         // '(00000000000000000000000000000000'
+        // '(000000000000000000000000000000000000<\x8e\r'
         // iterate over all available flag (as not all models have all flags, but at least in the same order)
         this->value_warnings_present_ = false;
         this->value_faults_present_ = true;
@@ -597,6 +898,7 @@ void Pipsolar::loop() {
           enabled = tmp[i] == '1';
           switch (i) {
             case 1:
+              // a0
               this->value_warning_power_loss_ = enabled;
               this->value_warnings_present_ += enabled;
               break;
@@ -717,19 +1019,23 @@ void Pipsolar::loop() {
               this->value_faults_present_ += enabled;
               break;
             case 32:
+              // a31
+              this->value_warning_battery_weak_ = enabled;
+              this->value_warnings_present_ += enabled;
+              break;
+            case 33:
+              // a32 && a33
               fc = tmp[i];
               fc += tmp[i + 1];
               this->value_fault_code_ = parse_number<int>(fc).value_or(0);
               break;
-            case 34:
-              this->value_warnung_low_pv_energy_ = enabled;
-              this->value_warnings_present_ += enabled;
-              break;
             case 35:
+              // a34 
               this->value_warning_high_ac_input_during_bus_soft_start_ = enabled;
               this->value_warnings_present_ += enabled;
               break;
             case 36:
+              // a35
               this->value_warning_battery_equalization_ = enabled;
               this->value_warnings_present_ += enabled;
               break;
@@ -740,13 +1046,41 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_POLL_DECODED;
         break;
-      case POLLING_QT:
+      case POLLING_QT: {
+        
         ESP_LOGD(TAG, "Decode QT");
+        // (YYYYMMDDHHMMSS<cr>       
+
+        if (tmp) {
+          std::string tmp_buffer_ = tmp;
+
+          std::string year_   = tmp_buffer_.substr(1, 4);
+          std::string month_  = tmp_buffer_.substr(5, 2);
+          std::string day_    = tmp_buffer_.substr(7, 2);
+          std::string hour_   = tmp_buffer_.substr(9, 2);
+          std::string minute_ = tmp_buffer_.substr(11, 2);
+          std::string second_ = tmp_buffer_.substr(13, 2);
+          
+          ESP_LOGD(TAG, "QT data loaded: %s => %s-%s-%s %s:%s:%s", tmp, year_.c_str(), month_.c_str(), day_.c_str(), 
+                      hour_.c_str(), minute_.c_str(), second_.c_str());
+          
+          if (this->inverter_date_) {
+            std::string date_ = year_ + "-" + month_ + "-" + day_;
+            this->value_inverter_date_ = date_;
+          }
+          if (this->inverter_time_) {
+            std::string time_ = hour_ + ":" + minute_ + ":" + second_;
+            this->value_inverter_time_ = time_;
+          }
+        }
+
         if (this->last_qt_) {
           this->last_qt_->publish_state(tmp);
         }
+
         this->state_ = STATE_POLL_DECODED;
         break;
+      }
       case POLLING_QMN:
         ESP_LOGD(TAG, "Decode QMN");
         if (this->last_qmn_) {
@@ -754,8 +1088,119 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_POLL_DECODED;
         break;
+      case POLLING_Q1:
+        ESP_LOGD(TAG, "Decode Q1");
+        int gpio13;
+        int not_used;
+        int inverter_charge_status;
+        int unknown_value_in_response_18;
+        int unknown_value_in_response_19;
+        int unknown_value_in_response_20;
+        int unknown_value_in_response_21;
+        int unknown_value_in_response_22;
+        int unknown_value_in_response_23;
+        int unknown_value_in_response_24;
+        int unknown_value_in_response_25;
+        int unknown_value_in_response_26;
+        int unknown_value_in_response_27;
+        sscanf(                                                                                              // NOLINT
+            tmp,                                                                                             // NOLINT
+            // '(00001 00013 00 00 00 019 024 021 017 02 00 000 0030 0406 0000 00.00 10 0 060 030 060 030 58.40 000 120 0 0000
+            "(%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d %d %d %d %d %f %d %d %d %d",       // NOLINT
+            &value_time_until_absorb_charging_,                                                              // NOLINT  00001
+            &value_time_until_float_charging_,                                                               // NOLINT  00013
+            &value_scc_flag_,                                                                                // NOLINT  00
+            &value_allow_scc_on_,                                                                            // NOLINT  00
+            &value_charge_average_current_,                                                                  // NOLINT  00
+            &value_scc_pwm_temperature_,                                                                     // NOLINT  019
+            &value_inverter_temperature_,                                                                    // NOLINT  024
+            &value_battery_temperature_,                                                                     // NOLINT  021
+            &value_transformer_temperature_,                                                                 // NOLINT  017
+            &gpio13,                                                                                         // NOLINT  02
+            &value_fan_lock_status_,                                                                         // NOLINT  00
+            &not_used,                                                                                       // NOLINT  000
+            &value_fan_pwm_speed_,                                                                           // NOLINT  0030
+            &value_scc_charge_power_,                                                                        // NOLINT  0406
+            &value_parallel_warning_,                                                                        // NOLINT  0000
+            &value_sync_frequency_,                                                                          // NOLINT  00.00
+            &inverter_charge_status,                                                                         // NOLINT  10
+            &unknown_value_in_response_18,                                                                   // NOLINT  0
+            &unknown_value_in_response_19,                                                                   // NOLINT  060
+            &unknown_value_in_response_20,                                                                   // NOLINT  030
+            &unknown_value_in_response_21,                                                                   // NOLINT  060
+            &unknown_value_in_response_22,                                                                   // NOLINT  030
+            &unknown_value_in_response_23,                                                                   // NOLINT  58.40
+            &unknown_value_in_response_24,                                                                   // NOLINT  000
+            &unknown_value_in_response_25,                                                                   // NOLINT  120
+            &unknown_value_in_response_26,                                                                   // NOLINT  0
+            &unknown_value_in_response_27                                                                    // NOLINT  0000
+            );                                                                                               // NOLINT
+        if (this->last_q1_) {
+          this->last_q1_->publish_state(tmp);
+        }
+        value_inverter_charge_status_ = std::to_string(inverter_charge_status);
+        //ESP_LOGD(TAG, "Inverter Charge Status (raw) = %d -> %s", inverter_charge_status, value_inverter_charge_status_);
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QBMS:
+        ESP_LOGD(TAG, "Decode QBMS");
+        int value_bms_battery_connect_status_;
+        int value_bms_battery_percentage_;
+        int value_bms_force_charging_;
+        int value_bms_stop_discharge_flag_;
+        int value_bms_stop_charge_flag_;
+        int value_bms_bulk_voltage_;
+        int value_bms_float_voltage_;
+        int value_bms_cutoff_voltage_;
+        int value_bms_max_charge_current_;
+        int value_bms_max_discharge_current_;
+        sscanf(                                                                                              // NOLINT
+            tmp,                                                                                             // NOLINT
+            // '(a bbb c d e fff ggg hhh iiii jjjj
+            //  (1 000 0 0 0 000 000 000 0000 0000
+            "(%d %d %d %d %d %d %d %d %d %d",                                                                // NOLINT
+            &value_bms_battery_connect_status_,                                                              // NOLINT  0
+            &value_bms_battery_percentage_,                                                                  // NOLINT  000
+            &value_bms_force_charging_,                                                                      // NOLINT  0
+            &value_bms_stop_discharge_flag_,                                                                 // NOLINT  0
+            &value_bms_stop_charge_flag_,                                                                    // NOLINT  0
+            &value_bms_bulk_voltage_,                                                                        // NOLINT  000
+            &value_bms_float_voltage_,                                                                       // NOLINT  000
+            &value_bms_cutoff_voltage_,                                                                      // NOLINT  000
+            &value_bms_max_charge_current_,                                                                  // NOLINT  000
+            &value_bms_max_discharge_current_                                                                // NOLINT  000
+            );                                                                                               // NOLINT
+        if (this->last_qbms_) {
+          this->last_qbms_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QET:
+        ESP_LOGD(TAG, "Decode QET");
+        //(NNNNNNNN
+        sscanf(                                                                                 // NOLINT
+            tmp,                                                                                // NOLINT
+            "(%d",                                                                              // NOLINT
+            &value_total_pv_generated_energy_);                                                 // NOLINT
+        if (this->last_qet_) {
+          this->last_qet_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QLT:
+        ESP_LOGD(TAG, "Decode QLT");
+        //(NNNNNNNN
+        sscanf(                                                                                 // NOLINT
+            tmp,                                                                                // NOLINT
+            "(%d",                                                                              // NOLINT
+            &value_total_output_load_energy_);                                                  // NOLINT
+        if (this->last_qlt_) {
+          this->last_qlt_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
       case POLLING_QBATCD:
-        ESP_LOGD(TAG, "Decode QBATCD");
+        ESP_LOGD(TAG, "Decode QBATCD: %s", tmp);
         // '(000'
         for (size_t i = 1; i < strlen(tmp); i++) {
           enabled = tmp[i] == '1';
@@ -771,12 +1216,27 @@ void Pipsolar::loop() {
               break;
           }
         }
-        this->value_charging_discharging_control_select_ = tmp;
+        //this->value_charging_discharging_control_select_ = tmp;
         if (this->last_qbatcd_) {
           this->last_qbatcd_->publish_state(tmp);
         }
         this->state_ = STATE_POLL_DECODED;
         break;
+      case POLLING_QMCHGCR:
+        ESP_LOGD(TAG, "Decode QMCHGCR");
+        if (this->last_qmchgcr_) {
+          this->last_qmchgcr_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+      case POLLING_QMUCHGCR:
+        ESP_LOGD(TAG, "Decode QMUCHGCR");
+        if (this->last_qmuchgcr_) {
+          this->last_qmuchgcr_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;
+
       default:
         this->state_ = STATE_IDLE;
         break;
