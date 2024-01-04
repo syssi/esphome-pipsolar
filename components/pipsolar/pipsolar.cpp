@@ -298,6 +298,112 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_IDLE;
         break;
+      case POLLING_QPGS2:
+        if (this->parallel_num_) {
+          this->parallel_num_->publish_state(value_parallel_num_);
+        }
+        if (this->serial_number_) {
+          this->serial_number_->publish_state(value_serial_number_);
+        }
+        if (this->work_mode_) {
+          this->work_mode_->publish_state(value_work_mode_);
+        }
+        if (this->fault_code_par_) {
+          this->fault_code_par_->publish_state(value_fault_code_par_);
+        }
+        if (this->grid_voltage_) {
+          this->grid_voltage_par_->publish_state(value_grid_voltage_par_);
+        }
+        if (this->grid_frequency_par_) {
+          this->grid_frequency_par_->publish_state(value_grid_frequency_par_);
+        }
+        if (this->ac_output_voltage_par_) {
+          this->ac_output_voltage_par_->publish_state(value_ac_output_voltage_par_);
+        }
+        if (this->ac_output_frequency_par_) {
+          this->ac_output_frequency_par_->publish_state(value_ac_output_frequency_par_);
+        }
+        if (this->ac_output_apparent_power_par_) {
+          this->ac_output_apparent_power_par_->publish_state(value_ac_output_apparent_power_par_);
+        }
+        if (this->ac_output_active_power_par_) {
+          this->ac_output_active_power_par_->publish_state(value_ac_output_active_power_par_);
+        }
+        if (this->load_perc_par_) {
+          this->load_perc_par_->publish_state(value_load_perc_par_);
+        }
+        if (this->battery_voltage_par_) {
+          this->battery_voltage_par_->publish_state(value_battery_voltage_par_);
+        }
+        if (this->battery_charging_current_par_) {
+          this->battery_charging_current_par_->publish_state(value_battery_charging_current_par_);
+        }
+        if (this->battery_capacity_) {
+          this->battery_capacity_->publish_state(value_battery_capacity_);
+        }
+        if (this->pv_input_voltage_) {
+          this->pv_input_voltage_->publish_state(value_pv_input_voltage_);
+        }
+        if (this->total_charging_current_) {
+          this->total_charging_current_->publish_state(value_total_charging_current_);
+        }
+        if (this->total_ac_out_apparent_power_) {
+          this->total_ac_out_apparent_power_->publish_state(value_total_ac_out_apparent_power_);
+        }
+        if (this->total_output_active_power_) {
+          this->total_output_active_power_->publish_state(value_total_output_active_power_);
+        }
+        if (this->total_ac_out_perc_) {
+          this->total_ac_out_perc_->publish_state(value_total_ac_out_perc_);
+        }
+        if (this->scc_) {
+          this->scc_->publish_state(value_scc_);
+        }
+        if (this->ac_chg_) {
+          this->ac_chg_->publish_state(
+              value_ac_chg_);
+        }
+        if (this->scc_chg_) {
+          this->scc_chg_->publish_state(value_scc_chg_);
+        }
+        if (this->batt_open_) {
+          this->batt_open_->publish_state(value_batt_open_);
+        }
+        if (this->batt_under_) {
+          this->batt_under_->publish_state(value_batt_under_);
+        }
+        if (this->line_loss_) {
+          this->line_loss_->publish_state(value_line_loss_);
+        } 
+        if (this->load_on_) {
+          this->load_on_->publish_state(value_load_on_);
+        }
+        if (this->pv1_charging_power_) {
+          this->pv1_charging_power_->publish_state(value_pv1_charging_power_);
+        }
+        if (this->configuration_change_) {
+          this->configuration_change_->publish_state(value_configuration_change_);
+        }
+        if (this->output_mode_par_) {
+          this->output_mode_par_->publish_state(value_output_mode_par_);
+        }
+        if (this->max_charger_current_) {
+          this->max_charger_current_->publish_state(value_max_charger_current_);
+        }
+        if (this->max_charger_range_) {
+          this->max_charger_range_->publish_state(value_max_charger_range_);
+        }
+        if (this->max_ac_charger_current_) {
+          this->max_ac_charger_current_->publish_state(value_max_ac_charger_current_);
+        }
+        if (this->pv_input_current_for_battery_) {
+          this->pv_input_current_for_battery_->publish_state(value_pv_input_current_for_battery_);
+        }
+        if (this->battery_discharge_current_par_) {
+          this->battery_discharge_current_par_->publish_state(value_battery_discharge_current_par_);
+        }
+        this->state_ = STATE_IDLE;
+        break;
       case POLLING_QMOD:
         if (this->device_mode_) {
           mode = value_device_mode_;
@@ -532,6 +638,30 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_POLL_DECODED;
         break;
+      case POLLING_QPGS2:
+        ESP_LOGD(TAG, "Decode QPGS2");
+        sscanf(                                                                                                         // NOLINT
+            tmp,                                                                                                        // NOLINT
+            "(%d %d %d %f %f %f %f %f %d %d %d %f %d %d %f %d %d %d %d %1d%1d%1d%1d%1d%1d%1d%1d %d %d %d %d %d %d",     // NOLINT
+            &value_parallel_num_, &value_serial_number_, &value_work_mode_,                                             // NOLINT
+            &value_fault_code_par_,                                                                                     // NOLINT
+            &value_grid_voltage_par_, &value_grid_frequency_par_, &value_ac_output_voltage_par_,                        // NOLINT
+            &value_ac_output_frequency_par_, &value_ac_output_apparent_power_par_, &value_ac_output_active_power_par_,  // NOLINT
+            &value_load_perc_par_, &value_battery_voltage_par_,                                                         // NOLINT
+            &value_battery_charging_current_par_, &value_battery_capacity_, &value_pv_input_voltage_,                   // NOLINT
+            &value_total_charging_current_, &value_total_ac_out_apparent_power_,                                        // NOLINT
+            &value_total_output_active_power_, &value_total_ac_out_perc_, &value_scc_,                                  // NOLINT
+            &value_ac_chg_, &value_scc_chg_,                                                                            // NOLINT
+            &value_batt_open_, &value_batt_under_,                                                                      // NOLINT
+            &value_line_loss_, &value_load_on_, &value_configuration_change_,                                           // NOLINT
+            &value_output_mode_par_, &value_max_charger_current_, &value_max_charger_range_,                            // NOLINT
+            &value_max_ac_charger_current_,                                                                             // NOLINT
+            &value_pv_input_current_for_battery_, &value_battery_discharge_current_par_);                               // NOLINT
+        if (this->last_qpgs2_) {
+          this->last_qpgs2_->publish_state(tmp);
+        }
+        this->state_ = STATE_POLL_DECODED;
+        break;  
       case POLLING_QMOD:
         ESP_LOGD(TAG, "Decode QMOD");
         this->value_device_mode_ = char(this->read_buffer_[1]);
