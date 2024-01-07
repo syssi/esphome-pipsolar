@@ -15,7 +15,7 @@ namespace pipsolar {
 class PipsolarSelect;
 
 enum ENUMPollingCommand {
-  POLLING_QPIRI = 0,
+  // POLLING_QPIRI = 0,
   POLLING_QPIGS = 1,
   POLLING_QPIGS2 = 2,
   POLLING_QMOD = 3,
