@@ -8,10 +8,13 @@
 
 substitutions:
   name: pipsolar
+  tx_pin: GPIO4
+  rx_pin: GPIO5
 
 esphome:
   name: ${name}
-  platform: ESP8266
+
+esp8266:
   board: d1_mini
 
 external_components:
@@ -26,21 +29,33 @@ ota:
 
 logger:
   baud_rate: 0
+  level: DEBUG
 
+# If you use Home Assistant please remove this `mqtt` section and uncomment the `api` component!
+# The native API has many advantages over MQTT: https://esphome.io/components/api.html#advantages-over-mqtt
 mqtt:
   broker: !secret mqtt_host
   username: !secret mqtt_username
   password: !secret mqtt_password
   id: mqtt_client
 
+# api:
+
 uart:
-  id: uart0
+  id: uart_0
   baud_rate: 2400
-  tx_pin: GPIO1
-  rx_pin: GPIO3
+  tx_pin: ${tx_pin}
+  rx_pin: ${rx_pin}
+#  debug:
+#    direction: BOTH
+#    dummy_receiver: false
+#    after:
+#      delimiter: "\r"
+#    sequence:
+#      - lambda: UARTDebug::log_string(direction, bytes);
 
 pipsolar:
-  uart_id: uart0
+  uart_id: uart_0
   id: inverter0
 
 sensor:
