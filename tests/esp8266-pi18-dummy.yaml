@@ -18,7 +18,7 @@ ota:
 logger:
 
 uart:
-  id: uart0
+  id: uart_0
   baud_rate: 2400
   tx_pin: ${tx_pin}
   rx_pin: ${rx_pin}
@@ -31,6 +31,6 @@ uart:
       - lambda: UARTDebug::log_string(direction, bytes);
       - lambda: |-
           if(direction == 0) {
-            id(uart0).write_str("^D0882300,217,2300,500,217,5000,5000,480,500,540,450,560,560,2,02,060,1,0,1,9,1,0,0,0,1,00\xe9\r");
+            id(uart_0).write_str("^D0882300,217,2300,500,217,5000,5000,480,500,540,450,560,560,2,02,060,1,0,1,9,1,0,0,0,1,00\xe9\r");
             ESP_LOGD("Lambda", "PIRI response sent");
           }
