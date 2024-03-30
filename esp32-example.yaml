@@ -11,8 +11,11 @@ substitutions:
 
 esphome:
   name: ${name}
-  platform: ESP32
-  board: esp-wrover-kit
+
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: esp-idf
 
 external_components:
   - source: github://syssi/esphome-pipsolar@pip8048
