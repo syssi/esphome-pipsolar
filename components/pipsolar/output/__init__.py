@@ -20,7 +20,8 @@ CONF_POSSIBLE_VALUES = "possible_values"
 #                               48V unit: 44V/45V/46V/47V/48V/49V/50V/51V
 # battery_under_voltage;        40.0V ~ 48.0V for 48V unit
 # battery_float_voltage;        48.0V ~ 58.4V for 48V unit
-# battery_type;  00 for AGM, 01 for Flooded battery
+# battery_type;  00 for AGM, 01 for Flooded battery, 02 for user define, 03 for Pylontech, 
+#                04 for Shinheung, 05 for Weco, 06 for Soltaro, 07 for BAK, 08 for Lib, 09 for Lic
 # current_max_ac_charging_current;
 # output_source_priority; 00 / 01 / 02
 # charger_source_priority;  For HS: 00 for utility first, 01 for solar first, 02 for solar and utility, 03 for only solar charging
@@ -41,24 +42,38 @@ CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
 
 TYPES = {
+    # 26. Bulk charging voltage (C.V voltage)
     CONF_BATTERY_BULK_VOLTAGE: (
-        [44.0, 45.0, 46.0, 47.0, 48.0, 49.0, 50.0, 51.0],
+        #[44.0, 45.0, 46.0, 47.0, 48.0, 49.0, 50.0, 51.0],
+        [48.0, 48.8, 49.6, 50.4, 51.2, 52.0, 52.8, 53.6, 54.4, 55.2, 56.0, 56.8, 57.0, 57.6, 58.4],
+        #[3.0, 3.05, 3.1, 3.15, 3.2, 3.25, 3.3, 3.35, 3.4, 3.45, 3.5, 3.5, 3.55, 3.6, 3.65], # Single Cell Volt
         "PCVV%02.1f",
     ),
     CONF_BATTERY_RECHARGE_VOLTAGE: (
         [44.0, 45.0, 46.0, 47.0, 48.0, 49.0, 50.0, 51.0],
         "PBCV%02.1f",
     ),
+    # 29. Low DC cut-off voltage
     CONF_BATTERY_UNDER_VOLTAGE: (
-        [40.0, 40.1, 42, 43, 44, 45, 46, 47, 48.0],
+        [42.0, 42.4, 43.2, 44, 44.8, 45.6, 46.4, 47.2, 48.0],
+        #[2.625, 2.65, 2.7, 2.75, 2.8, 2.85, 2.9, 2.95, 3], # Single Cell Volt
         "PSDV%02.1f",
     ),
-    CONF_BATTERY_FLOAT_VOLTAGE: ([48.0, 49.0, 50.0, 51.0], "PBFT%02.1f"),
-    CONF_BATTERY_TYPE: ([0, 1, 2], "PBT%02.0f"),
+    # 27. Floating charging voltage
+    CONF_BATTERY_FLOAT_VOLTAGE: (
+        #[48.0, 49.0, 50.0, 51.0], 
+        [48.0, 48.8, 49.6, 50.4, 51.2, 52.0, 52.8, 53.6, 54.4, 55.2, 56.0, 56.8, 57.0, 57.6, 58.4],
+        #[3.0, 3.05, 3.1, 3.15, 3.2, 3.25, 3.3, 3.35, 3.4, 3.45, 3.5, 3.5, 3.55, 3.6, 3.65], # Single Cell Volt
+        "PBFT%02.1f"
+    ),
+    # Setting battery type, 00 for AGM, 01 for Flooded battery, 02 for user define, 03 for Pylontech, 04 for Shinheung, 05 for Weco, 06 for Soltaro, 07 for BAK, 08 for Lib, 09 for Lic
+    CONF_BATTERY_TYPE: ([0, 1, 2, 3, 4 ,5 ,6, 7, 8, 9], "PBT%02.0f"),
     CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ([2, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120], "MUCHGC%04.0f"),
-    CONF_CURRENT_MAX_CHARGING_CURRENT: ([ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120 ], "MCHGC%03.0f"),
+    #CONF_CURRENT_MAX_CHARGING_CURRENT: ([ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120 ], "MCHGC%03.0f"),
+    CONF_CURRENT_MAX_CHARGING_CURRENT: ([ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120 ], "MNCHGC%03.0f"),
     CONF_OUTPUT_SOURCE_PRIORITY: ([0, 1, 2], "POP%02.0f"),
     CONF_CHARGER_SOURCE_PRIORITY: ([0, 1, 2, 3], "PCP%02.0f"),
+    # 13. Setting voltage point back to battery mode when selecting SBU (SBU priority) in program 01.
     CONF_BATTERY_REDISCHARGE_VOLTAGE: (
         [0, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58],
         "PBDV%02.1f",
