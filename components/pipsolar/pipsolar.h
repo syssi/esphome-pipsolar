@@ -52,6 +52,8 @@ struct PollingCommand {
   PIPSOLAR_VALUED_ENTITY_(sensor::Sensor, name, polling_command, value_type)
 #define PIPSOLAR_SWITCH(name, polling_command) PIPSOLAR_ENTITY_(switch_::Switch, name, polling_command)
 #define PIPSOLAR_SELECT(name, polling_command) PIPSOLAR_ENTITY_(pipsolar::PipsolarSelect, name, polling_command)
+#define PIPSOLAR_VALUED_SELECT(name, polling_command, value_type) \
+  PIPSOLAR_VALUED_ENTITY_(pipsolar::PipsolarSelect, name, polling_command, value_type)
 #define PIPSOLAR_BINARY_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(binary_sensor::BinarySensor, name, polling_command, value_type)
 #define PIPSOLAR_VALUED_TEXT_SENSOR(name, polling_command, value_type) \
@@ -189,6 +191,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void update() override;
 
  protected:
+  friend class PipsolarSelect;
   static const size_t PIPSOLAR_READ_BUFFER_LENGTH = 150;  // maximum supported answer length
   static const size_t COMMAND_QUEUE_LENGTH = 10;
   static const size_t COMMAND_TIMEOUT = 5000;
