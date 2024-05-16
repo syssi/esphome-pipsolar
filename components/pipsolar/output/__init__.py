@@ -3,7 +3,8 @@ import esphome.config_validation as cv
 from esphome import automation
 from esphome.components import output
 from esphome.const import CONF_ID, CONF_VALUE
-from .. import PIPSOLAR_COMPONENT_SCHEMA, CONF_PIPSOLAR_ID, pipsolar_ns
+
+from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
 
 DEPENDENCIES = ["pipsolar"]
 
