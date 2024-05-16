@@ -13,7 +13,7 @@ namespace pipsolar {
 
 enum ENUMPollingCommand {
   POLLING_P007PIRI = 0,
-  POLLING_P007GS = 1,
+  POLLING_P005GS = 1,
   POLLING_P006MOD = 2,
   POLLING_P007FLAG = 3,
   POLLING_P005FWS = 4,
@@ -55,35 +55,35 @@ struct PollingCommand {
 #define PIPSOLAR_TEXT_SENSOR(name, polling_command) PIPSOLAR_ENTITY_(text_sensor::TextSensor, name, polling_command)
 
 class Pipsolar : public uart::UARTDevice, public PollingComponent {
-  // P007GS values
-  PIPSOLAR_SENSOR(grid_voltage, P007GS, float)                            // AAAA
-  PIPSOLAR_SENSOR(grid_frequency, P007GS, float)                          // BBB
-  PIPSOLAR_SENSOR(ac_output_voltage, P007GS, float)                       // CCCC
-  PIPSOLAR_SENSOR(ac_output_frequency, P007GS, float)                     // DDD
-  PIPSOLAR_SENSOR(ac_output_apparent_power, P007GS, int)                  // EEEE
-  PIPSOLAR_SENSOR(ac_output_active_power, P007GS, int)                    // FFFF
-  PIPSOLAR_SENSOR(output_load_percent, P007GS, int)                       // GGG
-  PIPSOLAR_SENSOR(battery_voltage, P007GS, float)                         // HHH
-  PIPSOLAR_SENSOR(battery_voltage_scc, P007GS, float)                     // III
-  PIPSOLAR_SENSOR(battery_voltage_scc2, P007GS, float)                    // JJJ
-  PIPSOLAR_SENSOR(battery_discharge_current, P007GS, int)                 // KKK
-  PIPSOLAR_SENSOR(battery_charging_current, P007GS, int)                  // LLL
-  PIPSOLAR_SENSOR(battery_capacity_percent, P007GS, int)                  // MMM
-  PIPSOLAR_SENSOR(inverter_heat_sink_temperature, P007GS, int)            // NNN
-  PIPSOLAR_SENSOR(mppt1_charger_temperature, P007GS, float)               // OOO
-  PIPSOLAR_SENSOR(mppt2_charger_temperature, P007GS, float)               // PPP
-  PIPSOLAR_SENSOR(pv1_input_power, P007GS, float)                         // QQQQ
-  PIPSOLAR_SENSOR(pv2_input_power, P007GS, float)                         // RRRR
-  PIPSOLAR_SENSOR(pv1_input_voltage, P007GS, float)                       // SSSS
-  PIPSOLAR_SENSOR(pv2_input_voltage, P007GS, float)                       // TTTT
-  PIPSOLAR_BINARY_SENSOR(setting_value_configuration_state, P007GS, int)  // U
-  PIPSOLAR_SENSOR(mppt1_charger_status, P007GS, int)                      // V
-  PIPSOLAR_SENSOR(mppt2_charger_status, P007GS, int)                      // W
-  PIPSOLAR_BINARY_SENSOR(load_connection, P007GS, int)                    // X
-  PIPSOLAR_SENSOR(battery_power_direction, P007GS, int)                   // Y
-  PIPSOLAR_SENSOR(dc_ac_power_direction, P007GS, int)                     // Z
-  PIPSOLAR_SENSOR(line_power_direction, P007GS, int)                      // a
-  PIPSOLAR_SENSOR(local_parallel_id, P007GS, int)                         // b
+  // P005GS values
+  PIPSOLAR_SENSOR(grid_voltage, P005GS, float)                            // AAAA
+  PIPSOLAR_SENSOR(grid_frequency, P005GS, float)                          // BBB
+  PIPSOLAR_SENSOR(ac_output_voltage, P005GS, float)                       // CCCC
+  PIPSOLAR_SENSOR(ac_output_frequency, P005GS, float)                     // DDD
+  PIPSOLAR_SENSOR(ac_output_apparent_power, P005GS, int)                  // EEEE
+  PIPSOLAR_SENSOR(ac_output_active_power, P005GS, int)                    // FFFF
+  PIPSOLAR_SENSOR(output_load_percent, P005GS, int)                       // GGG
+  PIPSOLAR_SENSOR(battery_voltage, P005GS, float)                         // HHH
+  PIPSOLAR_SENSOR(battery_voltage_scc, P005GS, float)                     // III
+  PIPSOLAR_SENSOR(battery_voltage_scc2, P005GS, float)                    // JJJ
+  PIPSOLAR_SENSOR(battery_discharge_current, P005GS, int)                 // KKK
+  PIPSOLAR_SENSOR(battery_charging_current, P005GS, int)                  // LLL
+  PIPSOLAR_SENSOR(battery_capacity_percent, P005GS, int)                  // MMM
+  PIPSOLAR_SENSOR(inverter_heat_sink_temperature, P005GS, int)            // NNN
+  PIPSOLAR_SENSOR(mppt1_charger_temperature, P005GS, float)               // OOO
+  PIPSOLAR_SENSOR(mppt2_charger_temperature, P005GS, float)               // PPP
+  PIPSOLAR_SENSOR(pv1_input_power, P005GS, float)                         // QQQQ
+  PIPSOLAR_SENSOR(pv2_input_power, P005GS, float)                         // RRRR
+  PIPSOLAR_SENSOR(pv1_input_voltage, P005GS, float)                       // SSSS
+  PIPSOLAR_SENSOR(pv2_input_voltage, P005GS, float)                       // TTTT
+  PIPSOLAR_BINARY_SENSOR(setting_value_configuration_state, P005GS, int)  // U
+  PIPSOLAR_SENSOR(mppt1_charger_status, P005GS, int)                      // V
+  PIPSOLAR_SENSOR(mppt2_charger_status, P005GS, int)                      // W
+  PIPSOLAR_BINARY_SENSOR(load_connection, P005GS, int)                    // X
+  PIPSOLAR_SENSOR(battery_power_direction, P005GS, int)                   // Y
+  PIPSOLAR_SENSOR(dc_ac_power_direction, P005GS, int)                     // Z
+  PIPSOLAR_SENSOR(line_power_direction, P005GS, int)                      // a
+  PIPSOLAR_SENSOR(local_parallel_id, P005GS, int)                         // b
 
   PIPSOLAR_SENSOR(total_ac_output_apparent_power, P007PGS0, int)
   PIPSOLAR_SENSOR(total_ac_output_active_power, P007PGS0, int)
@@ -153,7 +153,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(scc1_battery_too_low_to_charge, P005FWS, bool)
   PIPSOLAR_BINARY_SENSOR(scc2_battery_too_low_to_charge, P005FWS, bool)
 
-  //            PIPSOLAR_TEXT_SENSOR(last_qpigs, P007GS)
+  //            PIPSOLAR_TEXT_SENSOR(last_qpigs, P005GS)
   //            PIPSOLAR_TEXT_SENSOR(last_qpiri, P007PIRI)
   //            PIPSOLAR_TEXT_SENSOR(last_qmod, P006MOD)
   //            PIPSOLAR_TEXT_SENSOR(last_qflag, P007FLAG)

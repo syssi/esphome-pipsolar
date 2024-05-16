@@ -198,7 +198,7 @@ void Pipsolar::loop() {
 
         this->state_ = STATE_IDLE;
         break;
-      case POLLING_P007GS:
+      case POLLING_P005GS:
         if (this->grid_voltage_) {
           this->grid_voltage_->publish_state(value_grid_voltage_ * 0.1);
         }
@@ -448,8 +448,8 @@ void Pipsolar::loop() {
         this->state_ = STATE_POLL_DECODED;
         break;
 
-      case POLLING_P007GS:
-        ESP_LOGD(TAG, "Decode P007GS");
+      case POLLING_P005GS:
+        ESP_LOGD(TAG, "Decode P005GS");
         //        "^D1062135,499,2135,499,2102,2102,037,544,000,000,000,039,095,049,000,000,0000,0000,0000,0000,0,0,0,1,1,1,1,1\e\'\r"
         sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
                &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_, &value_ac_output_frequency_,
