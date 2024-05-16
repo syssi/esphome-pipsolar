@@ -12,6 +12,7 @@
 
 namespace esphome {
 namespace pipsolar {
+class PipsolarSelect;
 
 enum ENUMPollingCommand {
   POLLING_P007PIRI = 0,
