@@ -168,7 +168,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   //            PIPSOLAR_TEXT_SENSOR(last_qt, QT)
   //            PIPSOLAR_TEXT_SENSOR(last_qmn, QMN)
 
-  PIPSOLAR_SWITCH(output_source_priority_switch, P007PIRI)
+  //PIPSOLAR_SWITCH(output_source_priority_switch, P007PIRI)   // ersetzt durch Select
   PIPSOLAR_SWITCH(solar_power_priority_switch, P007PIRI)
   PIPSOLAR_SWITCH(charger_source_priority_solarfirst_switch, P007PIRI)
   PIPSOLAR_SWITCH(charger_source_priority_utility_switch, P007PIRI)

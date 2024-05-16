@@ -279,6 +279,19 @@ switch:
     power_saving:
       name: "${name} sw power_saving"
 
+select:
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    output_source_priority:
+      id: inverter0_output_source_priority_select
+      name: "${name} output_source_priority_select"
+      optionsmap:
+        "Solar-Utility-Battery": "POP0"
+        "Solar-Battery-Utility": "POP1"
+      statusmap:
+        "0": "Solar Utility Battery"
+        "1": "Solar Battery Utility"
+
 output:
   - platform: pipsolar
     pipsolar_id: inverter0
