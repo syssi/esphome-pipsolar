@@ -48,6 +48,7 @@ struct PollingCommand {
 #define PIPSOLAR_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(sensor::Sensor, name, polling_command, value_type)
 #define PIPSOLAR_SWITCH(name, polling_command) PIPSOLAR_ENTITY_(switch_::Switch, name, polling_command)
+#define PIPSOLAR_SELECT(name, polling_command) PIPSOLAR_ENTITY_(pipsolar::PipsolarSelect, name, polling_command)
 #define PIPSOLAR_BINARY_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(binary_sensor::BinarySensor, name, polling_command, value_type)
 #define PIPSOLAR_VALUED_TEXT_SENSOR(name, polling_command, value_type) \
@@ -109,6 +110,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SENSOR(current_max_charging_current, P007PIRI, int)
   PIPSOLAR_SENSOR(input_voltage_range, P007PIRI, int)
   PIPSOLAR_SENSOR(output_source_priority, P007PIRI, int)
+  PIPSOLAR_SELECT(output_source_priority_select, P007PIRI)
   PIPSOLAR_SENSOR(charger_source_priority, P007PIRI, int)
   PIPSOLAR_SENSOR(parallel_max_num, P007PIRI, int)
   PIPSOLAR_SENSOR(machine_type, P007PIRI, int)
