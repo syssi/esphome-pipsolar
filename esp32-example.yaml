@@ -324,12 +324,11 @@ select:
       id: inverter0_machine_type_select
       name: "${name} Machine type" # P007PIRI
       optionsmap:
-        "Grid-Tie": "PEI"
         "OFF-Grid": "PDI"
+        "Grid-Tie": "PEI"
       statusmap:
-        "0": "Grid-Tie"
-        "1": "OFF-Grid"
-
+        "0": "OFF-Grid"
+        "1": "Grid-Tie"
 output:
   - platform: pipsolar
     pipsolar_id: inverter0
