@@ -125,7 +125,10 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SENSOR(machine_type, P007PIRI, int)
   PIPSOLAR_SENSOR(topology, P007PIRI, int)
   PIPSOLAR_SENSOR(output_mode, P007PIRI, int)
-  PIPSOLAR_SENSOR(solar_power_priority, P007PIRI, int)  // 24 Z
+
+  PIPSOLAR_SENSOR(solar_power_priority, P007PIRI, int)
+  PIPSOLAR_SELECT(solar_power_priority_select, P007PIRI)
+
   PIPSOLAR_SENSOR(mppt_string, P007PIRI, int)           // 25 a
 
   PIPSOLAR_SENSOR(total_generated_energy, P005ET, int)
@@ -172,7 +175,6 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   //            PIPSOLAR_TEXT_SENSOR(last_qt, QT)
   //            PIPSOLAR_TEXT_SENSOR(last_qmn, QMN)
 
-  PIPSOLAR_SWITCH(solar_power_priority_switch, P007PIRI)
   PIPSOLAR_SWITCH(silence_buzzer_open_buzzer_switch, P007FLAG)
   PIPSOLAR_SWITCH(overload_bypass_function_switch, P007FLAG)
   PIPSOLAR_SWITCH(lcd_escape_to_default_switch, P007FLAG)

@@ -102,8 +102,6 @@ sensor:
       name: "${name} topology"
     output_mode:
       name: "${name} output_mode"
-    solar_power_priority:
-      name: "${name} solar_power_priority"
     mppt_string:
       name: "${name} mppt_string"
     # P005GS
@@ -245,8 +243,6 @@ text_sensor:
 switch:
   - platform: pipsolar
     pipsolar_id: inverter0
-    solar_power_priority:
-      name: "${name} solar_power_priority"
     silence_buzzer_open_buzzer:
       name: "${name} sw silence_buzzer_open_buzzer"
     overload_bypass_function:
@@ -292,6 +288,18 @@ select:
         "0": "Solar first"
         "1": "Solar and Utility"
         "2": "Only solar"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    solar_power_priority:
+      id: inverter0_solar_power_priority_select
+      name: "${name} solar_power_priority_select"
+      optionsmap:
+        "Battery-Load-Utiliy": "PSP0"
+        "Load-Battery-Utiliy": "PSP1"
+      statusmap:
+        "0": "Battery-Load-Utiliy"
+        "1": "Load-Battery-Utiliy"
 
 output:
   - platform: pipsolar

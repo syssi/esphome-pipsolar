@@ -165,6 +165,12 @@ void Pipsolar::loop() {
           this->charger_source_priority_select_->map_and_publish(value);
         }
 
+        // special for solar power priority select
+        if (this->charger_solar_power_priority__) {
+          std::string value = esphome::to_string(value_solar_power_priority__);
+          this->solar_power_priority_select_->map_and_publish(value);
+        }
+
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
         }
@@ -177,13 +183,7 @@ void Pipsolar::loop() {
         if (this->output_mode_) {
           this->output_mode_->publish_state(value_output_mode_);
         }
-        if (this->solar_power_priority_) {
-          this->solar_power_priority_->publish_state(value_solar_power_priority_);
-        }
-        // solar power priority switches
-        if (this->solar_power_priority_switch_) {
-          this->solar_power_priority_switch_->publish_state(value_solar_power_priority_ == 1);
-        }
+
         if (this->mppt_string_) {
           this->mppt_string_->publish_state(value_mppt_string_);
         }
