@@ -167,7 +167,7 @@ void Pipsolar::loop() {
 
         // special for solar power priority select
         if (this->solar_power_priority_) {
-          std::string value = esphome::to_string(value_solar_power_priority__);
+          std::string value = esphome::to_string(value_solar_power_priority_);
           this->solar_power_priority_select_->map_and_publish(value);
         }
 
