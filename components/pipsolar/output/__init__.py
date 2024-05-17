@@ -29,7 +29,8 @@ CONF_POSSIBLE_VALUES = "possible_values"
 #                               24V unit: 00.0V/24V/24.5V/25V/25.5V/26V/26.5V/27V/27.5V/28V/28.5V/29V
 #                               48V unit: 00.0V48V/49V/50V/51V/52V/53V/54V/55V/56V/57V/58V
 
-# solar_power_priority; 0 Battery-Load-Utiliy, 1 Load-Battery-Utiliy 
+# solar_power_priority; 0 Battery-Load-Utiliy, 1 Load-Battery-Utiliy
+# machine_type; 0 Off-Grid, 1 Grid-Tie
 
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
@@ -42,6 +43,7 @@ CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 # CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
 # CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 # CONF_SOLAR_POWER_PRIORITY = "solar_power_priority"
+# CONF_MACHINE_TYPE = "machine_type"
 # CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
 
 TYPES = {
@@ -69,6 +71,7 @@ TYPES = {
     #    CONF_BATTERY_TYPE: ([0, 1, 2], "PBT%02.0f"),
     #    CONF_OUTPUT_SOURCE_PRIORITY: ([0, 1, 2], "POP%02.0f"),
     #    CONF_SOLAR_POWER_PRIORITY: ([0,1], "PSP%02.0f"),
+    #    CONF_MACHINE_TYPE: ([0,1], "PDI%02.0f| PEI%02.0f|"),
     #    CONF_CHARGER_SOURCE_PRIORITY: ([0, 1, 2, 3], "PCP%02.0f"),
 }
 

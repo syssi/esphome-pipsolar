@@ -122,7 +122,10 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SELECT(charger_source_priority_select, P007PIRI)
 
   PIPSOLAR_SENSOR(parallel_max_num, P007PIRI, int)
+
   PIPSOLAR_SENSOR(machine_type, P007PIRI, int)
+  PIPSOLAR_SELECT(machine_type_select, P007PIRI)
+
   PIPSOLAR_SENSOR(topology, P007PIRI, int)
   PIPSOLAR_SENSOR(output_mode, P007PIRI, int)
 

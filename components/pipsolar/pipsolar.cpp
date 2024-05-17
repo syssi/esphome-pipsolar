@@ -171,11 +171,14 @@ void Pipsolar::loop() {
           this->solar_power_priority_select_->map_and_publish(value);
         }
 
+        // special for solar power priority select
+        if (this->machine_type_) {
+          std::string value = esphome::to_string(value_machine_type_);
+          this->machine_type_select_->map_and_publish(value);
+        }
+
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
-        }
-        if (this->machine_type_) {
-          this->machine_type_->publish_state(value_machine_type_);
         }
         if (this->topology_) {
           this->topology_->publish_state(value_topology_);
