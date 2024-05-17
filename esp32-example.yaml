@@ -94,8 +94,6 @@ sensor:
       name: "${name} current_max_charging_current"
     input_voltage_range:
       name: "${name} input_voltage_range"
-    charger_source_priority:
-      name: "${name} charger_source_priority"
     parallel_max_num:
       name: "${name} parallel_max_num"
     machine_type:
@@ -249,13 +247,6 @@ switch:
     pipsolar_id: inverter0
     solar_power_priority:
       name: "${name} solar_power_priority"
-    #charger_source_priority_solarfirst:
-    #  name: "${name} charger_source_priority_solarfirst"
-    #charger_source_priority_utility:
-    #  name: "${name} charger_source_priority_utility"
-    #charger_source_priority_solaronly:
-    #  name: "${name} charger_source_priority_solaronly"
-
     silence_buzzer_open_buzzer:
       name: "${name} sw silence_buzzer_open_buzzer"
     overload_bypass_function:
