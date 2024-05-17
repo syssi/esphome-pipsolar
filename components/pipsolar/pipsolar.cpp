@@ -153,33 +153,18 @@ void Pipsolar::loop() {
         //                            this->input_voltage_range_switch_->publish_state(value_input_voltage_range_ == 1);
         //                        }
 
-
-        //if (this->output_source_priority_) {
-        //  this->output_source_priority_->publish_state(value_output_source_priority_);
-        //}
         // special for output source priority select
         if (this->output_source_priority_select_) {
           std::string value = esphome::to_string(value_output_source_priority_);
           this->output_source_priority_select_->map_and_publish(value);
         }
-        // special for output source priority switches
-        //if (this->output_source_priority_switch_) {
-        //  this->output_source_priority_switch_->publish_state(value_output_source_priority_ == 1);
-        //}
 
-        if (this->charger_source_priority_) {
-          this->charger_source_priority_->publish_state(value_charger_source_priority_);
+        // special for charger source priority select
+        if (this->charger_source_priority_select_) {
+          std::string value = esphome::to_string(value_charger_source_priority_);
+          this->charger_source_priority_select->map_and_publish(value);
         }
-        // charger source priority switches
-        if (this->charger_source_priority_solarfirst_switch_) {
-          this->charger_source_priority_solarfirst_switch_->publish_state(value_charger_source_priority_ == 0);
-        }
-        if (this->charger_source_priority_utility_switch_) {
-          this->charger_source_priority_utility_switch_->publish_state(value_charger_source_priority_ == 1);
-        }
-        if (this->charger_source_priority_solaronly_switch_) {
-          this->charger_source_priority_solaronly_switch_->publish_state(value_charger_source_priority_ == 2);
-        }
+
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
         }

@@ -94,8 +94,6 @@ sensor:
       name: "${name} current_max_charging_current"
     input_voltage_range:
       name: "${name} input_voltage_range"
-    output_source_priority:
-      name: "${name} output_source_priority"
     charger_source_priority:
       name: "${name} charger_source_priority"
     parallel_max_num:
@@ -249,16 +247,14 @@ text_sensor:
 switch:
   - platform: pipsolar
     pipsolar_id: inverter0
-    output_source_priority:
-      name: "${name} output_source_priority"
     solar_power_priority:
       name: "${name} solar_power_priority"
-    charger_source_priority_solarfirst:
-      name: "${name} charger_source_priority_solarfirst"
-    charger_source_priority_utility:
-      name: "${name} charger_source_priority_utility"
-    charger_source_priority_solaronly:
-      name: "${name} charger_source_priority_solaronly"
+    #charger_source_priority_solarfirst:
+    #  name: "${name} charger_source_priority_solarfirst"
+    #charger_source_priority_utility:
+    #  name: "${name} charger_source_priority_utility"
+    #charger_source_priority_solaronly:
+    #  name: "${name} charger_source_priority_solaronly"
 
     silence_buzzer_open_buzzer:
       name: "${name} sw silence_buzzer_open_buzzer"
@@ -291,6 +287,20 @@ select:
       statusmap:
         "0": "Solar Utility Battery"
         "1": "Solar Battery Utility"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    charger_source_priority:
+      id: inverter0_charger_source_priority_select
+      name: "${name} charger_source_priority_select"
+      optionsmap:
+        "Solar first": "PCP0,0"
+        "Solar and Utility": "PCP0,1"
+        "Only solar": "PCP0,2"
+      statusmap:
+        "0": "Solar first"
+        "1": "Solar and Utility"
+        "2": "Only solar"
 
 output:
   - platform: pipsolar

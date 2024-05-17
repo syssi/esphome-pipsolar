@@ -114,9 +114,13 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SENSOR(current_max_ac_charging_current, P007PIRI, int)
   PIPSOLAR_SENSOR(current_max_charging_current, P007PIRI, int)
   PIPSOLAR_SENSOR(input_voltage_range, P007PIRI, int)
+
   PIPSOLAR_SENSOR(output_source_priority, P007PIRI, int)
   PIPSOLAR_SELECT(output_source_priority_select, P007PIRI)
+
   PIPSOLAR_SENSOR(charger_source_priority, P007PIRI, int)
+  PIPSOLAR_SELECT(charger_source_priority_select, P007PIRI)
+
   PIPSOLAR_SENSOR(parallel_max_num, P007PIRI, int)
   PIPSOLAR_SENSOR(machine_type, P007PIRI, int)
   PIPSOLAR_SENSOR(topology, P007PIRI, int)
@@ -168,12 +172,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   //            PIPSOLAR_TEXT_SENSOR(last_qt, QT)
   //            PIPSOLAR_TEXT_SENSOR(last_qmn, QMN)
 
-  //PIPSOLAR_SWITCH(output_source_priority_switch, P007PIRI)   // ersetzt durch Select
   PIPSOLAR_SWITCH(solar_power_priority_switch, P007PIRI)
-  PIPSOLAR_SWITCH(charger_source_priority_solarfirst_switch, P007PIRI)
-  PIPSOLAR_SWITCH(charger_source_priority_utility_switch, P007PIRI)
-  PIPSOLAR_SWITCH(charger_source_priority_solaronly_switch, P007PIRI)
-
   PIPSOLAR_SWITCH(silence_buzzer_open_buzzer_switch, P007FLAG)
   PIPSOLAR_SWITCH(overload_bypass_function_switch, P007FLAG)
   PIPSOLAR_SWITCH(lcd_escape_to_default_switch, P007FLAG)
