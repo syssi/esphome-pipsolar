@@ -98,7 +98,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_VALUED_TEXT_SENSOR(mppt2_charger_status, P005GS, char)               // X
   PIPSOLAR_VALUED_TEXT_SENSOR(load_connection, P005GS, char)               // X
   PIPSOLAR_VALUED_TEXT_SENSOR(battery_power_direction, P005GS, char)      // Y
-  PIPSOLAR_SENSOR(dc_ac_power_direction, P005GS, int)                     // Z
+  PIPSOLAR_VALUED_TEXT_SENSOR(dc_ac_power_direction, P005GS, char)      // Y
   PIPSOLAR_VALUED_TEXT_SENSOR(line_power_direction, P005GS, char)      // Y
   PIPSOLAR_SENSOR(local_parallel_id, P005GS, int)                         // b
   PIPSOLAR_SENSOR(total_ac_output_apparent_power, P007PGS0, int)

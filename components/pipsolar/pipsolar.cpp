@@ -320,8 +320,20 @@ void Pipsolar::loop() {
               break;
           }
         }
+        // special for dc_ac_power_direction Text
         if (this->dc_ac_power_direction_) {
-          this->dc_ac_power_direction_->publish_state(value_dc_ac_power_direction_);
+          mode = value_dc_ac_power_direction_;
+          switch (value_dc_ac_power_direction_) {
+            case '0':
+              this->dc_ac_power_direction_->publish_state("donothing");
+              break;
+            case '1':
+              this->dc_ac_power_direction_->publish_state("AC-DC");
+              break;
+            case '2':
+              this->dc_ac_power_direction_->publish_state("DC-AC");
+              break;
+          }
         }
         // special for line_power_direction Text
         if (this->line_power_direction_) {
@@ -503,7 +515,7 @@ void Pipsolar::loop() {
       case POLLING_P005GS:
         ESP_LOGD(TAG, "Decode P005GS");
         //        "^D1062135,499,2135,499,2102,2102,037,544,000,000,000,039,095,049,000,000,0000,0000,0000,0000,0,0,0,1,1,1,1,1\e\'\r"
-        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%c,%c,%c,%c,%d,%c,%d", &ind,
+        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%c,%c,%c,%c,%c,%c,%d", &ind,
                &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_, &value_ac_output_frequency_,
                &value_ac_output_apparent_power_, &value_ac_output_active_power_, &value_output_load_percent_,
                &value_battery_voltage_, &value_battery_voltage_scc_, &value_battery_voltage_scc2_,

@@ -69,7 +69,6 @@ CONF_PV2_INPUT_POWER = "pv2_input_power"
 CONF_PV1_INPUT_VOLTAGE = "pv1_input_voltage"
 CONF_PV2_INPUT_VOLTAGE = "pv2_input_voltage"
 
-CONF_DC_AC_POWER_DIRECTION = "dc_ac_power_direction"
 CONF_LOCAL_PARALLEL_ID = "local_parallel_id"
 CONF_FAULT_CODE = "fault_code"
 CONF_TOTAL_GENERATED_ENERGY = "total_generated_energy"
@@ -278,9 +277,6 @@ TYPES = {
         unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_VOLTAGE,
-    ),
-    CONF_DC_AC_POWER_DIRECTION: sensor.sensor_schema(
-        accuracy_decimals=0,
     ),
     CONF_LOCAL_PARALLEL_ID: sensor.sensor_schema(
         accuracy_decimals=0,

@@ -66,15 +66,15 @@ sensor:
     #grid_rating_current:
     #  name: "${name} AC input rated current"
     #ac_output_rating_voltage:
-    #  name: "${name} AC output rated voltage"
+    #  name: "${name} AC Output rated voltage"
     #ac_output_rating_frequency:
-    #  name: "${name} AC output rated frequency"
+    #  name: "${name} AC Output rated frequency"
     #ac_output_rating_current:
-    #  name: "${name} AC output rated current"
+    #  name: "${name} AC Output rated current"
     #ac_output_rating_apparent_power:
     #  name: "${name} ac_output_rating_apparent_power"
     #ac_output_rating_active_power:
-    #  name: "${name} AC output rating active power"
+    #  name: "${name} AC Output rating active power"
     #battery_rating_voltage:
     #  name: "${name} Battery rated voltage"
     #parallel_max_num:
@@ -112,11 +112,11 @@ sensor:
 
     # P005GS
     grid_voltage:
-      name: "${name} grid_voltage"
+      name: "${name} Grid voltage"
     grid_frequency:
-      name: "${name} grid_frequency"
+      name: "${name} Grid frequency"
     ac_output_voltage:
-      name: "${name} ac_output_voltage"
+      name: "${name} AC Output voltage"
     ac_output_frequency:
       name: "${name} ac_output_frequency"
     ac_output_apparent_power:
@@ -151,8 +151,6 @@ sensor:
       name: "${name} pv1_input_voltage"
     # pv2_input_voltage:
     #   name: "${name} pv2_input_voltage"
-    dc_ac_power_direction:
-      name: "${name} dc_ac_power_direction"
     fault_code:
       name: "${name} wfs fault_code"
     local_parallel_id:
@@ -234,15 +232,17 @@ text_sensor:
     device_mode:
       name: "${name} Device mode"
     battery_power_direction:
-      name: "${name} Battery power direction"
+      name: "${name} Battery Power direction"
     load_connection:
-      name: "${name} Load connection"
+      name: "${name} AC Load connection"
     mppt1_charger_status:
       name: "${name} MPPT1 charger status"
     #mppt2_charger_status:
     #  name: "${name} MPPT2 charger status"
     line_power_direction:
-      name: "${name} Grid power direction"
+      name: "${name} Grid Power direction"
+    dc_ac_power_direction:
+      name: "${name} DC/AC Power direction"
 
 switch:
   - platform: pipsolar
@@ -293,7 +293,7 @@ select:
     pipsolar_id: inverter0
     solar_power_priority:
       id: inverter0_solar_power_priority_select
-      name: "${name} Select Solar power priority" # P007PIRI
+      name: "${name} Select Solar Power priority" # P007PIRI
       optionsmap:
         "Battery-Load-Utility (+AC Charge)": "^S007PSP0"
         "Load-Battery-Utility": "^S007PSP1"
