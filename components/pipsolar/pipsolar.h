@@ -50,15 +50,29 @@ struct PollingCommand {
 
 #define PIPSOLAR_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(sensor::Sensor, name, polling_command, value_type)
-#define PIPSOLAR_SWITCH(name, polling_command) PIPSOLAR_ENTITY_(switch_::Switch, name, polling_command)
-#define PIPSOLAR_SELECT(name, polling_command) PIPSOLAR_ENTITY_(pipsolar::PipsolarSelect, name, polling_command)
+
+#define PIPSOLAR_SWITCH(name, polling_command) \
+  PIPSOLAR_ENTITY_(switch_::Switch, name, polling_command)
+
+#define PIPSOLAR_SELECT(name, polling_command) \
+  PIPSOLAR_ENTITY_(pipsolar::PipsolarSelect, name, polling_command)
+
 #define PIPSOLAR_VALUED_SELECT(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(pipsolar::PipsolarSelect, name, polling_command, value_type)
+
 #define PIPSOLAR_BINARY_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(binary_sensor::BinarySensor, name, polling_command, value_type)
+
 #define PIPSOLAR_VALUED_TEXT_SENSOR(name, polling_command, value_type) \
   PIPSOLAR_VALUED_ENTITY_(text_sensor::TextSensor, name, polling_command, value_type)
-#define PIPSOLAR_TEXT_SENSOR(name, polling_command) PIPSOLAR_ENTITY_(text_sensor::TextSensor, name, polling_command)
+
+#define PIPSOLAR_VALUED_TEXT_SENSOR_TEST(name, polling_command, value_type) \
+  PIPSOLAR_VALUED_ENTITY_(text_sensor::TextSensor, name, polling_command, char)
+
+#define PIPSOLAR_TEXT_SENSOR(name, polling_command) \
+  PIPSOLAR_ENTITY_(text_sensor::TextSensor, name, polling_command)
+
+
 
 class Pipsolar : public uart::UARTDevice, public PollingComponent {
   // P005GS values
@@ -89,7 +103,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
 
   //PIPSOLAR_SENSOR(battery_power_direction, P005GS, int)                   // Y
   //PIPSOLAR_VALUED_TEXT_SENSOR(battery_power_direction, P005GS, char)      // Y
-  PIPSOLAR_VALUED_TEXT_SENSOR(battery_power_direction, P005GS)      // Y
+  PIPSOLAR_VALUED_TEXT_SENSOR_TEST(battery_power_direction, P005GS, int)      // Y
 
   PIPSOLAR_SENSOR(dc_ac_power_direction, P005GS, int)                     // Z
   PIPSOLAR_SENSOR(line_power_direction, P005GS, int)                      // a
