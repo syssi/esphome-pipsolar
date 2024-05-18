@@ -466,7 +466,7 @@ void Pipsolar::loop() {
         break;
       case POLLING_P005ET:
         if (this->total_generated_energy_) {
-          this->total_generated_energy_->publish_state(value_total_generated_energy_);
+          this->total_generated_energy_->publish_state( int(value_total_generated_energy_) / int("1000") );
         }
         this->state_ = STATE_IDLE;
         break;
