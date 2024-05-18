@@ -276,17 +276,19 @@ void Pipsolar::loop() {
         //  this->battery_power_direction_->publish_state(value_battery_power_direction_);
         //}
         if (this->battery_power_direction_) {
-          printf("value_battery_power_direction_: %s \n", value_battery_power_direction_);
           mode = value_battery_power_direction_;
           switch (value_battery_power_direction_) {
             case '0':
               this->battery_power_direction_->publish_state("donothing");
+              printf("donothing");
               break;
             case '1':
               this->battery_power_direction_->publish_state("charge");
+              printf("charge");
               break;
             case '2':
               this->battery_power_direction_->publish_state("discharge");
+              printf("discharge");
               break;
             default:
               this->battery_power_direction_->publish_state(mode);
