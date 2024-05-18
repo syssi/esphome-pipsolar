@@ -280,6 +280,7 @@ void Pipsolar::loop() {
             case '1':
               this->load_connection_->publish_state("connect");
               break;
+          }
         }
 
         // special for battery_power_direction Text
