@@ -118,6 +118,12 @@ sensor:
     current_max_charging_current:
       name: "${name} Max charging current"
 
+    # Settable
+    input_voltage_range:
+      # Appliances 90-280V
+      # UPS 170-280V
+      name: "${name} Input voltage range"
+
     # P005GS
     grid_voltage:
       name: "${name} grid_voltage"
@@ -323,6 +329,7 @@ select:
       statusmap:
         "0": "OFF-Grid"
         "1": "Grid-Tie"
+
   - platform: pipsolar
     pipsolar_id: inverter0
     input_voltage_range:
