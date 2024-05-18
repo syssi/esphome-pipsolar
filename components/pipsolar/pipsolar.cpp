@@ -280,15 +280,12 @@ void Pipsolar::loop() {
           switch (value_battery_power_direction_) {
             case '0':
               this->battery_power_direction_->publish_state("donothing");
-              printf("donothing");
               break;
             case '1':
               this->battery_power_direction_->publish_state("charge");
-              printf("charge");
               break;
             case '2':
               this->battery_power_direction_->publish_state("discharge");
-              printf("discharge");
               break;
             default:
               this->battery_power_direction_->publish_state(mode);
@@ -473,7 +470,7 @@ void Pipsolar::loop() {
       case POLLING_P005GS:
         ESP_LOGD(TAG, "Decode P005GS");
         //        "^D1062135,499,2135,499,2102,2102,037,544,000,000,000,039,095,049,000,000,0000,0000,0000,0000,0,0,0,1,1,1,1,1\e\'\r"
-        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
+        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%d,%d,%d,%s,%d,%d,%d", &ind,
                &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_, &value_ac_output_frequency_,
                &value_ac_output_apparent_power_, &value_ac_output_active_power_, &value_output_load_percent_,
                &value_battery_voltage_, &value_battery_voltage_scc_, &value_battery_voltage_scc2_,
