@@ -277,6 +277,8 @@ void Pipsolar::loop() {
         //}
         if (this->battery_power_direction_) {
           mode = value_battery_power_direction_;
+          this->battery_power_direction_->publish_state(mode);
+
           switch (value_battery_power_direction_) {
             case '0':
               this->battery_power_direction_->publish_state("donothing");
