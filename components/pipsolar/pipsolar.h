@@ -151,7 +151,6 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SENSOR(mppt_string, P007PIRI, int)           // 25 a
 
   PIPSOLAR_SENSOR(total_generated_energy, P005ET, int)
-  //            PIPSOLAR_SENSOR(pv_power_balance, P007PIRI, int)
 
   // P006MOD values
   PIPSOLAR_VALUED_TEXT_SENSOR(device_mode, P006MOD, char)

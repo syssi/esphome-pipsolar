@@ -285,7 +285,7 @@ TYPES = {
         accuracy_decimals=0,
     ),
     CONF_TOTAL_GENERATED_ENERGY: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
+        unit_of_measurement="kWh",
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_POWER,
     ),
