@@ -313,11 +313,11 @@ select:
       id: inverter0_solar_power_priority_select
       name: "${name} Solar power priority" # P007PIRI
       optionsmap:
-        "Battery-Load-Utiliy": "^S007PSP0"
-        "Load-Battery-Utiliy": "^S007PSP1"
+        "Battery-Load-Utility": "^S007PSP0"
+        "Load-Battery-Utility": "^S007PSP1"
       statusmap:
-        "0": "Battery-Load-Utiliy"
-        "1": "Load-Battery-Utiliy"
+        "0": "Battery-Load-Utility"
+        "1": "Load-Battery-Utility"
   - platform: pipsolar
     pipsolar_id: inverter0
     machine_type:
