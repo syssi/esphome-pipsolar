@@ -158,24 +158,28 @@ void Pipsolar::loop() {
           std::string value = esphome::to_string(value_output_source_priority_);
           this->output_source_priority_select_->map_and_publish(value);
         }
-
         // special for charger source priority select
         if (this->charger_source_priority_select_) {
           std::string value = esphome::to_string(value_charger_source_priority_);
           this->charger_source_priority_select_->map_and_publish(value);
         }
-
         // special for solar power priority select
         if (this->solar_power_priority_select_) {
           std::string value = esphome::to_string(value_solar_power_priority_);
           this->solar_power_priority_select_->map_and_publish(value);
         }
-
         // special for solar power priority select
         if (this->machine_type_select_) {
           std::string value = esphome::to_string(value_machine_type_);
           this->machine_type_select_->map_and_publish(value);
         }
+
+        // special for input voltage range  select
+        if (this->input_voltage_range_select_) {
+          std::string value = esphome::to_string(value_input_voltage_range_);
+          this->input_voltage_range_select_->map_and_publish(value);
+        }
+
 
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);

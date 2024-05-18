@@ -15,6 +15,7 @@ CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
 CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_SOLAR_POWER_PRIORITY = "solar_power_priority"
 CONF_MACHINE_TYPE = "machine_type"
+CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
 CONF_CHARGING_DISCHARGING_CONTROL = "charging_discharging_control"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
@@ -83,6 +84,7 @@ TYPES = {
     CONF_CHARGER_SOURCE_PRIORITY: ("PCP03", None),
     CONF_SOLAR_POWER_PRIORITY: ("PSP0", None),
     CONF_MACHINE_TYPE: ("PDI", None),
+    CONF_INPUT_VOLTAGE_RANGE: ("PGR0", None),
     CONF_CHARGING_DISCHARGING_CONTROL: ("PBATCD111", None),
     CONF_CURRENT_MAX_CHARGING_CURRENT: ("MCHGC010", None),
     CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ("MUCHGC0002", None),

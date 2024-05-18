@@ -329,6 +329,19 @@ select:
       statusmap:
         "0": "OFF-Grid"
         "1": "Grid-Tie"
+
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    input_voltage_range:
+      id: inverter0_input_voltage_range_select
+      name: "${name} Input voltage range" # P007PIRI
+      optionsmap:
+        "Appliances 90-280V": "^S007PGR0"
+        "UPS 170-280V": "^S007PGR1"
+      statusmap:
+        "0": "Appliances 90-280V"
+        "1": "UPS 170-280V"
+
 output:
   - platform: pipsolar
     pipsolar_id: inverter0
