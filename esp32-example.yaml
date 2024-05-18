@@ -242,7 +242,7 @@ text_sensor:
     #mppt2_charger_status:
     #  name: "${name} MPPT2 charger status"
     line_power_direction:
-      name: "${name} Line power direction"
+      name: "${name} Grid power direction"
 
 switch:
   - platform: pipsolar
