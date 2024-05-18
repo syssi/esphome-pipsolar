@@ -271,9 +271,29 @@ void Pipsolar::loop() {
         if (this->load_connection_) {
           this->load_connection_->publish_state(value_load_connection_);
         }
+
         if (this->battery_power_direction_) {
           this->battery_power_direction_->publish_state(value_battery_power_direction_);
         }
+        //if (this->battery_power_direction_) {
+        //  mode = value_battery_power_direction_;
+        //  switch (value_battery_power_direction_) {
+        //    case '0':
+        //      this->battery_power_direction_->publish_state("donothing");
+        //      break;
+        //    case '1':
+        //      this->battery_power_direction_->publish_state("charge");
+        //      break;
+        //    case '2':
+        //      this->battery_power_direction_->publish_state("discharge");
+        //      break;
+        //    default:
+        //      this->battery_power_direction_->publish_state(mode);
+        //      break;
+        //  }
+        //}
+
+
         if (this->dc_ac_power_direction_) {
           this->dc_ac_power_direction_->publish_state(value_dc_ac_power_direction_);
         }
