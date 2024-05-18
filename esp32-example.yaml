@@ -287,8 +287,8 @@ select:
       id: inverter0_output_source_priority_select
       name: "${name} Output source priority" # P007PIRI
       optionsmap:
-        "Solar-Utility-Battery": "POP0"
-        "Solar-Battery-Utility": "POP1"
+        "Solar-Utility-Battery": "^S007POP0"
+        "Solar-Battery-Utility": "^S007POP1"
       statusmap:
         "0": "Solar Utility Battery"
         "1": "Solar Battery Utility"
@@ -299,9 +299,9 @@ select:
       id: inverter0_charger_source_priority_select
       name: "${name} Charger source priority" # P007PIRI
       optionsmap:
-        "Solar first": "PCP0,0"
-        "Solar and Utility": "PCP0,1"
-        "Only solar": "PCP0,2"
+        "Solar first": "^S009PCP0,0"
+        "Solar and Utility": "^S009PCP0,1"
+        "Only solar": "^S009PCP0,2"
       statusmap:
         "0": "Solar first"
         "1": "Solar and Utility"
@@ -313,8 +313,8 @@ select:
       id: inverter0_solar_power_priority_select
       name: "${name} Solar power priority" # P007PIRI
       optionsmap:
-        "Battery-Load-Utiliy": "PSP0"
-        "Load-Battery-Utiliy": "PSP1"
+        "Battery-Load-Utiliy": "^S007PSP0"
+        "Load-Battery-Utiliy": "^S007PSP1"
       statusmap:
         "0": "Battery-Load-Utiliy"
         "1": "Load-Battery-Utiliy"
@@ -324,8 +324,8 @@ select:
       id: inverter0_machine_type_select
       name: "${name} Machine type" # P007PIRI
       optionsmap:
-        "OFF-Grid": "PDI"
-        "Grid-Tie": "PEI"
+        "OFF-Grid": "^S006PDI"
+        "Grid-Tie": "^S006PEI"
       statusmap:
         "0": "OFF-Grid"
         "1": "Grid-Tie"

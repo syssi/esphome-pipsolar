@@ -166,13 +166,13 @@ void Pipsolar::loop() {
         }
 
         // special for solar power priority select
-        if (this->solar_power_priority_) {
+        if (this->solar_power_priority_select_) {
           std::string value = esphome::to_string(value_solar_power_priority_);
           this->solar_power_priority_select_->map_and_publish(value);
         }
 
         // special for solar power priority select
-        if (this->machine_type_) {
+        if (this->machine_type_select_) {
           std::string value = esphome::to_string(value_machine_type_);
           this->machine_type_select_->map_and_publish(value);
         }
