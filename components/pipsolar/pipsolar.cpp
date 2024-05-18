@@ -611,7 +611,7 @@ void Pipsolar::loop() {
         break;
       case POLLING_P005ET:
         ESP_LOGD(TAG, "Decode P005ET");
-        sscanf(tmp, "^D%3d%08d", &ind, &value_total_generated_energy_ / (int*)1000);
+        sscanf(tmp, "^D%3d%08d", &ind, &value_total_generated_energy_ / "1000");
         this->state_ = STATE_POLL_DECODED;
         break;
       case POLLING_P007PGS0:
