@@ -279,12 +279,14 @@ void Pipsolar::loop() {
           mode = value_battery_power_direction_;
           switch (value_battery_power_direction_) {
             case '0':
-              this->battery_power_direction_->publish_state("donothing");
               break;
             case '1':
-              this->battery_power_direction_->publish_state("charge");
+              this->battery_power_direction_->publish_state("donothing");
               break;
             case '2':
+              this->battery_power_direction_->publish_state("charge");
+              break;
+            case '3':
               this->battery_power_direction_->publish_state("discharge");
               break;
             default:
