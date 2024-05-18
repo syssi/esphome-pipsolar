@@ -153,8 +153,10 @@ sensor:
     #   name: "${name} pv2_input_voltage"
     fault_code:
       name: "${name} wfs fault_code"
-    local_parallel_id:
-      name: "${name} local_parallel_id"
+    #local_parallel_id:
+    #  name: "${name} local_parallel_id"
+    total_generated_energy:
+      name: "${name} Rotal PV Generated Energy"
 
     # P007PGS0 Total Data for Paralell System
     #total_ac_output_apparent_power:
@@ -165,8 +167,6 @@ sensor:
     #  name: "${name} total_output_load_percent"
     #total_battery_charging_current:
     #  name: "${name} total_battery_charging_current"
-    total_generated_energy:
-      name: "${name} total_generated_energy"
 
 binary_sensor:
   - platform: pipsolar
