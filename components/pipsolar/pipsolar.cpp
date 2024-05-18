@@ -271,7 +271,7 @@ void Pipsolar::loop() {
         }
 
         // special for load connection Text
-        if (this->load_connection__) {
+        if (this->load_connection_) {
           mode = value_load_connection_;
           switch (value_load_connection_) {
             case '0':
