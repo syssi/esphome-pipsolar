@@ -14,6 +14,7 @@ from esphome.const import (
     UNIT_VOLT,
     UNIT_VOLT_AMPS,
     UNIT_WATT,
+    UNIT_WATT_HOURS,
     CONF_BUS_VOLTAGE,
     CONF_BATTERY_VOLTAGE,
 )
@@ -285,7 +286,7 @@ TYPES = {
         accuracy_decimals=0,
     ),
     CONF_TOTAL_GENERATED_ENERGY: sensor.sensor_schema(
-        unit_of_measurement="kWh",
+        unit_of_measurement=UNIT_WATT_HOURS,
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_POWER,
     ),
