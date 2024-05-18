@@ -15,6 +15,7 @@ from esphome.const import (
     UNIT_VOLT_AMPS,
     UNIT_WATT,
     UNIT_WATT_HOURS,
+    UNIT_KILOWATT_HOURS,
     CONF_BUS_VOLTAGE,
     CONF_BATTERY_VOLTAGE,
 )
