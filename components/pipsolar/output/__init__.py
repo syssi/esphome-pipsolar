@@ -31,6 +31,7 @@ CONF_POSSIBLE_VALUES = "possible_values"
 
 # solar_power_priority; 0 Battery-Load-Utiliy, 1 Load-Battery-Utiliy
 # machine_type; 0 Off-Grid, 1 Grid-Tie
+# battery_power_direction; 0 donothing, 1 charge, 2 discharge
 
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
@@ -44,6 +45,7 @@ CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 # CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 # CONF_SOLAR_POWER_PRIORITY = "solar_power_priority"
 # CONF_MACHINE_TYPE = "machine_type"
+# CONF_BATTERY_POWER_DIRECTION = "battery_power_direction"
 # CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
 
 TYPES = {
@@ -70,8 +72,9 @@ TYPES = {
     #    CONF_BATTERY_FLOAT_VOLTAGE: ([48.0, 49.0, 50.0, 51.0], "PBFT%02.1f"),
     #    CONF_BATTERY_TYPE: ([0, 1, 2], "PBT%02.0f"),
     #    CONF_OUTPUT_SOURCE_PRIORITY: ([0, 1, 2], "POP%02.0f"),
-    #    CONF_SOLAR_POWER_PRIORITY: ([0,1], "PSP%02.0f"),
-    #    CONF_MACHINE_TYPE: ([0,1], "PDI%02.0f| PEI%02.0f|"),
+    #    CONF_SOLAR_POWER_PRIORITY: ([0, 1], "PSP%02.0f"),
+    #    CONF_MACHINE_TYPE: ([0, 1], "PDI%02.0f| PEI%02.0f|"),
+    #    CONF_BATTERY_POWER_DIRECTION: ([0, 1, 2], "GS.....")
     #    CONF_CHARGER_SOURCE_PRIORITY: ([0, 1, 2, 3], "PCP%02.0f"),
 }
 
