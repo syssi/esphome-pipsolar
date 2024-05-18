@@ -110,20 +110,6 @@ sensor:
     battery_type:
       name: "${name} Battery type"
 
-    # Settable
-    current_max_ac_charging_current:
-      name: "${name} Max AC charging current"
-
-    # Settable
-    current_max_charging_current:
-      name: "${name} Max charging current"
-
-    # Settable
-    input_voltage_range:
-      # Appliances 90-280V
-      # UPS 170-280V
-      name: "${name} Input voltage range"
-
     # P005GS
     grid_voltage:
       name: "${name} grid_voltage"
@@ -178,16 +164,15 @@ sensor:
     local_parallel_id:
       name: "${name} local_parallel_id"
 
-    # P007PGS0
-    total_ac_output_apparent_power:
-      name: "${name} total_ac_output_apparent_power"
-    total_ac_output_active_power:
-      name: "${name} total_ac_output_active_power"
-    total_output_load_percent:
-      name: "${name} total_output_load_percent"
-    total_battery_charging_current:
-      name: "${name} total_battery_charging_current"
-
+    # P007PGS0 Total Data for Paralell System
+    #total_ac_output_apparent_power:
+    #  name: "${name} total_ac_output_apparent_power"
+    #total_ac_output_active_power:
+    #  name: "${name} total_ac_output_active_power"
+    #total_output_load_percent:
+    #  name: "${name} total_output_load_percent"
+    #total_battery_charging_current:
+    #  name: "${name} total_battery_charging_current"
     total_generated_energy:
       name: "${name} total_generated_energy"
 
@@ -264,28 +249,28 @@ switch:
   - platform: pipsolar
     pipsolar_id: inverter0
     silence_buzzer_open_buzzer:
-      name: "${name} Buzzer beep"
+      name: "${name} Set Buzzer beep"
     overload_bypass_function:
-      name: "${name} Overload bypass function"
+      name: "${name} Set Overload bypass function"
     lcd_escape_to_default:
-      name: "${name} LCD escape to default Page"
+      name: "${name} Set LCD escape to default Page"
     overload_restart_function:
-      name: "${name} Overload restart"
+      name: "${name} Set Overload restart"
     over_temperature_restart_function:
-      name: "${name} Over temperature restart"
+      name: "${name} Set Over temperature restart"
     backlight_on:
-      name: "${name} Backlight"
+      name: "${name} Set Backlight"
     alarm_on_when_primary_source_interrupt:
-      name: "${name} Alarm when primary source interrupt"
+      name: "${name} Set Alarm when primary source interrupt"
     fault_code_record:
-      name: "${name} Fault code record"
+      name: "${name} Set Fault code record"
 
 select:
   - platform: pipsolar
     pipsolar_id: inverter0
     output_source_priority:
       id: inverter0_output_source_priority_select
-      name: "${name} Set Output source priority" # P007PIRI
+      name: "${name} Select Output source priority" # P007PIRI
       optionsmap:
         "Solar-Utility-Battery": "^S007POP0"
         "Solar-Battery-Utility": "^S007POP1"
@@ -296,7 +281,7 @@ select:
     pipsolar_id: inverter0
     charger_source_priority:
       id: inverter0_charger_source_priority_select
-      name: "${name} Set Charger source priority" # P007PIRI
+      name: "${name} Select Charger source priority" # P007PIRI
       optionsmap:
         "Solar first": "^S009PCP0,0"
         "Solar and Utility": "^S009PCP0,1"
@@ -309,18 +294,18 @@ select:
     pipsolar_id: inverter0
     solar_power_priority:
       id: inverter0_solar_power_priority_select
-      name: "${name} Set Solar power priority" # P007PIRI
+      name: "${name} Select Solar power priority" # P007PIRI
       optionsmap:
-        "Battery-Load-Utility": "^S007PSP0"
+        "Battery-Load-Utility (+AC Charge)": "^S007PSP0"
         "Load-Battery-Utility": "^S007PSP1"
       statusmap:
-        "0": "Battery-Load-Utility"
+        "0": "Battery-Load-Utility (+AC Charge)"
         "1": "Load-Battery-Utility"
   - platform: pipsolar
     pipsolar_id: inverter0
     machine_type:
       id: inverter0_machine_type_select
-      name: "${name} Set Machine type" # P007PIRI
+      name: "${name} Select Machine type" # P007PIRI
       optionsmap:
         "OFF-Grid": "^S006PDI"
         "Grid-Tie": "^S006PEI"
@@ -331,13 +316,61 @@ select:
     pipsolar_id: inverter0
     input_voltage_range:
       id: inverter0_input_voltage_range_select
-      name: "${name} Set Input voltage range" # P007PIRI
+      name: "${name} Select Input voltage range" # P007PIRI
       optionsmap:
         "Appliances 90-280V": "^S007PGR0"
         "UPS 170-280V": "^S007PGR1"
       statusmap:
         "0": "Appliances 90-280V"
         "1": "UPS 170-280V"
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    current_max_ac_charging_current:
+      id: inverter0_current_max_ac_charging_current_select
+      name: "${name} Select Battery Max AC Charging Current"
+      optionsmap:
+        "2A":  "^S014MUCHGC0,002"
+        "10A": "^S014MUCHGC0,010"
+        "20A": "^S014MUCHGC0,020"
+        "30A": "^S014MUCHGC0,030"
+        "40A": "^S014MUCHGC0,040"
+        "50A": "^S014MUCHGC0,050"
+        "60A": "^S014MUCHGC0,060"
+        "70A": "^S014MUCHGC0,070"
+        "80A": "^S014MUCHGC0,080"
+      statusmap:
+        "2": "2A"
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+  - platform: pipsolar
+    pipsolar_id: inverter0
+    current_max_charging_current:
+      id: inverter0_current_max_charging_current_select
+      name: "${name} Select Battery Max Charging Current Solar + AC"
+      optionsmap:
+        "10A": "^S013MCHGC0,010"
+        "20A": "^S013MCHGC0,020"
+        "30A": "^S013MCHGC0,030"
+        "40A": "^S013MCHGC0,040"
+        "50A": "^S013MCHGC0,050"
+        "60A": "^S013MCHGC0,060"
+        "70A": "^S013MCHGC0,070"
+        "80A": "^S013MCHGC0,080"
+      statusmap:
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
 
 output:
   - platform: pipsolar
