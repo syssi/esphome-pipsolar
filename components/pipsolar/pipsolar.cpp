@@ -285,6 +285,7 @@ void Pipsolar::loop() {
             case '2':
               this->battery_power_direction_->publish_state("discharge");
               break;
+          }
         }
 
         if (this->dc_ac_power_direction_) {
