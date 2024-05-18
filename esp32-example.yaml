@@ -201,8 +201,7 @@ binary_sensor:
     #   name: "${name} flag alarm_on_when_primary_source_interrupt"
     # fault_code_record:
     #   name: "${name} flag fault_code_record"
-    # power_saving:
-    #   name: "${name} flag power_saving"
+
     # P005FWS
     warning_line_fail:
       name: "${name} wfs warning_line_fail"

@@ -30,7 +30,6 @@ CONF_OVER_TEMPERATURE_RESTART_FUNCTION = "over_temperature_restart_function"
 CONF_BACKLIGHT_ON = "backlight_on"
 CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
 CONF_FAULT_CODE_RECORD = "fault_code_record"
-CONF_POWER_SAVING = "power_saving"
 
 CONF_WARNING_LINE_FAIL = "warning_line_fail"
 CONF_WARNING_OUTPUT_CIRCUIT_SHORT = "warning_output_circuit_short"
