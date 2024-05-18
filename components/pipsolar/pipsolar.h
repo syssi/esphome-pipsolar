@@ -166,7 +166,6 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(backlight_on, P007FLAG, int)
   PIPSOLAR_BINARY_SENSOR(alarm_on_when_primary_source_interrupt, P007FLAG, int)
   PIPSOLAR_BINARY_SENSOR(fault_code_record, P007FLAG, int)
-  PIPSOLAR_BINARY_SENSOR(power_saving, P007FLAG, int)
 
   // P005FWS values
   PIPSOLAR_SENSOR(fault_code, P005FWS, int)
@@ -203,7 +202,6 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SWITCH(backlight_on_switch, P007FLAG)
   PIPSOLAR_SWITCH(alarm_on_when_primary_source_interrupt_switch, P007FLAG)
   PIPSOLAR_SWITCH(fault_code_record_switch, P007FLAG)
-  PIPSOLAR_SWITCH(power_saving_switch, P007FLAG)
 
   void switch_command(const std::string &command);
   void setup() override;
