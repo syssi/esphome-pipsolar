@@ -71,7 +71,7 @@ CONF_PV2_INPUT_VOLTAGE = "pv2_input_voltage"
 
 CONF_MPPT1_CHARGER_STATUS = "mppt1_charger_status"
 CONF_MPPT2_CHARGER_STATUS = "mppt2_charger_status"
-CONF_BATTERY_POWER_DIRECTION = "battery_power_direction"
+#CONF_BATTERY_POWER_DIRECTION = "battery_power_direction"
 CONF_DC_AC_POWER_DIRECTION = "dc_ac_power_direction"
 CONF_LINE_POWER_DIRECTION = "line_power_direction"
 CONF_LOCAL_PARALLEL_ID = "local_parallel_id"
@@ -289,9 +289,9 @@ TYPES = {
     CONF_MPPT1_CHARGER_STATUS: sensor.sensor_schema(
         accuracy_decimals=0,
     ),
-    CONF_BATTERY_POWER_DIRECTION: sensor.sensor_schema(
-        accuracy_decimals=0,
-    ),
+    #CONF_BATTERY_POWER_DIRECTION: sensor.sensor_schema(
+    #    accuracy_decimals=0,
+    #),
     CONF_DC_AC_POWER_DIRECTION: sensor.sensor_schema(
         accuracy_decimals=0,
     ),
