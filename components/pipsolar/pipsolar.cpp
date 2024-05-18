@@ -499,7 +499,7 @@ void Pipsolar::loop() {
                "^D%3d%d,%d,%d,%d,%d,%d,%d,%d,%d", &ind, &value_silence_buzzer_open_buzzer_,
                &value_overload_bypass_function_, &value_lcd_escape_to_default_, &value_overload_restart_function_,
                &value_over_temperature_restart_function_, &value_backlight_on_,
-               &value_alarm_on_when_primary_source_interrupt_, &value_fault_code_record_, &reserved_);
+               &value_alarm_on_when_primary_source_interrupt_, &value_fault_code_record_, reserved_);
         this->state_ = STATE_POLL_DECODED;
         break;
       case POLLING_P005FWS:
