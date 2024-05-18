@@ -17,6 +17,7 @@ CONF_BATTERY_POWER_DIRECTION = "battery_power_direction"
 
 TYPES = [
     CONF_DEVICE_MODE,
+    CONF_BATTERY_POWER_DIRECTION,
     #    CONF_LAST_QPIGS,
     #    CONF_LAST_QPIRI,
     #    CONF_LAST_QMOD,
