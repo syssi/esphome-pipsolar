@@ -285,19 +285,18 @@ select:
     pipsolar_id: inverter0
     output_source_priority:
       id: inverter0_output_source_priority_select
-      name: "${name} Output source priority" # P007PIRI
+      name: "${name} Set Output source priority" # P007PIRI
       optionsmap:
         "Solar-Utility-Battery": "^S007POP0"
         "Solar-Battery-Utility": "^S007POP1"
       statusmap:
         "0": "Solar Utility Battery"
         "1": "Solar Battery Utility"
-
   - platform: pipsolar
     pipsolar_id: inverter0
     charger_source_priority:
       id: inverter0_charger_source_priority_select
-      name: "${name} Charger source priority" # P007PIRI
+      name: "${name} Set Charger source priority" # P007PIRI
       optionsmap:
         "Solar first": "^S009PCP0,0"
         "Solar and Utility": "^S009PCP0,1"
@@ -306,12 +305,11 @@ select:
         "0": "Solar first"
         "1": "Solar and Utility"
         "2": "Only solar"
-
   - platform: pipsolar
     pipsolar_id: inverter0
     solar_power_priority:
       id: inverter0_solar_power_priority_select
-      name: "${name} Solar power priority" # P007PIRI
+      name: "${name} Set Solar power priority" # P007PIRI
       optionsmap:
         "Battery-Load-Utility": "^S007PSP0"
         "Load-Battery-Utility": "^S007PSP1"
@@ -322,19 +320,18 @@ select:
     pipsolar_id: inverter0
     machine_type:
       id: inverter0_machine_type_select
-      name: "${name} Machine type" # P007PIRI
+      name: "${name} Set Machine type" # P007PIRI
       optionsmap:
         "OFF-Grid": "^S006PDI"
         "Grid-Tie": "^S006PEI"
       statusmap:
         "0": "OFF-Grid"
         "1": "Grid-Tie"
-
   - platform: pipsolar
     pipsolar_id: inverter0
     input_voltage_range:
       id: inverter0_input_voltage_range_select
-      name: "${name} Input voltage range" # P007PIRI
+      name: "${name} Set Input voltage range" # P007PIRI
       optionsmap:
         "Appliances 90-280V": "^S007PGR0"
         "UPS 170-280V": "^S007PGR1"
