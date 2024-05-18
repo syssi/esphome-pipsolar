@@ -272,23 +272,23 @@ void Pipsolar::loop() {
           this->load_connection_->publish_state(value_load_connection_);
         }
 
-        if (this->battery_power_direction_) {
-          this->battery_power_direction_->publish_state(value_battery_power_direction_);
-        }
+        //if (this->battery_power_direction_) {
+        //  this->battery_power_direction_->publish_state(value_battery_power_direction_);
+        //}
         if (this->battery_power_direction_) {
           mode = value_battery_power_direction_;
           switch (value_battery_power_direction_) {
             case '0':
-              this->device_mode_->publish_state("donothing");
+              this->battery_power_direction_->publish_state("donothing");
               break;
             case '1':
-              this->device_mode_->publish_state("charge");
+              this->battery_power_direction_->publish_state("charge");
               break;
             case '2':
-              this->device_mode_->publish_state("discharge");
+              this->battery_power_direction_->publish_state("discharge");
               break;
             default:
-              this->device_mode_->publish_state(mode);
+              this->battery_power_direction_->publish_state(mode);
               break;
           }
         }
