@@ -169,8 +169,6 @@ sensor:
       name: "${name} mppt1_charger_status"
     # mppt2_charger_status:
     #   name: "${name} mppt2_charger_status"
-    battery_power_direction:
-      name: "${name} battery_power_direction"
     dc_ac_power_direction:
       name: "${name} dc_ac_power_direction"
     line_power_direction:
@@ -259,6 +257,8 @@ text_sensor:
     pipsolar_id: inverter0
     device_mode:
       name: "${name} Device mode"
+    battery_power_direction:
+      name: "${name} Battery power direction"
 
 switch:
   - platform: pipsolar
