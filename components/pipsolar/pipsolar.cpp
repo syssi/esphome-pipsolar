@@ -272,9 +272,7 @@ void Pipsolar::loop() {
           this->load_connection_->publish_state(value_load_connection_);
         }
 
-        //if (this->battery_power_direction_) {
-        //  this->battery_power_direction_->publish_state(value_battery_power_direction_);
-        //}
+        // special for battery_power_direction Text
         if (this->battery_power_direction_) {
           mode = value_battery_power_direction_;
           switch (value_battery_power_direction_) {
@@ -287,12 +285,7 @@ void Pipsolar::loop() {
             case '2':
               this->battery_power_direction_->publish_state("discharge");
               break;
-            default:
-              this->battery_power_direction_->publish_state(mode);
-              break;
-          }
         }
-
 
         if (this->dc_ac_power_direction_) {
           this->dc_ac_power_direction_->publish_state(value_dc_ac_power_direction_);
