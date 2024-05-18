@@ -269,8 +269,17 @@ void Pipsolar::loop() {
         if (this->mppt2_charger_status_) {
           this->mppt2_charger_status_->publish_state(value_mppt2_charger_status_);
         }
-        if (this->load_connection_) {
-          this->load_connection_->publish_state(value_load_connection_);
+
+        // special for load connection Text
+        if (this->load_connection__) {
+          mode = value_load_connection_;
+          switch (value_load_connection_) {
+            case '0':
+              this->load_connection_->publish_state("disconnect");
+              break;
+            case '1':
+              this->load_connection_->publish_state("connect");
+              break;
         }
 
         // special for battery_power_direction Text

@@ -13,7 +13,7 @@ SetOutputAction = pipsolar_ns.class_("SetOutputAction", automation.Action)
 CONF_POSSIBLE_VALUES = "possible_values"
 
 # 3.11 PCVV<nn.n><cr>: Setting battery C.V. (constant voltage) charging voltage 48.0V ~ 58.4V for 48V unit
-# battery_bulk_voltage;
+# battery_bulk_voltage; 
 # battery_recharge_voltage;     12V unit: 11V/11.3V/11.5V/11.8V/12V/12.3V/12.5V/12.8V
 #                               24V unit: 22V/22.5V/23V/23.5V/24V/24.5V/25V/25.5V
 #                               48V unit: 44V/45V/46V/47V/48V/49V/50V/51V
@@ -34,6 +34,7 @@ CONF_POSSIBLE_VALUES = "possible_values"
 
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
+CONF_BATTERY_BULK_VOLTAGE = "battery_bulk_voltage"
 
 # CONF_BATTERY_RECHARGE_VOLTAGE = "battery_recharge_voltage"
 # CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
@@ -55,6 +56,10 @@ TYPES = {
     CONF_CURRENT_MAX_CHARGING_CURRENT: (
         [10, 20, 30, 40, 50, 60, 70, 80, 90],
         "^S013MCHGC0,%02d",
+    ),
+    CONF_BATTERY_BULK_VOLTAGE: (
+        [44.0, 45.0, 46.0, 47.0, 48.0, 49.0, 50.0, 51.0],
+        "MCHGV%02.1f",
     ),
     #    CONF_BATTERY_RECHARGE_VOLTAGE: (
     #        [440, 450, 460, 470, 480, 490, 500, 510],
