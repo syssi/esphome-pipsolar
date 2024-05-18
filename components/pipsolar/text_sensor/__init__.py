@@ -13,6 +13,7 @@ CONF_BATTERY_POWER_DIRECTION = "battery_power_direction"
 CONF_LOAD_CONNECTION = "load_connection"
 CONF_MPPT1_CHARGER_STATUS = "mppt1_charger_status"
 CONF_MPPT2_CHARGER_STATUS = "mppt2_charger_status"
+CONF_LINE_POWER_DIRECTION = "line_power_direction"
 
 # CONF_LAST_QPIGS = "last_qpigs"
 # CONF_LAST_QPIRI = "last_qpiri"
@@ -28,6 +29,7 @@ TYPES = [
     CONF_LOAD_CONNECTION,
     CONF_MPPT1_CHARGER_STATUS,
     CONF_MPPT2_CHARGER_STATUS,
+    CONF_LINE_POWER_DIRECTION,
     #    CONF_LAST_QPIGS,
     #    CONF_LAST_QPIRI,
     #    CONF_LAST_QMOD,

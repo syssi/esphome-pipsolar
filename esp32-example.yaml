@@ -153,8 +153,6 @@ sensor:
     #   name: "${name} pv2_input_voltage"
     dc_ac_power_direction:
       name: "${name} dc_ac_power_direction"
-    line_power_direction:
-      name: "${name} line_power_direction"
     fault_code:
       name: "${name} wfs fault_code"
     local_parallel_id:
@@ -241,8 +239,10 @@ text_sensor:
       name: "${name} Load connection"
     mppt1_charger_status:
       name: "${name} MPPT1 charger status"
-    mppt2_charger_status:
-      name: "${name} MPPT2 charger status"
+    #mppt2_charger_status:
+    #  name: "${name} MPPT2 charger status"
+    line_power_direction:
+      name: "${name} Line power direction"
 
 switch:
   - platform: pipsolar
