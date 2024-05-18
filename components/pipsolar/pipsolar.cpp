@@ -263,11 +263,35 @@ void Pipsolar::loop() {
         if (this->setting_value_configuration_state_) {
           this->setting_value_configuration_state_->publish_state(value_setting_value_configuration_state_);
         }
+        // special for mppt1_charger_status Text
         if (this->mppt1_charger_status_) {
-          this->mppt1_charger_status_->publish_state(value_mppt1_charger_status_);
+          mode = value_mppt1_charger_status_;
+          switch (value_mppt1_charger_status_) {
+            case '0':
+              this->mppt1_charger_status_->publish_state("abnormal");
+              break;
+            case '1':
+              this->mppt1_charger_status_->publish_state("normal but not charged");
+              break;
+            case '2':
+              this->mppt1_charger_status_->publish_state("charging");
+              break;
+          }
         }
+        // special for mppt2_charger_status Text
         if (this->mppt2_charger_status_) {
-          this->mppt2_charger_status_->publish_state(value_mppt2_charger_status_);
+          mode = value_mppt2_charger_status_;
+          switch (value_mppt2_charger_status_) {
+            case '0':
+              this->mppt2_charger_status_->publish_state("abnormal");
+              break;
+            case '1':
+              this->mppt2_charger_status_->publish_state("normal but not charged");
+              break;
+            case '2':
+              this->mppt2_charger_status_->publish_state("charging");
+              break;
+          }
         }
 
         // special for load connection Text
@@ -282,7 +306,6 @@ void Pipsolar::loop() {
               break;
           }
         }
-
         // special for battery_power_direction Text
         if (this->battery_power_direction_) {
           mode = value_battery_power_direction_;
@@ -470,7 +493,7 @@ void Pipsolar::loop() {
       case POLLING_P005GS:
         ESP_LOGD(TAG, "Decode P005GS");
         //        "^D1062135,499,2135,499,2102,2102,037,544,000,000,000,039,095,049,000,000,0000,0000,0000,0000,0,0,0,1,1,1,1,1\e\'\r"
-        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%d,%d,%c,%c,%d,%d,%d", &ind,
+        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%c,%c,%c,%c,%d,%d,%d", &ind,
                &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_, &value_ac_output_frequency_,
                &value_ac_output_apparent_power_, &value_ac_output_active_power_, &value_output_load_percent_,
                &value_battery_voltage_, &value_battery_voltage_scc_, &value_battery_voltage_scc2_,

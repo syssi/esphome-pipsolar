@@ -151,10 +151,6 @@ sensor:
       name: "${name} pv1_input_voltage"
     # pv2_input_voltage:
     #   name: "${name} pv2_input_voltage"
-    mppt1_charger_status:
-      name: "${name} mppt1_charger_status"
-    # mppt2_charger_status:
-    #   name: "${name} mppt2_charger_status"
     dc_ac_power_direction:
       name: "${name} dc_ac_power_direction"
     line_power_direction:
@@ -182,8 +178,6 @@ binary_sensor:
     # P007GS
     setting_value_configuration_state:
       name: "${name} setting_value_configuration_state"
-    load_connection:
-      name: "${name} load_connection"
     # # P007FLAG
     # silence_buzzer_open_buzzer:
     #   name: "${name} flag silence_buzzer_open_buzzer"
@@ -243,6 +237,12 @@ text_sensor:
       name: "${name} Device mode"
     battery_power_direction:
       name: "${name} Battery power direction"
+    load_connection:
+      name: "${name} Load connection"
+    mppt1_charger_status:
+      name: "${name} MPPT1 charger status"
+    mppt2_charger_status:
+      name: "${name} MPPT2 charger status"
 
 switch:
   - platform: pipsolar

@@ -69,8 +69,6 @@ CONF_PV2_INPUT_POWER = "pv2_input_power"
 CONF_PV1_INPUT_VOLTAGE = "pv1_input_voltage"
 CONF_PV2_INPUT_VOLTAGE = "pv2_input_voltage"
 
-CONF_MPPT1_CHARGER_STATUS = "mppt1_charger_status"
-CONF_MPPT2_CHARGER_STATUS = "mppt2_charger_status"
 CONF_DC_AC_POWER_DIRECTION = "dc_ac_power_direction"
 CONF_LINE_POWER_DIRECTION = "line_power_direction"
 CONF_LOCAL_PARALLEL_ID = "local_parallel_id"
@@ -281,12 +279,6 @@ TYPES = {
         unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_VOLTAGE,
-    ),
-    CONF_MPPT1_CHARGER_STATUS: sensor.sensor_schema(
-        accuracy_decimals=0,
-    ),
-    CONF_MPPT1_CHARGER_STATUS: sensor.sensor_schema(
-        accuracy_decimals=0,
     ),
     CONF_DC_AC_POWER_DIRECTION: sensor.sensor_schema(
         accuracy_decimals=0,
