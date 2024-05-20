@@ -516,7 +516,7 @@ void Pipsolar::loop() {
         ESP_LOGD(TAG, "Decode P007PIRI");
         sscanf(  //"^D0892300,243,2300,500,243,5600,5600,480,470,530,440,554,544,2,040,090,1,0,1,9,0,0,1,0,1,00\xD9\xA1\r"
             tmp,  // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-            "^D%3d%f,%f,%f,%f,%f,%d,%d,%f,%f,%f,%f,%f,%f,%c,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
+            "^D%3d%f,%f,%f,%f,%f,%d,%d,%f,%f,%f,%d,%f,%f,%c,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
             &value_grid_rating_voltage_, &value_grid_rating_current_, &value_ac_output_rating_voltage_,
             &value_ac_output_rating_frequency_, &value_ac_output_rating_current_,
             &value_ac_output_rating_apparent_power_, &value_ac_output_rating_active_power_,
