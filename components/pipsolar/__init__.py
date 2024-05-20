@@ -5,7 +5,7 @@ from esphome.components import uart
 
 DEPENDENCIES = ["uart"]
 CODEOWNERS = ["@andreashergert1984"]
-AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "output"]
+AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "output", "select"]
 MULTI_CONF = True
 
 CONF_PIPSOLAR_ID = "pipsolar_id"
