@@ -136,6 +136,7 @@ void Pipsolar::loop() {
         if (this->battery_float_voltage_) {
           this->battery_float_voltage_->publish_state(value_battery_float_voltage_ * 0.1);
         }
+
         //if (this->battery_type_) {
         //  this->battery_type_->publish_state(value_battery_type_);
         //}

@@ -106,10 +106,6 @@ sensor:
     battery_float_voltage:
       name: "${name} Battery float voltage"
 
-    # Settable
-    battery_type:
-      name: "${name} Battery type"
-
     # P005GS
     grid_voltage:
       name: "${name} Grid voltage"
@@ -243,6 +239,9 @@ text_sensor:
       name: "${name} Grid Power direction"
     dc_ac_power_direction:
       name: "${name} DC/AC Power direction"
+    # Settable
+    battery_type:
+      name: "${name} Battery type"
 
 switch:
   - platform: pipsolar
