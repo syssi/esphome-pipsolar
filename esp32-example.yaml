@@ -102,10 +102,6 @@ sensor:
       name: "${name} Battery re-discharge voltage"
 
     # Settable
-    battery_under_voltage:
-      name: "${name} Battery under voltage"
-
-    # Settable
     battery_bulk_voltage:
       name: "${name} Battery bulk voltage"
 
@@ -385,3 +381,6 @@ output:
       id: inverter0_current_max_ac_charging_current
     current_max_charging_current:
       id: inverter0_current_max_charging_current
+    # Settable
+    battery_under_voltage:
+      name: "${name} Battery under voltage"
