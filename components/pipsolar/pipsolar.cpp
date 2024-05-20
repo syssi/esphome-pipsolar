@@ -127,9 +127,15 @@ void Pipsolar::loop() {
         if (this->battery_redischarge_voltage_) {
           this->battery_redischarge_voltage_->publish_state(value_battery_redischarge_voltage_ * 0.1);
         }
-        if (this->battery_under_voltage_) {
-          this->battery_under_voltage_->publish_state(value_battery_under_voltage_ * 0.1);
+        //if (this->battery_under_voltage_) {
+        //  this->battery_under_voltage_->publish_state(value_battery_under_voltage_ * 0.1);
+        //}
+        // SELECT OPTION for battery_under_voltage
+        if (this->battery_under_voltage_select_) {
+          std::string value = esphome::to_string(value_battery_under_voltage_);
+          this->battery_under_voltage_select_->map_and_publish(value);
         }
+
         if (this->battery_bulk_voltage_) {
           this->battery_bulk_voltage_->publish_state(value_battery_bulk_voltage_ * 0.1);
         }
