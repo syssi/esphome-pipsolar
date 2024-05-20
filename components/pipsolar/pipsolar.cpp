@@ -143,12 +143,6 @@ void Pipsolar::loop() {
           this->battery_float_voltage_->publish_state(value_battery_float_voltage_ * 0.1);
         }
 
-<<<<<<< HEAD
-=======
-        //if (this->battery_type_) {
-        //  this->battery_type_->publish_state(value_battery_type_);
-        //}
->>>>>>> 36545614850f66cd493982c3e7e10e8cbcd97315
         // special for battery_type Text
         if (this->battery_type_) {
           mode = value_battery_type_;
@@ -165,11 +159,6 @@ void Pipsolar::loop() {
           }
         }
 
-<<<<<<< HEAD
-        // SELECT OPTION for current_max_ac_charging_current
-=======
-        //}
->>>>>>> 36545614850f66cd493982c3e7e10e8cbcd97315
         if (this->current_max_ac_charging_current_select_) {
           std::string value = esphome::to_string(value_current_max_ac_charging_current_);
           this->current_max_ac_charging_current_select_->map_and_publish(value);
