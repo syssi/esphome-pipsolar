@@ -142,7 +142,7 @@ TYPES = {
     ),
     CONF_BATTERY_UNDER_VOLTAGE: sensor.sensor_schema(
         unit_of_measurement=UNIT_VOLT,
-        accuracy_decimals=1,
+        accuracy_decimals=0,
         device_class=DEVICE_CLASS_VOLTAGE,
     ),
     CONF_BATTERY_BULK_VOLTAGE: sensor.sensor_schema(

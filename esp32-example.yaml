@@ -373,9 +373,11 @@ select:
         "60": "60A"
         "70": "70A"
         "80": "80A"
+  - platform: pipsolar
+    pipsolar_id: inverter0
     battery_under_voltage:
       id: inverter0_battery_under_voltage_select
-      name: "${name} Battery under voltage"
+      name: "${name} Select Battery under voltage"
       optionsmap:
         "40V": "^S010PSDV400"
         "41V": "^S010PSDV410"

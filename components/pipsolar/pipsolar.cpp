@@ -132,7 +132,7 @@ void Pipsolar::loop() {
         //}
         // SELECT OPTION for battery_under_voltage
         if (this->battery_under_voltage_select_) {
-          std::string value = esphome::to_string(value_battery_under_voltage_);
+          std::string value = esphome::to_string(value_battery_under_voltage_ * 0.1);
           this->battery_under_voltage_select_->map_and_publish(value);
         }
 
