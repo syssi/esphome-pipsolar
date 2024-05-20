@@ -18,7 +18,7 @@ CONF_MACHINE_TYPE = "machine_type"
 CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
-CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
+#CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
 
 
 PipsolarSelect = pipsolar_ns.class_("PipsolarSelect", cg.Component, select.Select)
@@ -87,7 +87,7 @@ TYPES = {
     CONF_INPUT_VOLTAGE_RANGE: ("PGR0", None),
     CONF_CURRENT_MAX_CHARGING_CURRENT: ("MCHGC0,010", None),
     CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ("MUCHGC0,002", None),
-    CONF_BATTERY_UNDER_VOLTAGET: ("PSDV400", None),
+#    CONF_BATTERY_UNDER_VOLTAGET: ("PSDV400", None),
 }
 
 
