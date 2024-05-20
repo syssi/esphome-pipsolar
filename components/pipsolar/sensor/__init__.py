@@ -11,7 +11,7 @@ from esphome.const import (
     DEVICE_CLASS_VOLTAGE,
     DEVICE_CLASS_TEMPERATURE,
     STATE_CLASS_MEASUREMENT,
-    STATE_CLASS_TOTAL_INCREASING,
+    STATE_CLASS_TOTAL,
     UNIT_AMPERE,
     UNIT_CELSIUS,
     UNIT_HERTZ,
@@ -324,7 +324,7 @@ TYPES = {
         unit_of_measurement=UNIT_KILOWATT_HOURS,
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
+        state_class=STATE_CLASS_TOTAL,
     ),
     # for all in parallel
     CONF_TOTAL_AC_OUTPUT_APPARENT_POWER: sensor.sensor_schema(
