@@ -95,6 +95,8 @@ void Pipsolar::loop() {
               break;
           }
         }
+        this->state_ = STATE_IDLE;
+        break;
 
       case POLLING_P007PIRI:
         if (this->grid_rating_voltage_) {
@@ -127,57 +129,76 @@ void Pipsolar::loop() {
         if (this->battery_redischarge_voltage_) {
           this->battery_redischarge_voltage_->publish_state(value_battery_redischarge_voltage_ * 0.1);
         }
-        if (this->battery_under_voltage_) {
-          this->battery_under_voltage_->publish_state(value_battery_under_voltage_ * 0.1);
+
+        // SELECT OPTION for battery_under_voltage
+        if (this->battery_under_voltage_select_) {
+          std::string value = esphome::to_string(value_battery_under_voltage_);
+          this->battery_under_voltage_select_->map_and_publish(value);
         }
+
         if (this->battery_bulk_voltage_) {
           this->battery_bulk_voltage_->publish_state(value_battery_bulk_voltage_ * 0.1);
         }
         if (this->battery_float_voltage_) {
           this->battery_float_voltage_->publish_state(value_battery_float_voltage_ * 0.1);
         }
+
+        // special for battery_type Text
         if (this->battery_type_) {
-          this->battery_type_->publish_state(value_battery_type_);
-        }
-        if (this->current_max_ac_charging_current_) {
-          this->current_max_ac_charging_current_->publish_state(value_current_max_ac_charging_current_);
-        }
-        if (this->current_max_charging_current_) {
-          this->current_max_charging_current_->publish_state(value_current_max_charging_current_);
-        }
-        if (this->input_voltage_range_) {
-          this->input_voltage_range_->publish_state(value_input_voltage_range_);
-        }
-        //                        // special for input voltage range switch
-        //                        if (this->input_voltage_range_switch_) {
-        //                            this->input_voltage_range_switch_->publish_state(value_input_voltage_range_ == 1);
-        //                        }
-        if (this->output_source_priority_) {
-          this->output_source_priority_->publish_state(value_output_source_priority_);
-        }
-        // special for output source priority switches
-        if (this->output_source_priority_switch_) {
-          this->output_source_priority_switch_->publish_state(value_output_source_priority_ == 1);
+          mode = value_battery_type_;
+          switch (value_battery_type_) {
+            case '0':
+              this->battery_type_->publish_state("AGM");
+              break;
+            case '1':
+              this->battery_type_->publish_state("Flooded");
+              break;
+            case '2':
+              this->battery_type_->publish_state("User");
+              break;
+          }
         }
 
-        if (this->charger_source_priority_) {
-          this->charger_source_priority_->publish_state(value_charger_source_priority_);
+        // SELECT OPTION for current_max_ac_charging_current
+        if (this->current_max_ac_charging_current_select_) {
+          std::string value = esphome::to_string(value_current_max_ac_charging_current_);
+          this->current_max_ac_charging_current_select_->map_and_publish(value);
         }
-        // charger source priority switches
-        if (this->charger_source_priority_solarfirst_switch_) {
-          this->charger_source_priority_solarfirst_switch_->publish_state(value_charger_source_priority_ == 0);
+
+        // SELECT OPTION for current_max_charging_current
+        if (this->current_max_charging_current_select_) {
+          std::string value = esphome::to_string(value_current_max_charging_current_);
+          this->current_max_charging_current_select_->map_and_publish(value);
         }
-        if (this->charger_source_priority_utility_switch_) {
-          this->charger_source_priority_utility_switch_->publish_state(value_charger_source_priority_ == 1);
+
+        // SELECT OPTION for output source priority
+        if (this->output_source_priority_select_) {
+          std::string value = esphome::to_string(value_output_source_priority_);
+          this->output_source_priority_select_->map_and_publish(value);
         }
-        if (this->charger_source_priority_solaronly_switch_) {
-          this->charger_source_priority_solaronly_switch_->publish_state(value_charger_source_priority_ == 2);
+        // SELECT OPTION for charger source priority
+        if (this->charger_source_priority_select_) {
+          std::string value = esphome::to_string(value_charger_source_priority_);
+          this->charger_source_priority_select_->map_and_publish(value);
         }
+        // SELECT OPTION for solar power priority
+        if (this->solar_power_priority_select_) {
+          std::string value = esphome::to_string(value_solar_power_priority_);
+          this->solar_power_priority_select_->map_and_publish(value);
+        }
+        // SELECT OPTION for solar power priority
+        if (this->machine_type_select_) {
+          std::string value = esphome::to_string(value_machine_type_);
+          this->machine_type_select_->map_and_publish(value);
+        }
+        // SELECT OPTION for input voltage range
+        if (this->input_voltage_range_select_) {
+          std::string value = esphome::to_string(value_input_voltage_range_);
+          this->input_voltage_range_select_->map_and_publish(value);
+        }
+
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
-        }
-        if (this->machine_type_) {
-          this->machine_type_->publish_state(value_machine_type_);
         }
         if (this->topology_) {
           this->topology_->publish_state(value_topology_);
@@ -185,20 +206,13 @@ void Pipsolar::loop() {
         if (this->output_mode_) {
           this->output_mode_->publish_state(value_output_mode_);
         }
-        if (this->solar_power_priority_) {
-          this->solar_power_priority_->publish_state(value_solar_power_priority_);
-        }
-        // solar power priority switches
-        if (this->solar_power_priority_switch_) {
-          this->solar_power_priority_switch_->publish_state(value_solar_power_priority_ == 1);
-        }
         if (this->mppt_string_) {
           this->mppt_string_->publish_state(value_mppt_string_);
         }
-
         this->state_ = STATE_IDLE;
         break;
-      case POLLING_P007GS:
+
+      case POLLING_P005GS:
         if (this->grid_voltage_) {
           this->grid_voltage_->publish_state(value_grid_voltage_ * 0.1);
         }
@@ -220,7 +234,6 @@ void Pipsolar::loop() {
         if (this->output_load_percent_) {
           this->output_load_percent_->publish_state(value_output_load_percent_);
         }
-
         if (this->battery_voltage_) {
           this->battery_voltage_->publish_state(value_battery_voltage_ * 0.1);
         }
@@ -263,23 +276,92 @@ void Pipsolar::loop() {
         if (this->setting_value_configuration_state_) {
           this->setting_value_configuration_state_->publish_state(value_setting_value_configuration_state_);
         }
+        // special for mppt1_charger_status Text
         if (this->mppt1_charger_status_) {
-          this->mppt1_charger_status_->publish_state(value_mppt1_charger_status_);
+          mode = value_mppt1_charger_status_;
+          switch (value_mppt1_charger_status_) {
+            case '0':
+              this->mppt1_charger_status_->publish_state("abnormal");
+              break;
+            case '1':
+              this->mppt1_charger_status_->publish_state("normal but not charged");
+              break;
+            case '2':
+              this->mppt1_charger_status_->publish_state("charging");
+              break;
+          }
         }
+        // special for mppt2_charger_status Text
         if (this->mppt2_charger_status_) {
-          this->mppt2_charger_status_->publish_state(value_mppt2_charger_status_);
+          mode = value_mppt2_charger_status_;
+          switch (value_mppt2_charger_status_) {
+            case '0':
+              this->mppt2_charger_status_->publish_state("abnormal");
+              break;
+            case '1':
+              this->mppt2_charger_status_->publish_state("normal but not charged");
+              break;
+            case '2':
+              this->mppt2_charger_status_->publish_state("charging");
+              break;
+          }
         }
+        // special for load connection Text
         if (this->load_connection_) {
-          this->load_connection_->publish_state(value_load_connection_);
+          mode = value_load_connection_;
+          switch (value_load_connection_) {
+            case '0':
+              this->load_connection_->publish_state("disconnect");
+              break;
+            case '1':
+              this->load_connection_->publish_state("connect");
+              break;
+          }
         }
+        // special for battery_power_direction Text
         if (this->battery_power_direction_) {
-          this->battery_power_direction_->publish_state(value_battery_power_direction_);
+          mode = value_battery_power_direction_;
+          switch (value_battery_power_direction_) {
+            case '0':
+              this->battery_power_direction_->publish_state("donothing");
+              break;
+            case '1':
+              this->battery_power_direction_->publish_state("charge");
+              break;
+            case '2':
+              this->battery_power_direction_->publish_state("discharge");
+              break;
+          }
         }
+        // special for dc_ac_power_direction Text
         if (this->dc_ac_power_direction_) {
-          this->dc_ac_power_direction_->publish_state(value_dc_ac_power_direction_);
+          mode = value_dc_ac_power_direction_;
+          switch (value_dc_ac_power_direction_) {
+            case '0':
+              this->dc_ac_power_direction_->publish_state("donothing");
+              break;
+            case '1':
+              this->dc_ac_power_direction_->publish_state("AC-DC");
+              break;
+            case '2':
+              this->dc_ac_power_direction_->publish_state("DC-AC");
+              break;
+          }
         }
+        // special for line_power_direction Text
         if (this->line_power_direction_) {
-          this->line_power_direction_->publish_state(value_line_power_direction_);
+          mode = value_line_power_direction_;
+          switch (value_line_power_direction_) {
+            case '0':
+              this->line_power_direction_->publish_state("donothing");
+              break;
+            case '1':
+              this->line_power_direction_->publish_state("input");
+              break;
+            case '2':
+              this->line_power_direction_->publish_state("output");
+              break;
+          }
         }
         if (this->local_parallel_id_) {
           this->local_parallel_id_->publish_state(value_local_parallel_id_);
@@ -312,9 +394,7 @@ void Pipsolar::loop() {
         if (this->fault_code_record_) {
           this->fault_code_record_->publish_state(value_fault_code_record_);
         }
-        if (this->power_saving_) {
-          this->power_saving_->publish_state(value_power_saving_);
-        }
+
         // SWICHES
         if (this->silence_buzzer_open_buzzer_switch_) {
           this->silence_buzzer_open_buzzer_switch_->publish_state(value_silence_buzzer_open_buzzer_ == 1);
@@ -340,9 +420,6 @@ void Pipsolar::loop() {
         }
         if (this->fault_code_record_switch_) {
           this->fault_code_record_switch_->publish_state(value_fault_code_record_ == 1);
-        }
-        if (this->power_saving_switch_) {
-          this->power_saving_switch_->publish_state(value_power_saving_ == 1);
         }
         this->state_ = STATE_IDLE;
         break;
@@ -400,12 +477,14 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_IDLE;
         break;
+
       case POLLING_P005ET:
         if (this->total_generated_energy_) {
-          this->total_generated_energy_->publish_state(value_total_generated_energy_);
+          this->total_generated_energy_->publish_state( value_total_generated_energy_);
         }
         this->state_ = STATE_IDLE;
         break;
+
       case POLLING_P007PGS0:
         if (this->total_ac_output_apparent_power_) {
           this->total_ac_output_apparent_power_->publish_state(value_total_ac_output_apparent_power_);
@@ -435,7 +514,7 @@ void Pipsolar::loop() {
         ESP_LOGD(TAG, "Decode P007PIRI");
         sscanf(  //"^D0892300,243,2300,500,243,5600,5600,480,470,530,440,554,544,2,040,090,1,0,1,9,0,0,1,0,1,00\xD9\xA1\r"
             tmp,  // 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-            "^D%3d%f,%f,%f,%f,%f,%d,%d,%f,%f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
+            "^D%3d%f,%f,%f,%f,%f,%d,%d,%f,%f,%f,%d,%f,%f,%c,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
             &value_grid_rating_voltage_, &value_grid_rating_current_, &value_ac_output_rating_voltage_,
             &value_ac_output_rating_frequency_, &value_ac_output_rating_current_,
             &value_ac_output_rating_apparent_power_, &value_ac_output_rating_active_power_,
@@ -448,10 +527,10 @@ void Pipsolar::loop() {
         this->state_ = STATE_POLL_DECODED;
         break;
 
-      case POLLING_P007GS:
-        ESP_LOGD(TAG, "Decode P007GS");
+      case POLLING_P005GS:
+        ESP_LOGD(TAG, "Decode P005GS");
         //        "^D1062135,499,2135,499,2102,2102,037,544,000,000,000,039,095,049,000,000,0000,0000,0000,0000,0,0,0,1,1,1,1,1\e\'\r"
-        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d", &ind,
+        sscanf(tmp, "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%c,%c,%c,%c,%c,%c,%d", &ind,
                &value_grid_voltage_, &value_grid_frequency_, &value_ac_output_voltage_, &value_ac_output_frequency_,
                &value_ac_output_apparent_power_, &value_ac_output_active_power_, &value_output_load_percent_,
                &value_battery_voltage_, &value_battery_voltage_scc_, &value_battery_voltage_scc2_,
@@ -477,10 +556,10 @@ void Pipsolar::loop() {
         // result like:"^D0201,1,1,0,0,1,0,1,0\xF6=\r"
         // get through all char: ignore first "(" Enable flag on 'E', Disable on 'D') else set the corresponding value
         sscanf(tmp,  // 1  2  3  4  5  6  7  8  9
-               "^D%3d%d,%d,%d,%d,%d,%d,%d,%d,%d", &ind, &value_silence_buzzer_open_buzzer_,
+               "^D%3d%d,%d,%d,%d,%d,%d,%d,%d", &ind, &value_silence_buzzer_open_buzzer_,
                &value_overload_bypass_function_, &value_lcd_escape_to_default_, &value_overload_restart_function_,
                &value_over_temperature_restart_function_, &value_backlight_on_,
-               &value_alarm_on_when_primary_source_interrupt_, &value_fault_code_record_, &value_power_saving_);
+               &value_alarm_on_when_primary_source_interrupt_, &value_fault_code_record_);
         this->state_ = STATE_POLL_DECODED;
         break;
       case POLLING_P005FWS:

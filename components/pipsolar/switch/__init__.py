@@ -20,7 +20,6 @@ CONF_OVER_TEMPERATURE_RESTART_FUNCTION = "over_temperature_restart_function"
 CONF_BACKLIGHT_ON = "backlight_on"
 CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
 CONF_FAULT_CODE_RECORD = "fault_code_record"
-CONF_POWER_SAVING = "power_saving"
 
 # CONF_OUTPUT_SOURCE_PRIORITY_UTILITY = "output_source_priority_utility"
 # CONF_OUTPUT_SOURCE_PRIORITY_SOLAR = "output_source_priority_solar"
@@ -52,7 +51,6 @@ TYPES = {
     CONF_BACKLIGHT_ON: ("^S006PEF", "^S006PDF"),
     CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT: ("^S006PEG", "^S006PDG"),
     CONF_FAULT_CODE_RECORD: ("^S006PEH", "^S006PDH"),
-    CONF_POWER_SAVING: ("^S006PEI", "^S006PDI"),
     #    CONF_OUTPUT_SOURCE_PRIORITY_UTILITY: ("POP00", None),
     #    CONF_OUTPUT_SOURCE_PRIORITY_SOLAR: ("POP01", None),
     #    CONF_OUTPUT_SOURCE_PRIORITY_BATTERY: ("POP02", None),
