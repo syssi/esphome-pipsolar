@@ -4,7 +4,6 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/switch/switch.h"
 #include "esphome/components/select/select.h"
-#include "esphome/components/text_input/text_input.h"
 #include "esphome/components/pipsolar/select/pipsolar_select.h"
 #include "esphome/components/text_sensor/text_sensor.h"
 #include "esphome/components/uart/uart.h"
