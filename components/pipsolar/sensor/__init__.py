@@ -287,11 +287,10 @@ TYPES = {
         accuracy_decimals=0,
     ),
     CONF_TOTAL_GENERATED_ENERGY: sensor.sensor_schema(
-        #unit_of_measurement=UNIT_WATT_HOURS,
         unit_of_measurement=UNIT_KILOWATT_HOURS,
-        #unit_of_measurement="kWh",
         accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
     ),
     # for all in parallel
     CONF_TOTAL_AC_OUTPUT_APPARENT_POWER: sensor.sensor_schema(
