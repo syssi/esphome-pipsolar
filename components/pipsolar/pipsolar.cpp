@@ -95,6 +95,8 @@ void Pipsolar::loop() {
               break;
           }
         }
+        this->state_ = STATE_IDLE;
+        break;
 
       case POLLING_P007PIRI:
         if (this->grid_rating_voltage_) {
@@ -215,6 +217,7 @@ void Pipsolar::loop() {
 
         this->state_ = STATE_IDLE;
         break;
+
       case POLLING_P005GS:
         if (this->grid_voltage_) {
           this->grid_voltage_->publish_state(value_grid_voltage_ * 0.1);
@@ -481,12 +484,14 @@ void Pipsolar::loop() {
         }
         this->state_ = STATE_IDLE;
         break;
+
       case POLLING_P005ET:
         if (this->total_generated_energy_) {
           this->total_generated_energy_->publish_state( value_total_generated_energy_);
         }
         this->state_ = STATE_IDLE;
         break;
+
       case POLLING_P007PGS0:
         if (this->total_ac_output_apparent_power_) {
           this->total_ac_output_apparent_power_->publish_state(value_total_ac_output_apparent_power_);
