@@ -56,9 +56,16 @@ pipsolar:
   uart_id: uart_0
   id: inverter0
 
+button:
+  # Restart the ESP via Rebooting safely
+  - platform: restart
+    name: "${name} Restart / Reboot Device"
+    icon: "mdi:restart"
+
 sensor:
   - platform: pipsolar
     pipsolar_id: inverter0
+
     # P007PIRI
     # Static Infos
     #grid_rating_voltage:
@@ -108,51 +115,52 @@ sensor:
 
     # P005GS
     grid_voltage:
-      name: "${name} Grid voltage"
+      name: "${name} Grid Voltage"
     grid_frequency:
-      name: "${name} Grid frequency"
+      name: "${name} Grid Frequency"
     ac_output_voltage:
-      name: "${name} AC Output voltage"
+      name: "${name} AC Output Voltage"
     ac_output_frequency:
-      name: "${name} ac_output_frequency"
+      name: "${name} AC Output Frequency"
     ac_output_apparent_power:
-      name: "${name} ac_output_apparent_power"
+      name: "${name} AC Output apparent Power"
     ac_output_active_power:
-      name: "${name} ac_output_active_power"
+      name: "${name} AC Output active Power"
     output_load_percent:
-      name: "${name} output_load_percent"
+      name: "${name} AC Output load percent"
     battery_voltage:
-      name: "${name} battery_voltage"
+      name: "${name} Battery Voltage"
     # battery_voltage_scc:
-    #   name: "${name} battery_voltage_scc"
+    #   name: "${name} Battery voltage scc"
     # battery_voltage_scc2:
-    #   name: "${name} battery_voltage_scc2"
+    #   name: "${name} Battery voltage scc2"
     battery_discharge_current:
-      name: "${name} battery_discharge_current"
+      name: "${name} Battery discharge current"
     battery_charging_current:
-      name: "${name} battery_charging_current"
+      name: "${name} Battery charging current"
     battery_capacity_percent:
-      name: "${name} battery_capacity_percent"
+      name: "${name} Battery capacity percent"
     inverter_heat_sink_temperature:
-      name: "${name} inverter_heat_sink_temperature"
+      name: "${name} Inverter heat sink temperature"
     # mppt1_charger_temperature:
-    #   name: "${name} mppt1_charger_temperature"
+    #   name: "${name} MPPT1 charger temperature"
     # mppt2_charger_temperature:
-    #   name: "${name} mppt2_charger_temperature"
+    #   name: "${name} MPPT2 charger temperature"
     pv1_input_power:
-      name: "${name} pv1_input_power"
+      name: "${name} PV1 input power"
     # pv2_input_power:
-    #   name: "${name} pv2_input_power"
+    #   name: "${name} PV2 input power"
     pv1_input_voltage:
-      name: "${name} pv1_input_voltage"
+      name: "${name} PV1 input voltage"
     # pv2_input_voltage:
-    #   name: "${name} pv2_input_voltage"
+    #   name: "${name} PV2 input voltage"
+    # ????
     fault_code:
       name: "${name} wfs fault_code"
     #local_parallel_id:
-    #  name: "${name} local_parallel_id"
+    #  name: "${name} Local parallel id"
     total_generated_energy:
-      name: "${name} Rotal PV Generated Energy"
+      name: "${name} Total PV Generated Energy"
 
     # P007PGS0 Total Data for Paralell System
     #total_ac_output_apparent_power:
@@ -211,12 +219,12 @@ binary_sensor:
       name: "${name} wfs warning_power_limit"
     warning_pv1_voltage_high:
       name: "${name} wfs warning_pv1_voltage_high"
-    warning_pv2_voltage_high:
-      name: "${name} wfs warning_pv2_voltage_high"
+    #warning_pv2_voltage_high:
+    #  name: "${name} wfs warning_pv2_voltage_high"
     warning_mppt1_overload:
       name: "${name} wfs warning_mppt1_overload"
-    warning_mppt2_overload:
-      name: "${name} wfs warning_mppt2_overload"
+    #warning_mppt2_overload:
+    #  name: "${name} wfs warning_mppt2_overload"
     scc1_battery_too_low_to_charge:
       name: "${name} wfs scc1_battery_too_low_to_charge"
     # scc2_battery_too_low_to_charge:
@@ -226,7 +234,7 @@ text_sensor:
   - platform: pipsolar
     pipsolar_id: inverter0
     device_mode:
-      name: "${name} Device mode"
+      name: "${name} Device Mode"
     battery_power_direction:
       name: "${name} Battery Power direction"
     load_connection:
@@ -273,8 +281,8 @@ select:
         "Solar-Utility-Battery": "^S007POP0"
         "Solar-Battery-Utility": "^S007POP1"
       statusmap:
-        "0": "Solar Utility Battery"
-        "1": "Solar Battery Utility"
+        "0": "Solar-Utility-Battery"
+        "1": "Solar-Battery-Utility"
   - platform: pipsolar
     pipsolar_id: inverter0
     charger_source_priority:
@@ -327,7 +335,7 @@ select:
       id: inverter0_current_max_ac_charging_current_select
       name: "${name} Select Battery Max AC Charging Current"
       optionsmap:
-        "2A":  "^S014MUCHGC0,002"
+        "2A": "^S014MUCHGC0,002"
         "10A": "^S014MUCHGC0,010"
         "20A": "^S014MUCHGC0,020"
         "30A": "^S014MUCHGC0,030"
