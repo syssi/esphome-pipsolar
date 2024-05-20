@@ -37,7 +37,7 @@ CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 CONF_BATTERY_BULK_VOLTAGE = "battery_bulk_voltage"
 
 # CONF_BATTERY_RECHARGE_VOLTAGE = "battery_recharge_voltage"
-CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
+#CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
 # CONF_BATTERY_FLOAT_VOLTAGE = "battery_float_voltage"
 # CONF_BATTERY_TYPE = "battery_type"
 #
@@ -69,10 +69,10 @@ TYPES = {
     #        [0, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58],
     #        "PBDV%02.1f",
     #    ),
-    CONF_BATTERY_UNDER_VOLTAGE: (
-        [40.0, 40.1, 42, 43, 44, 45, 46, 47, 48.0],
-        "PSDV%02.1f",
-    ),
+    #CONF_BATTERY_UNDER_VOLTAGE: (
+    #    [40.0, 40.1, 42, 43, 44, 45, 46, 47, 48.0],
+    #    "PSDV%02.1f",
+    #),
     #    CONF_BATTERY_FLOAT_VOLTAGE: ([48.0, 49.0, 50.0, 51.0], "PBFT%02.1f"),
     #    CONF_BATTERY_TYPE: ([0, 1, 2], "PBT%02.0f"),
     #    CONF_OUTPUT_SOURCE_PRIORITY: ([0, 1, 2], "POP%02.0f"),
