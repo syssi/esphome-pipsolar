@@ -118,7 +118,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SENSOR(battery_recharge_voltage, P007PIRI, float)
   PIPSOLAR_SENSOR(battery_redischarge_voltage, P007PIRI, float)
 
-  PIPSOLAR_SENSOR(battery_under_voltage, P007PIRI, float)
+  PIPSOLAR_SENSOR(battery_under_voltage, P007PIRI, int)
   PIPSOLAR_SELECT(battery_under_voltage_select, P007PIRI)
 
   PIPSOLAR_SENSOR(battery_bulk_voltage, P007PIRI, float)
