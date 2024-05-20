@@ -243,6 +243,7 @@ text_sensor:
       name: "${name} Grid Power direction"
     dc_ac_power_direction:
       name: "${name} DC/AC Power direction"
+
     # Settable
     battery_type:
       name: "${name} Battery type"
@@ -377,7 +378,7 @@ select:
     pipsolar_id: inverter0
     battery_under_voltage:
       id: inverter0_battery_under_voltage_select
-      name: "${name} Select Battery under voltage"
+      name: "${name} Select Battery CUT-OFF voltage"
       optionsmap:
         "40V": "^S010PSDV400"
         "41V": "^S010PSDV410"
@@ -389,15 +390,15 @@ select:
         "47V": "^S010PSDV470"
         "48V": "^S010PSDV480"
       statusmap:
-        "40": "40V"
-        "41": "41V"
-        "42": "42V"
-        "43": "43V"
-        "44": "44V"
-        "45": "45V"
-        "46": "46V"
-        "47": "47V"
-        "48": "48V"
+        "400": "40V"
+        "410": "41V"
+        "420": "42V"
+        "430": "43V"
+        "440": "44V"
+        "450": "45V"
+        "460": "46V"
+        "470": "47V"
+        "480": "48V"
 
 output:
   - platform: pipsolar
