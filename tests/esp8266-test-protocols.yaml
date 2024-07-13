@@ -1,0 +1,124 @@
+substitutions:
+  name: pipsolar
+  tx_pin: GPIO4
+  rx_pin: GPIO5
+
+esphome:
+  name: ${name}
+  min_version: 2024.6.0
+
+esp8266:
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+  platform: esphome
+
+logger:
+  level: DEBUG
+
+api:
+  reboot_timeout: 0s
+
+uart:
+  id: uart_0
+  baud_rate: 2400
+  tx_pin: ${tx_pin}
+  rx_pin: ${rx_pin}
+  debug:
+    direction: BOTH
+    dummy_receiver: true
+    after:
+      delimiter: "\r"
+    sequence:
+      - lambda: UARTDebug::log_string(direction, bytes);
+
+interval:
+  - interval: 80s
+    then:
+      # PI30/PI30MAX/PI30REVO/PI41
+      - logger.log:
+          level: INFO
+          format: "Testing PI30/PI30MAX/PI30REVO/PI41 commands..."
+      - logger.log:
+          level: INFO
+          format: "This is the set of commands supported by the pipsolar component!"
+      - uart.write: [0x51, 0x50, 0x49, 0xBE, 0xAC, 0x0D]  # QPI\xbe\xac\r
+      - delay: 1s
+      - uart.write: [0x51, 0x44, 0x49, 0x71, 0x1B, 0x0D]  # QDIq\x1b\r
+      - delay: 1s
+      - uart.write: [0x51, 0x46, 0x4C, 0x41, 0x47, 0x98, 0x74, 0x0D]  # QFLAG\x98t\r
+      - delay: 1s
+      - uart.write: [0x51, 0x4D, 0x4E, 0xBB, 0x64, 0x0D]  # QMN\xbbd\r
+      - delay: 1s
+      - uart.write: [0x51, 0x4D, 0x4F, 0x44, 0x49, 0xC1, 0x0D]  # QMODI\xc1\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x49, 0x47, 0x53, 0xB7, 0xA9, 0x0D]  # QPIGS\xB7\xA9\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x49, 0x52, 0x49, 0xF8, 0x54, 0x0D]  # QPIRI\xF8T\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x49, 0x57, 0x53, 0xB4, 0xDA, 0x0D]  # QPIWS\xb4\xda\r
+      - delay: 1s
+      - uart.write: [0x51, 0x54, 0x27, 0xFF, 0x0D]  # QT'\xff\r
+      - delay: 1s
+      # Test some PI30 commands from Phocos Any-Grid PSW-H inverters
+      - uart.write: [0x51, 0x50, 0x47, 0x53, 0x30, 0x3F, 0xDA, 0x0D]  # QPGS0<CRC>\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x47, 0x53, 0x31, 0x2F, 0xFB, 0x0D]  # QPGS1<CRC>\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x47, 0x53, 0x32, 0x1F, 0x98, 0x0D]  # QPGS2<CRC>\r
+      - delay: 1s
+
+      # PI41 split phase
+      - logger.log:
+          level: INFO
+          format: "Testing PI41 split phase / multiple strings commands..."
+      - uart.write: [0x51, 0x50, 0x49, 0x47, 0x53, 0x32, 0x68, 0x2D, 0x0D]  # QPIGS2h-\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x32, 0x47, 0x53, 0x30, 0x14, 0x05, 0x0D]  # QP2GS0\x14\x05\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x32, 0x47, 0x53, 0x31, 0x04, 0x24, 0x0D]  # QP2GS1\x04$\r
+      - delay: 1s
+
+      # PI18
+      - logger.log:
+          level: INFO
+          format: "Testing unsupported PI18 commands..."
+      - uart.write: [0x5E, 0x50, 0x30, 0x30, 0x35, 0x50, 0x49, 0x71, 0x8B, 0x0D]  # ^P005PIq\x8b\r
+      - delay: 1s
+      - uart.write: [0x5E, 0x50, 0x30, 0x30, 0x35, 0x47, 0x53, 0x58, 0x14, 0x0D]  # ^P005GSX\x14\r
+      - delay: 1s
+      - uart.write: [0x5E, 0x50, 0x30, 0x30, 0x36, 0x4D, 0x4F, 0x44, 0xDD, 0xBE, 0x0D]  # ^P006MOD\xdd\xbe\r
+      - delay: 1s
+
+      # PI17
+      - logger.log:
+          level: INFO
+          format: "Testing unsupported PI17 commands..."
+      - uart.write: [0x5E, 0x50, 0x30, 0x30, 0x33, 0x50, 0x49, 0x0D]  # ^P003PI\r
+      - delay: 1s
+      - uart.write: [0x5E, 0x50, 0x30, 0x30, 0x34, 0x4D, 0x4F, 0x44, 0x0D]  # ^P004MOD\r
+      - delay: 1s
+      - uart.write: [0x5E, 0x50, 0x30, 0x30, 0x35, 0x46, 0x4C, 0x41, 0x47, 0x0D]  # ^P005FLAG\r
+      - delay: 1s
+
+      # PI16
+      - logger.log:
+          level: INFO
+          format: "Testing unsupported PI16 commands..."
+      - uart.write: [0x51, 0x50, 0x49, 0x0D]  # QPI\r
+      - delay: 1s
+      - uart.write: [0x51, 0x4D, 0x4F, 0x44, 0x0D]  # QMOD\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x49, 0x47, 0x53, 0x0D]  # QPIGS\r
+      - delay: 1s
+      - uart.write: [0x51, 0x50, 0x49, 0x52, 0x49, 0x0D]  # QPIRI\r
+      - delay: 1s
+      - uart.write: [0x51, 0x4D, 0x4F, 0x44, 0x0D]  # QMOD\r
+
+      - logger.log:
+          level: INFO
+          format: "Done. Repeating..."
