@@ -14,6 +14,9 @@ substitutions:
 esphome:
   name: ${name}
   min_version: 2024.6.0
+  project:
+    name: "syssi.esphome-pipsolar@main"
+    version: 1.0.0
 
 esp32:
   board: wemos_d1_mini32
