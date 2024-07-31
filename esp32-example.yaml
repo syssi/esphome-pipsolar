@@ -11,6 +11,10 @@ substitutions:
 
 esphome:
   name: ${name}
+  min_version: 2024.6.0
+  project:
+    name: "syssi.esphome-pipsolar@pip8084"
+    version: 1.0.0
 
 esp32:
   board: wemos_d1_mini32
@@ -26,6 +30,7 @@ wifi:
   password: !secret wifi_password
 
 ota:
+  platform: esphome
 
 logger:
   baud_rate: 0
