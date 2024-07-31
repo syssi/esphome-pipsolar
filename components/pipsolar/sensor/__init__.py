@@ -2,11 +2,16 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
 from esphome.const import (
+    CONF_BATTERY_VOLTAGE,
+    CONF_BUS_VOLTAGE,
     DEVICE_CLASS_CURRENT,
+    DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
+    ICON_COUNTER,
     ICON_CURRENT_AC,
+    STATE_CLASS_TOTAL_INCREASING,
     UNIT_AMPERE,
     UNIT_CELSIUS,
     UNIT_HERTZ,
@@ -14,10 +19,10 @@ from esphome.const import (
     UNIT_VOLT,
     UNIT_VOLT_AMPS,
     UNIT_WATT,
-    CONF_BUS_VOLTAGE,
-    CONF_BATTERY_VOLTAGE,
+    UNIT_WATT_HOURS,
 )
-from .. import PIPSOLAR_COMPONENT_SCHEMA, CONF_PIPSOLAR_ID
+
+from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
 
 DEPENDENCIES = ["uart"]
 
@@ -305,9 +310,11 @@ TYPES = {
         accuracy_decimals=0,
     ),
     CONF_TOTAL_GENERATED_ENERGY: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
+        unit_of_measurement=UNIT_WATT_HOURS,
+        icon=ICON_COUNTER,
         accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
     ),
     # for all in parallel
     CONF_TOTAL_AC_OUTPUT_APPARENT_POWER: sensor.sensor_schema(
