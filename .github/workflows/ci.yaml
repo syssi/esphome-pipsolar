@@ -8,6 +8,9 @@ on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: 0 12 * * *
 
+env:
+  FORCE_COLOR: 1
+
 jobs:
   yamllint:
     runs-on: ubuntu-latest
@@ -40,12 +43,13 @@ jobs:
         shell: bash
         run: 'echo -e "wifi_ssid: ssid\nwifi_password: password\nmqtt_host: host\nmqtt_username: username\nmqtt_password: password" > tests/secrets.yaml'
       - run: |
-          esphome config esp32-example.yaml
+          for YAML in esp*.yaml; do
+            esphome config $YAML >/dev/null
+          done
       - run: |
-          esphome config esp8266-example.yaml
-          esphome config tests/esp8266-test-ping.yaml
-          esphome config tests/esp8266-test-pong.yaml
-          esphome config tests/esp8266-test-protocols.yaml
+          for YAML in tests/esp*.yaml; do
+            esphome config $YAML >/dev/null
+          done
 
   esphome-compile:
     runs-on: ubuntu-latest
@@ -83,6 +87,6 @@ jobs:
         shell: bash
         run: 'echo -e "wifi_ssid: ssid\nwifi_password: password\nmqtt_host: host\nmqtt_username: username\nmqtt_password: password" > secrets.yaml'
       - run: |
-          esphome compile esp32-example.yaml
-      - run: |
-          esphome compile esp8266-example.yaml
+          for YAML in esp*.yaml; do
+            esphome compile $YAML
+          done
