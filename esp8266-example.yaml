@@ -21,6 +21,10 @@ esphome:
 esp8266:
   board: d1_mini
 
+external_components:
+  - source: github://syssi/esphome-pipsolar@prio-hybrid
+    refresh: 0s
+
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
@@ -215,6 +219,8 @@ switch:
       name: "${name} output_source_priority_solar"
     output_source_priority_battery:
       name: "${name} output_source_priority_battery"
+    output_source_priority_hybrid:
+      name: "${name} output_source_priority_hybrid"
     input_voltage_range:
       name: "${name} input_voltage_range"
     pv_ok_condition_for_parallel:
