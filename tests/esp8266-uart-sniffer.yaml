@@ -1,0 +1,43 @@
+substitutions:
+  name: uart-sniffer
+  rx_pin: GPIO5
+  rx_pin2: GPIO4
+
+esphome:
+  name: ${name}
+  min_version: 2024.6.0
+
+esp8266:
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+  platform: esphome
+
+logger:
+  level: DEBUG
+
+api:
+  reboot_timeout: 0s
+
+uart:
+  - id: uart_0
+    baud_rate: 2400
+    rx_pin: ${rx_pin}
+    debug:
+      direction: RX
+      dummy_receiver: true
+      sequence:
+        - lambda: UARTDebug::log_hex(esphome::uart::UARTDirection::UART_DIRECTION_RX, bytes, ':');
+
+  - id: uart_1
+    baud_rate: 2400
+    rx_pin: ${rx_pin2}
+    debug:
+      direction: RX
+      dummy_receiver: true
+      sequence:
+        - lambda: UARTDebug::log_hex(esphome::uart::UARTDirection::UART_DIRECTION_TX, bytes, ':');
