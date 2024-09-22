@@ -160,7 +160,7 @@ text_sensor:
     device_mode:
       name: "${name} device_mode"
       filters:
-        - map:
+        map:
           - P -> Power on mode
           - S -> Standby mode
           - L -> Line mode
