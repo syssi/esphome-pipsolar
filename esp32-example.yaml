@@ -158,9 +158,17 @@ sensor:
 
 text_sensor:
   - platform: pipsolar
-    pipsolar_id: inverter0
+    pipsolar_id: inverter0      
     device_mode:
       name: "${name} device_mode"
+      filters:
+        - map:
+          - P -> Power on mode
+          - S -> Standby mode
+          - L -> Line mode
+          - B -> Battery mode
+          - F -> Fault mode
+          - D -> Shutdown mode
 #    last_qpigs:
 #      name: "${name} last_qpigs"
 #    last_qpiri:
