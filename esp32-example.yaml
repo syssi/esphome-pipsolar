@@ -158,7 +158,7 @@ sensor:
 
 text_sensor:
   - platform: pipsolar
-    pipsolar_id: inverter0      
+    pipsolar_id: inverter0
     device_mode:
       name: "${name} device_mode"
       filters:
