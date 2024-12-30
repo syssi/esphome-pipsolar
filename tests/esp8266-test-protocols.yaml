@@ -119,6 +119,19 @@ interval:
       - delay: 1s
       - uart.write: [0x51, 0x4D, 0x4F, 0x44, 0x0D]  # QMOD\r
 
+      # Qx
+      - logger.log:
+          level: INFO
+          format: "Testing unsupported Qx commands..."
+      - uart.write: [0x51, 0x31, 0x0D]  # Q1\r
+      - delay: 1s
+      - uart.write: [0x51, 0x32, 0x0D]  # Q2\r
+      - delay: 1s
+      - uart.write: [0x51, 0x34, 0x0D]  # Q4\r
+      - delay: 1s
+      - uart.write: [0x51, 0x36, 0x0D]  # Q6\r
+      - delay: 1s
+
       - logger.log:
           level: INFO
           format: "Done. Repeating..."
