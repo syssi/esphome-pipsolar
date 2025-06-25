@@ -44,11 +44,11 @@ jobs:
         run: 'echo -e "wifi_ssid: ssid\nwifi_password: password\nmqtt_host: host\nmqtt_username: username\nmqtt_password: password" > tests/secrets.yaml'
       - run: |
           for YAML in esp*.yaml; do
-            esphome config $YAML >/dev/null
+            esphome config $YAML
           done
       - run: |
           for YAML in tests/esp*.yaml; do
-            esphome config $YAML >/dev/null
+            esphome config $YAML
           done
 
   esphome-compile:
