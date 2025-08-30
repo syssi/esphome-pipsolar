@@ -204,7 +204,7 @@ void Pipsolar::loop() {
         }
          // special for ac_output_voltage switch
         if (this->ac_output_voltage_switch_) {
-          this->ac_output_voltage_switch_->publish_state(value_ac_output_voltage_ >= 238 !! value_ac_output_voltage_ <= 243);
+          this->ac_output_voltage_switch_->publish_state(value_ac_output_voltage_ >= 238 || value_ac_output_voltage_ <= 243);
         }
         if (this->ac_output_frequency_) {
           this->ac_output_frequency_->publish_state(value_ac_output_frequency_);
