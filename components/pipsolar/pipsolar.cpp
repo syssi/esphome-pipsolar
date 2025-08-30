@@ -213,11 +213,11 @@ void Pipsolar::loop() {
         }
          if (this->ac_output_voltage_select_) {          
           if (value_ac_output_voltage_ >= 218 && value_ac_output_voltage_ <= 222) {
-            this->ac_output_voltage_select_->map_and_publish("220");
+            this->ac_output_voltage_select_->map_and_publish(220);
           }else if (value_ac_output_voltage_ >= 228 && value_ac_output_voltage_ <= 232) {
-            this->ac_output_voltage_select_->map_and_publish("230");
+            this->ac_output_voltage_select_->map_and_publish(230);
           }else if (value_ac_output_voltage_ >= 238 && value_ac_output_voltage_ <= 243) {
-            this->ac_output_voltage_select_->map_and_publish("240");
+            this->ac_output_voltage_select_->map_and_publish(240);
           }else{
             this->ac_output_voltage_select_->map_and_publish(value_ac_output_voltage_select_);
           }
