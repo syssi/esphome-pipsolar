@@ -163,7 +163,7 @@ void Pipsolar::loop() {
         // special for AC output voltage select
         if (this->ac_output_voltage_select_) {
           std::string value = esphome::to_string(value_ac_output_voltage_);
-          this->>ac_output_voltage_select_->map_and_publish(value);
+          this->ac_output_voltage_select_->map_and_publish(value);
         }
         
         if (this->parallel_max_num_) {
