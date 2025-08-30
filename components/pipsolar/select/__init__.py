@@ -16,7 +16,7 @@ CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_CHARGING_DISCHARGING_CONTROL = "charging_discharging_control"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
-
+CONF_AC_OUTPUT_VOLTAGE = "ac_output_voltage"
 
 PipsolarSelect = pipsolar_ns.class_("PipsolarSelect", cg.Component, select.Select)
 
@@ -82,6 +82,7 @@ TYPES = {
     CONF_CHARGING_DISCHARGING_CONTROL: ("PBATCD111", None),
     CONF_CURRENT_MAX_CHARGING_CURRENT: ("MCHGC010", None),
     CONF_CURRENT_MAX_AC_CHARGING_CURRENT: ("MUCHGC0002", None),
+    CONF_AC_OUTPUT_VOLTAGE: ("V220", None),
 }
 
 

@@ -160,6 +160,11 @@ void Pipsolar::loop() {
           std::string value = esphome::to_string(value_charger_source_priority_);
           this->charger_source_priority_select_->map_and_publish(value);
         }
+        // special for AC output voltage select
+        if (this->ac_output_voltage_select_) {
+          std::string value = esphome::to_string(value_>ac_output_voltage_);
+          this->>ac_output_voltage_select_->map_and_publish(value);
+        }
         
         if (this->parallel_max_num_) {
           this->parallel_max_num_->publish_state(value_parallel_max_num_);
@@ -204,8 +209,19 @@ void Pipsolar::loop() {
         }
          // special for ac_output_voltage switch
         if (this->ac_output_voltage_switch_) {
-          this->ac_output_voltage_switch_->publish_state(value_ac_output_voltage_ >= 238 || value_ac_output_voltage_ <= 243);
+          this->ac_output_voltage_switch_->publish_state(value_ac_output_voltage_ >= 238 && value_ac_output_voltage_ <= 243);
         }
+         if (this->ac_output_voltage_select_) {          
+          if (value_ac_output_voltage_ >= 218 && value_ac_output_voltage_ <= 222) {
+            this->ac_output_voltage_select_->map_and_publish("220");
+          }else if (value_ac_output_voltage_ >= 228 && value_ac_output_voltage_ <= 232) {
+            this->ac_output_voltage_select_->map_and_publish("230");
+          }else if (value_ac_output_voltage_ >= 238 && value_ac_output_voltage_ <= 243) {
+            this->ac_output_voltage_select_->map_and_publish("240");
+          }else{
+            this->ac_output_voltage_select_->map_and_publish(value_ac_output_voltage_select_);
+          }
+        }        
         if (this->ac_output_frequency_) {
           this->ac_output_frequency_->publish_state(value_ac_output_frequency_);
         }

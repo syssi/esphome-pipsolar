@@ -200,6 +200,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SWITCH(pv_power_balance_switch, QPIRI)
   PIPSOLAR_SWITCH(ac_output_voltage_switch, QPIGS)
 
+  PIPSOLAR_SELECT(ac_output_voltage_select, QPIGS)
   PIPSOLAR_SELECT(output_source_priority_select, QPIRI)
   PIPSOLAR_SELECT(charger_source_priority_select, QPIRI)
   
