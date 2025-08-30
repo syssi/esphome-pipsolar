@@ -201,11 +201,7 @@ void Pipsolar::loop() {
         }
         if (this->ac_output_voltage_) {
           this->ac_output_voltage_->publish_state(value_ac_output_voltage_);
-        }
-         // special for ac_output_voltage switch
-        if (this->ac_output_voltage_switch_) {
-          this->ac_output_voltage_switch_->publish_state(value_ac_output_voltage_ >= 238 && value_ac_output_voltage_ <= 243);
-        }
+        }        
         if (this->ac_output_voltage_select_) {          
           if (value_ac_output_voltage_ >= 218 && value_ac_output_voltage_ <= 222) {
             std::string value = "220";
