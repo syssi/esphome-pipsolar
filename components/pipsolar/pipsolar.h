@@ -91,7 +91,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(charging_to_floating_mode, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(switch_on, QPIGS, int)
   PIPSOLAR_BINARY_SENSOR(dustproof_installed, QPIGS, int)
-  PIPSOLAR_SELECT(ac_output_voltage_select, QPIGS, int)
+  PIPSOLAR_SELECT(ac_output_voltage_select, QPIGS)
 
   // QPIGS2 values
 
