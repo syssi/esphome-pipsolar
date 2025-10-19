@@ -91,13 +91,16 @@ TYPES = {
 }
 
 
-PIPSELECT_SCHEMA = select.SELECT_SCHEMA.extend(
-    {
-        cv.GenerateID(): cv.declare_id(PipsolarSelect),
-        cv.Optional(CONF_OPTIONSMAP): ensure_option_map(),
-        cv.Optional(CONF_STATUSMAP): ensure_option_map(),
-    }
-).extend(cv.COMPONENT_SCHEMA)
+PIPSELECT_SCHEMA = (
+    select.select_schema(PipsolarSelect)
+    .extend(
+        {
+            cv.Optional(CONF_OPTIONSMAP): ensure_option_map(),
+            cv.Optional(CONF_STATUSMAP): ensure_option_map(),
+        }
+    )
+    .extend(cv.COMPONENT_SCHEMA)
+)
 
 
 CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
