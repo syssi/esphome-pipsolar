@@ -91,7 +91,7 @@ TYPES = {
 }
 
 
-IPSELECT_SCHEMA = (
+PIPSELECT_SCHEMA = (
     select.select_schema(PipsolarSelect)
     .extend(
         {
