@@ -29,11 +29,11 @@ template<typename... Ts> class SetOutputAction : public Action<Ts...> {
   SetOutputAction(PipsolarOutput *output) : output_(output) {}
 
   TEMPLATABLE_VALUE(float, level)
-  #if ESPHOME_VERSION_CODE >= VERSION_CODE(2025, 11, 0)
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2025, 11, 0)
     void play(const Ts&... x) override { this->output_->set_value(this->level_.value(x...)); }
-  #else
+#else
     void play(Ts... x) override { this->output_->set_value(this->level_.value(x...)); }
-  #endif
+#endif
  protected:
   PipsolarOutput *output_;
 };
