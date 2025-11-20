@@ -31,7 +31,7 @@ template<typename... Ts> class SetOutputAction : public Action<Ts...> {
   TEMPLATABLE_VALUE(float, level)
 #if ESPHOME_VERSION_CODE >= VERSION_CODE(2025, 11, 3)
     void play(const Ts &...x) override { this->output_->set_value(this->level_.value(x...)); }
-#elif ESPHOME_VERSION_CODE < VERSION_CODE(2025, 12, 0)
+#else
     void play(Ts... x) override { this->output_->set_value(this->level_.value(x...)); }
 #endif
  protected:
