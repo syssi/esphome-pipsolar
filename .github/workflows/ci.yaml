@@ -15,9 +15,9 @@ jobs:
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4.3.1
       - name: yaml-lint
-        uses: ibiqlik/action-yamllint@v3
+        uses: ibiqlik/action-yamllint@v3.1.1
         with:
           config_file: .yamllint
 
@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Check out configuration from GitHub
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.3.1
       - name: Setup Python 3.12
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: 3.12
       - name: Install dependencies
@@ -56,21 +56,21 @@ jobs:
     needs: [esphome-config]
     steps:
       - name: ⤵️ Check out configuration from GitHub
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.3.1
       - name: Cache .esphome
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.4
         with:
           path: .esphome
           key: esphome-compile-esphome-${{ hashFiles('*.yaml') }}
           restore-keys: esphome-compile-esphome-
       - name: Cache .pioenvs
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.4
         with:
           path: .pioenvs
           key: esphome-compile-pioenvs-${{ hashFiles('*.yaml') }}
           restore-keys: esphome-compile-pioenvs-
       - name: Set up Python 3.12
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: 3.12
       - name: Install dependencies
