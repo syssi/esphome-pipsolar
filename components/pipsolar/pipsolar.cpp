@@ -13,9 +13,9 @@ void Pipsolar::setup() {
 
 void Pipsolar::empty_uart_buffer_() {
   uint8_t buf[64];
-  int avail;
+  size_t avail;
   while ((avail = this->available()) > 0) {
-    if (!this->read_array(buf, std::min(static_cast<size_t>(avail), sizeof(buf)))) {
+    if (!this->read_array(buf, std::min(avail, sizeof(buf)))) {
       break;
     }
   }
@@ -803,10 +803,10 @@ void Pipsolar::loop() {
   }
 
   if (this->state_ == STATE_COMMAND || this->state_ == STATE_POLL) {
-    int avail = this->available();
+    size_t avail = this->available();
     while (avail > 0) {
       uint8_t buf[64];
-      size_t to_read = std::min(static_cast<size_t>(avail), sizeof(buf));
+      size_t to_read = std::min(avail, sizeof(buf));
       if (!this->read_array(buf, to_read)) {
         break;
       }
@@ -898,8 +898,13 @@ uint8_t Pipsolar::send_next_command_() {
   if (this->command_queue_[this->command_queue_position_].length() != 0) {
     const char *command = this->command_queue_[this->command_queue_position_].c_str();
     uint8_t byte_command[16];
-    uint8_t length = this->command_queue_[this->command_queue_position_].length();
-    for (uint8_t i = 0; i < length; i++) {
+    size_t length = this->command_queue_[this->command_queue_position_].length();
+    if (length > sizeof(byte_command)) {
+      ESP_LOGE(TAG, "Command too long: %zu", length);
+      this->command_queue_[this->command_queue_position_].clear();
+      return 0;
+    }
+    for (size_t i = 0; i < length; i++) {
       byte_command[i] = (uint8_t) this->command_queue_[this->command_queue_position_].at(i);
     }
     this->state_ = STATE_COMMAND;
