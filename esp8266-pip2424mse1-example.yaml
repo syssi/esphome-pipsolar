@@ -7,7 +7,6 @@ substitutions:
 esphome:
   name: ${name}
   friendly_name: ${name}
-  min_version: 2024.6.0
   project:
     name: "syssi.esphome-pipsolar@main"
     version: 1.0.0
@@ -62,101 +61,101 @@ sensor:
     pipsolar_id: inverter0
     # QPIRI
 #    grid_rating_voltage:
-#      name: "grid_rating_voltage"
+#      name: "grid rating voltage"
 #    grid_rating_current:
-#      name: "grid_rating_current"
+#      name: "grid rating current"
 #    ac_output_rating_voltage:
-#      name: "ac_output_rating_voltage"
+#      name: "ac output rating voltage"
 #    ac_output_rating_frequency:
-#      name: "ac_output_rating_frequency"
+#      name: "ac output rating frequency"
 #    ac_output_rating_current:
-#      name: "ac_output_rating_current"
+#      name: "ac output rating current"
 #    ac_output_rating_apparent_power:
-#      name: "ac_output_rating_apparent_power"
+#      name: "ac output rating apparent power"
 #    ac_output_rating_active_power:
-#      name: "ac_output_rating_active_power"
+#      name: "ac output rating active power"
 #    battery_rating_voltage:
-#      name: "battery_rating_voltage"
+#      name: "battery rating voltage"
 #    battery_recharge_voltage:
-#      name: "battery_recharge_voltage"
+#      name: "battery recharge voltage"
 #    battery_under_voltage:
-#      name: "battery_under_voltage"
+#      name: "battery under voltage"
 #    battery_bulk_voltage:
-#      name: "battery_bulk_voltage"
+#      name: "battery bulk voltage"
 #    battery_float_voltage:
-#      name: "battery_float_voltage"
+#      name: "battery float voltage"
 #    battery_type:
-#      name: "battery_type"
+#      name: "battery type"
 #    current_max_ac_charging_current:
-#      name: "current_max_ac_charging_current"
+#      name: "current max ac charging current"
 #    current_max_charging_current:
-#      name: "current_max_charging_current"
+#      name: "current max charging current"
 #    input_voltage_range:
-#      name: "input_voltage_range"
+#      name: "input voltage range"
 #    output_source_priority:
-#      name: "output_source_priority"
+#      name: "output source priority"
 #    charger_source_priority:
-#      name: "charger_source_priority"
+#      name: "charger source priority"
 #    parallel_max_num:
-#      name: "parallel_max_num"
+#      name: "parallel max num"
 #    machine_type:
-#      name: "machine_type"
+#      name: "machine type"
 #    topology:
 #      name: "topology"
 #    output_mode:
-#      name: "output_mode"
+#      name: "output mode"
 #    battery_redischarge_voltage:
-#      name: "battery_redischarge_voltage"
+#      name: "battery redischarge voltage"
 #    pv_ok_condition_for_parallel:
-#      name: "pv_ok_condition_for_parallel"
+#      name: "pv ok condition for parallel"
 #    pv_power_balance:
-#      name: "pv_power_balance"
+#      name: "pv power balance"
 
     # QPIGS
     grid_voltage:
-      name: "grid_voltage"
+      name: "grid voltage"
     grid_frequency:
-      name: "grid_frequency"
+      name: "grid frequency"
     ac_output_voltage:
-      name: "ac_output_voltage"
+      name: "ac output voltage"
     ac_output_frequency:
-      name: "ac_output_frequency"
+      name: "ac output frequency"
     ac_output_apparent_power:
-      name: "ac_output_apparent_power"
+      name: "ac output apparent power"
     ac_output_active_power:
-      name: "ac_output_active_power"
+      name: "ac output active power"
     output_load_percent:
-      name: "output_load_percent"
+      name: "output load percent"
     bus_voltage:
-      name: "bus_voltage"
+      name: "bus voltage"
     battery_voltage:
-      name: "battery_voltage"
+      name: "battery voltage"
     battery_charging_current:
-      name: "battery_charging_current"
+      name: "battery charging current"
     battery_capacity_percent:
-      name: "battery_capacity_percent"
+      name: "battery capacity percent"
     inverter_heat_sink_temperature:
-      name: "inverter_heat_sink_temperature"
+      name: "inverter heat sink temperature"
     pv_input_current_for_battery:
-      name: "pv_input_current_for_battery"
+      name: "pv input current for battery"
     pv_input_voltage:
-      name: "pv_input_voltage"
+      name: "pv input voltage"
     battery_voltage_scc:
-      name: "battery_voltage_scc"
+      name: "battery voltage scc"
     battery_discharge_current:
-      name: "battery_discharge_current"
+      name: "battery discharge current"
     battery_voltage_offset_for_fans_on:
-      name: "battery_voltage_offset_for_fans_on"
+      name: "battery voltage offset for fans on"
 #    eeprom_version:
-#      name: "eeprom_version"
+#      name: "eeprom version"
     pv_charging_power:
-      name: "pv_charging_power"
+      name: "pv charging power"
 
 text_sensor:
   - platform: pip2424mse1
     pipsolar_id: inverter0
     device_mode:
-      name: "device_mode"
+      name: "device mode"
       filters:
         map:
           - P -> Power on mode
@@ -166,66 +165,66 @@ text_sensor:
           - F -> Fault mode
           - D -> Shutdown mode
 #    last_qpigs:
-#      name: "last_qpigs"
+#      name: "last qpigs"
 #    last_qpiri:
-#      name: "last_qpiri"
+#      name: "last qpiri"
 #    last_qmod:
-#      name: "last_qmod"
+#      name: "last qmod"
 #    last_qflag:
-#      name: "last_qflag"
+#      name: "last qflag"
 #    last_qbatcd:
-#      name: "last_qbatcd"
+#      name: "last qbatcd"
 
 binary_sensor:
   - platform: pip2424mse1
     pipsolar_id: inverter0
     add_sbu_priority_version:
-      name: "add_sbu_priority_version"
+      name: "add sbu priority version"
     configuration_status:
-      name: "configuration_status"
+      name: "configuration status"
 #    scc_firmware_version:
-#      name: "scc_firmware_version"
+#      name: "scc firmware version"
     load_status:
-      name: "load_status"
+      name: "load status"
     battery_voltage_to_steady_while_charging:
-      name: "battery_voltage_to_steady_while_charging"
+      name: "battery voltage to steady while charging"
     charging_status:
-      name: "charging_status"
+      name: "charging status"
     scc_charging_status:
-      name: "scc_charging_status"
+      name: "scc charging status"
     ac_charging_status:
-      name: "ac_charging_status"
+      name: "ac charging status"
     charging_to_floating_mode:
-      name: "charging_to_floating_mode"
+      name: "charging to floating mode"
     switch_on:
-      name: "switch_on"
+      name: "switch on"
 #    dustproof_installed:
-#      name: "dustproof_installed"
+#      name: "dustproof installed"
     silence_buzzer_open_buzzer:
-      name: "silence_buzzer_open_buzzer"
+      name: "silence buzzer open buzzer"
     overload_bypass_function:
-      name: "overload_bypass_function"
+      name: "overload bypass function"
     lcd_escape_to_default:
-      name: "lcd_escape_to_default"
+      name: "lcd escape to default"
     overload_restart_function:
-      name: "overload_restart_function"
+      name: "overload restart function"
     over_temperature_restart_function:
-      name: "over_temperature_restart_function"
+      name: "over temperature restart function"
 #    backlight_on:
-#      name: "backlight_on"
+#      name: "backlight on"
     # QBATCD
     discharge_onoff:
-      name: "discharge_onoff"
+      name: "discharge onoff"
     discharge_with_standby_onoff:
-      name: "discharge_with_standby_onoff"
+      name: "discharge with standby onoff"
     charge_onoff:
-      name: "charge_onoff"
+      name: "charge onoff"
 
 select:
   - platform: pip2424mse1
     pipsolar_id: inverter0
     output_source_priority:
-      name: "output_source_priority"
+      name: "output source priority"
       optionsmap:
         "Utility first": "POP00"
         "Solar first": "POP01"
@@ -235,7 +234,7 @@ select:
         "1": "Solar first"
         "2": "SBU first"
     charging_discharging_control:
-      name: "charging_discharging_control"
+      name: "charging discharging control"
       optionsmap:
         "Charge and discharge enabled": "PBATCD111"
         "Discharge only": "PBATCD110"
@@ -251,17 +250,17 @@ switch:
   - platform: pip2424mse1
     pipsolar_id: inverter0
     output_source_priority_utility:
-      name: "output_source_priority_utility"
+      name: "output source priority utility"
     output_source_priority_solar:
-      name: "output_source_priority_solar"
+      name: "output source priority solar"
     output_source_priority_battery:
-      name: "output_source_priority_battery"
+      name: "output source priority battery"
     input_voltage_range:
-      name: "input_voltage_range"
+      name: "input voltage range"
     pv_ok_condition_for_parallel:
-      name: "pv_ok_condition_for_parallel"
+      name: "pv ok condition for parallel"
     pv_power_balance:
-      name: "pv_power_balance"
+      name: "pv power balance"
 
 output:
   - platform: pip2424mse1
