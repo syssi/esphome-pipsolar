@@ -140,7 +140,7 @@ void Pipsolar::loop() {
     }
   }
   if (this->state_ == STATE_COMMAND) {
-    if (millis() - this->command_start_millis_ > esphome::pipsolar::Pipsolar::COMMAND_TIMEOUT) {
+    if (millis() - this->command_start_millis_ > esphome::pip8048::Pipsolar::COMMAND_TIMEOUT) {
       // command timeout
       const char *command = this->command_queue_[this->command_queue_position_].c_str();
       this->command_start_millis_ = millis();
@@ -152,7 +152,7 @@ void Pipsolar::loop() {
     }
   }
   if (this->state_ == STATE_POLL) {
-    if (millis() - this->command_start_millis_ > esphome::pipsolar::Pipsolar::COMMAND_TIMEOUT) {
+    if (millis() - this->command_start_millis_ > esphome::pip8048::Pipsolar::COMMAND_TIMEOUT) {
       // command timeout
       ESP_LOGD(TAG, "poll %s timeout", this->enabled_polling_commands_[this->last_polling_command_].command);
       this->handle_poll_error_(this->enabled_polling_commands_[this->last_polling_command_].identifier);
