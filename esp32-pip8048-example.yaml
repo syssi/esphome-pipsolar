@@ -1,6 +1,6 @@
 substitutions:
   name: pip8048
-  external_components_source: github://syssi/esphome-pipsolar@reorganize-project
+  external_components_source: github://syssi/esphome-pipsolar@main
   tx_pin: GPIO16
   rx_pin: GPIO17
 
