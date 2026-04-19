@@ -30,6 +30,7 @@ CONF_POSSIBLE_VALUES = "possible_values"
 #                               24V unit: 00.0V/24V/24.5V/25V/25.5V/26V/26.5V/27V/27.5V/28V/28.5V/29V
 #                               48V unit: 00.0V48V/49V/50V/51V/52V/53V/54V/55V/56V/57V/58V
 
+CONF_BATTERY_BULK_VOLTAGE = "battery_bulk_voltage"
 CONF_BATTERY_RECHARGE_VOLTAGE = "battery_recharge_voltage"
 CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
 CONF_BATTERY_FLOAT_VOLTAGE = "battery_float_voltage"
@@ -40,6 +41,33 @@ CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
 
 TYPES = {
+    CONF_BATTERY_BULK_VOLTAGE: (
+        [
+            48.0,
+            48.5,
+            49.0,
+            49.5,
+            50.0,
+            50.5,
+            51.0,
+            51.5,
+            52.0,
+            52.5,
+            53.0,
+            53.5,
+            54.0,
+            54.5,
+            55.0,
+            55.5,
+            56.0,
+            56.5,
+            57.0,
+            57.5,
+            58.0,
+            58.4,
+        ],
+        "PCVV%02.1f",
+    ),
     CONF_BATTERY_RECHARGE_VOLTAGE: (
         [44.0, 45.0, 46.0, 47.0, 48.0, 49.0, 50.0, 51.0],
         "PBCV%02.1f",
