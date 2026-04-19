@@ -1,7 +1,7 @@
 #include "pipsolar.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
-#include "select/pipsolar_select.h"
+#include "pipsolar_select.h"
 
 namespace esphome {
 namespace pip2424mse1 {
