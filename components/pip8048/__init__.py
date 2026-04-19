@@ -20,9 +20,10 @@ PIPSOLAR_COMPONENT_SCHEMA = cv.Schema(
 )
 
 CONFIG_SCHEMA = cv.All(
+    cv.require_esphome_version(2026, 3, 0),
     cv.Schema({cv.GenerateID(): cv.declare_id(PipsolarComponent)})
     .extend(cv.polling_component_schema("1s"))
-    .extend(uart.UART_DEVICE_SCHEMA)
+    .extend(uart.UART_DEVICE_SCHEMA),
 )
 
 
