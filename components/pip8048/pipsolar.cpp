@@ -1,6 +1,7 @@
 #include "pipsolar.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
+#include "select/pipsolar_select.h"
 
 namespace esphome {
 namespace pip8048 {
@@ -287,6 +288,12 @@ void Pipsolar::handle_poll_response_(ENUMPollingCommand polling_command, const c
     case POLLING_QMN:
       handle_qmn_(message);
       break;
+    case POLLING_QPIGS2:
+      handle_qpigs2_(message);
+      break;
+    case POLLING_QBATCD:
+      handle_qbatcd_(message);
+      break;
     default:
       break;
   }
@@ -320,13 +327,26 @@ void Pipsolar::handle_qpiri_(const char *message) {
   this->read_float_sensor_(message, &pos, this->battery_float_voltage_);
 
   this->read_int_sensor_(message, &pos, this->battery_type_);
-  this->read_int_sensor_(message, &pos, this->current_max_ac_charging_current_);
-  this->read_int_sensor_(message, &pos, this->current_max_charging_current_);
+  std::string current_max_ac_charging_current_str = this->read_field_(message, &pos);
+  std::string current_max_charging_current_str = this->read_field_(message, &pos);
+  if (this->current_max_ac_charging_current_) {
+    this->current_max_ac_charging_current_->publish_state(
+        parse_number<int32_t>(current_max_ac_charging_current_str).value_or(NAN));
+  }
+  if (this->current_max_charging_current_) {
+    this->current_max_charging_current_->publish_state(
+        parse_number<int32_t>(current_max_charging_current_str).value_or(NAN));
+  }
 
-  esphome::optional<int> input_voltage_range = parse_number<int32_t>(this->read_field_(message, &pos));
-  esphome::optional<int> output_source_priority = parse_number<int32_t>(this->read_field_(message, &pos));
+  std::string input_voltage_range_str = this->read_field_(message, &pos);
+  std::string output_source_priority_str = this->read_field_(message, &pos);
+  esphome::optional<int> input_voltage_range = parse_number<int32_t>(input_voltage_range_str);
+  esphome::optional<int> output_source_priority = parse_number<int32_t>(output_source_priority_str);
 
-  this->read_int_sensor_(message, &pos, this->charger_source_priority_);
+  std::string charger_source_priority_str = this->read_field_(message, &pos);
+  if (this->charger_source_priority_) {
+    this->charger_source_priority_->publish_state(parse_number<int32_t>(charger_source_priority_str).value_or(NAN));
+  }
   this->read_int_sensor_(message, &pos, this->parallel_max_num_);
   this->read_int_sensor_(message, &pos, this->machine_type_);
   this->read_int_sensor_(message, &pos, this->topology_);
@@ -347,6 +367,18 @@ void Pipsolar::handle_qpiri_(const char *message) {
 
   if (this->output_source_priority_) {
     this->output_source_priority_->publish_state(output_source_priority.value_or(NAN));
+  }
+  if (this->output_source_priority_select_) {
+    this->output_source_priority_select_->map_and_publish(output_source_priority_str);
+  }
+  if (this->charger_source_priority_select_) {
+    this->charger_source_priority_select_->map_and_publish(charger_source_priority_str);
+  }
+  if (this->current_max_ac_charging_current_select_) {
+    this->current_max_ac_charging_current_select_->map_and_publish(current_max_ac_charging_current_str);
+  }
+  if (this->current_max_charging_current_select_) {
+    this->current_max_charging_current_select_->map_and_publish(current_max_charging_current_str);
   }
   // special for output source priority switches
   if (this->output_source_priority_utility_switch_ && output_source_priority.has_value()) {
@@ -403,8 +435,8 @@ void Pipsolar::handle_qpigs_(const char *message) {
   this->read_int_sensor_(message, &pos, this->battery_capacity_percent_);
   this->read_int_sensor_(message, &pos, this->inverter_heat_sink_temperature_);
 
-  this->read_float_sensor_(message, &pos, this->pv_input_current_for_battery_);
-  this->read_float_sensor_(message, &pos, this->pv_input_voltage_);
+  this->read_float_sensor_(message, &pos, this->pv1_input_current_);
+  this->read_float_sensor_(message, &pos, this->pv1_input_voltage_);
   this->read_float_sensor_(message, &pos, this->battery_voltage_scc_);
 
   this->read_int_sensor_(message, &pos, this->battery_discharge_current_);
@@ -424,7 +456,7 @@ void Pipsolar::handle_qpigs_(const char *message) {
     this->battery_voltage_offset_for_fans_on_->publish_state(battery_voltage_offset_for_fans_on.value_or(NAN) / 10.0f);
   }
   this->read_int_sensor_(message, &pos, this->eeprom_version_);
-  this->read_int_sensor_(message, &pos, this->pv_charging_power_);
+  this->read_int_sensor_(message, &pos, this->pv1_charging_power_);
 
   std::string device_status_2 = this->read_field_(message, &pos);
   this->publish_binary_sensor_(this->get_bit_(device_status_2, 0), this->charging_to_floating_mode_);
@@ -682,6 +714,45 @@ void Pipsolar::handle_qt_(const char *message) {
 void Pipsolar::handle_qmn_(const char *message) {
   if (this->last_qmn_) {
     this->last_qmn_->publish_state(message);
+  }
+}
+
+void Pipsolar::handle_qpigs2_(const char *message) {
+  // Response format: '(pv2_current pv2_voltage pv2_charging_power'
+  if (this->last_qpigs2_) {
+    this->last_qpigs2_->publish_state(message);
+  }
+
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+
+  this->read_float_sensor_(message, &pos, this->pv2_input_current_);
+  this->read_float_sensor_(message, &pos, this->pv2_input_voltage_);
+  this->read_int_sensor_(message, &pos, this->pv2_charging_power_);
+}
+
+void Pipsolar::handle_qbatcd_(const char *message) {
+  // Response format: '(000' where each digit is 0/1 for discharge, discharge_standby, charge
+  if (this->last_qbatcd_) {
+    this->last_qbatcd_->publish_state(message);
+  }
+  for (size_t i = 1; i < strlen(message); i++) {
+    esphome::optional<bool> enabled = message[i] == '1';
+    switch (i) {
+      case 1:
+        this->publish_binary_sensor_(enabled, this->discharge_onoff_);
+        break;
+      case 2:
+        this->publish_binary_sensor_(enabled, this->discharge_with_standby_onoff_);
+        break;
+      case 3:
+        this->publish_binary_sensor_(enabled, this->charge_onoff_);
+        break;
+    }
+  }
+  if (this->charging_discharging_control_select_) {
+    std::string tmp = message;
+    this->charging_discharging_control_select_->map_and_publish(tmp);
   }
 }
 

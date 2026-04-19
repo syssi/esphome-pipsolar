@@ -139,10 +139,10 @@ sensor:
       name: "battery_capacity_percent"
     inverter_heat_sink_temperature:
       name: "inverter_heat_sink_temperature"
-    pv_input_current_for_battery:
-      name: "pv_input_current_for_battery"
-    pv_input_voltage:
-      name: "pv_input_voltage"
+    pv1_input_current:
+      name: "pv1_input_current"
+    pv1_input_voltage:
+      name: "pv1_input_voltage"
     battery_voltage_scc:
       name: "battery_voltage_scc"
     battery_discharge_current:
@@ -151,8 +151,16 @@ sensor:
       name: "battery_voltage_offset_for_fans_on"
 #    eeprom_version:
 #      name: "eeprom_version"
-    pv_charging_power:
-      name: "pv_charging_power"
+    pv1_charging_power:
+      name: "pv1_charging_power"
+
+    # QPIGS2
+    pv2_input_current:
+      name: "pv2_input_current"
+    pv2_input_voltage:
+      name: "pv2_input_voltage"
+    pv2_charging_power:
+      name: "pv2_charging_power"
 
 text_sensor:
   - platform: pip8048
@@ -175,6 +183,10 @@ text_sensor:
 #      name: "last_qmod"
 #    last_qflag:
 #      name: "last_qflag"
+#    last_qpigs2:
+#      name: "last_qpigs2"
+#    last_qbatcd:
+#      name: "last_qbatcd"
 
 binary_sensor:
   - platform: pip8048
@@ -213,6 +225,117 @@ binary_sensor:
       name: "over_temperature_restart_function"
 #    backlight_on:
 #      name: "backlight_on"
+    # QBATCD
+    discharge_onoff:
+      name: "discharge_onoff"
+    discharge_with_standby_onoff:
+      name: "discharge_with_standby_onoff"
+    charge_onoff:
+      name: "charge_onoff"
+
+select:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    output_source_priority:
+      name: "output_source_priority"
+      optionsmap:
+        "Utility first": "POP00"
+        "Solar first": "POP01"
+        "SBU first": "POP02"
+      statusmap:
+        "0": "Utility first"
+        "1": "Solar first"
+        "2": "SBU first"
+    charger_source_priority:
+      name: "charger_source_priority"
+      optionsmap:
+#        "Utility first": "PCP00"
+        "Solar first": "PCP01"
+        "Solar and utility": "PCP02"
+        "Solar charging only": "PCP03"
+      statusmap:
+#        "0": "Utility first"
+        "1": "Solar first"
+        "2": "Solar and utility"
+        "3": "Solar charging only"
+    current_max_ac_charging_current:
+      name: "current_max_ac_charging_current"
+      optionsmap:
+        "2A": "MUCHGC0002"
+        "10A": "MUCHGC0010"
+        "20A": "MUCHGC0020"
+        "30A": "MUCHGC0030"
+        "40A": "MUCHGC0040"
+        "50A": "MUCHGC0050"
+        "60A": "MUCHGC0060"
+        "70A": "MUCHGC0070"
+        "80A": "MUCHGC0080"
+        "90A": "MUCHGC0090"
+        "100A": "MUCHGC0100"
+        "110A": "MUCHGC0110"
+        "120A": "MUCHGC0120"
+      statusmap:
+        "2": "2A"
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+        "90": "90A"
+        "100": "100A"
+        "110": "110A"
+        "120": "120A"
+    current_max_charging_current:
+      name: "current_max_charging_current"
+      optionsmap:
+        "10A": "MCHGC010"
+        "20A": "MCHGC020"
+        "30A": "MCHGC030"
+        "40A": "MCHGC040"
+        "50A": "MCHGC050"
+        "60A": "MCHGC060"
+        "70A": "MCHGC070"
+        "80A": "MCHGC080"
+        "90A": "MCHGC090"
+        "100A": "MCHGC100"
+        "110A": "MCHGC110"
+        "120A": "MCHGC120"
+      statusmap:
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+        "90": "90A"
+        "100": "100A"
+        "110": "110A"
+        "120": "120A"
+    charging_discharging_control:
+      name: "charging_discharging_control"
+      optionsmap:
+        "111": "PBATCD111"
+        "011": "PBATCD011"
+        "101": "PBATCD101"
+        "110": "PBATCD110"
+        "010": "PBATCD010"
+        "100": "PBATCD100"
+        "001": "PBATCD001"
+        "000": "PBATCD000"
+      statusmap:
+        "(111": "111"
+        "(011": "011"
+        "(101": "101"
+        "(110": "110"
+        "(010": "010"
+        "(100": "100"
+        "(001": "001"
+        "(000": "000"
 
 switch:
   - platform: pip8048
@@ -235,3 +358,7 @@ output:
     pipsolar_id: inverter0
     battery_recharge_voltage:
       id: inverter0_battery_recharge_voltage_out
+  - platform: pip8048
+    pipsolar_id: inverter0
+    battery_bulk_voltage:
+      id: inverter0_battery_bulk_voltage_out
