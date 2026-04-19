@@ -27,6 +27,7 @@ from esphome.const import (
 )
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
+from ..const import CONF_OUTPUT_SOURCE_PRIORITY
 
 DEPENDENCIES = ["uart"]
 
@@ -48,7 +49,6 @@ CONF_BATTERY_TYPE = "battery_type"
 CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
 CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
 CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
-CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
 CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_PARALLEL_MAX_NUM = "parallel_max_num"
 CONF_MACHINE_TYPE = "machine_type"
