@@ -1,0 +1,361 @@
+substitutions:
+  name: pip8048
+  external_components_source: github://syssi/esphome-pipsolar@main
+  tx_pin: GPIO4
+  rx_pin: GPIO5
+
+esphome:
+  name: ${name}
+  friendly_name: ${name}
+  project:
+    name: "syssi.esphome-pipsolar@main"
+    version: 1.0.0
+
+esp8266:
+  board: d1_mini
+
+external_components:
+  - source: ${external_components_source}
+    refresh: 0s
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+  platform: esphome
+
+logger:
+  baud_rate: 0
+  level: DEBUG
+
+# If you use Home Assistant please remove this `mqtt` section and uncomment the `api` component!
+# The native API has many advantages over MQTT: https://esphome.io/components/api.html#advantages-over-mqtt
+mqtt:
+  broker: !secret mqtt_host
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  id: mqtt_client
+
+# api:
+
+uart:
+  id: uart_0
+  baud_rate: 2400
+  tx_pin: ${tx_pin}
+  rx_pin: ${rx_pin}
+#  debug:
+#    direction: BOTH
+#    dummy_receiver: false
+#    after:
+#      delimiter: "\r"
+#    sequence:
+#      - lambda: UARTDebug::log_string(direction, bytes);
+
+pip8048:
+  uart_id: uart_0
+  id: inverter0
+
+sensor:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    # QPIRI
+#    grid_rating_voltage:
+#      name: "grid rating voltage"
+#    grid_rating_current:
+#      name: "grid rating current"
+#    ac_output_rating_voltage:
+#      name: "ac output rating voltage"
+#    ac_output_rating_frequency:
+#      name: "ac output rating frequency"
+#    ac_output_rating_current:
+#      name: "ac output rating current"
+#    ac_output_rating_apparent_power:
+#      name: "ac output rating apparent power"
+#    ac_output_rating_active_power:
+#      name: "ac output rating active power"
+#    battery_rating_voltage:
+#      name: "battery rating voltage"
+#    battery_recharge_voltage:
+#      name: "battery recharge voltage"
+#    battery_under_voltage:
+#      name: "battery under voltage"
+#    battery_bulk_voltage:
+#      name: "battery bulk voltage"
+#    battery_float_voltage:
+#      name: "battery float voltage"
+#    battery_type:
+#      name: "battery type"
+#    current_max_ac_charging_current:
+#      name: "current max ac charging current"
+#    current_max_charging_current:
+#      name: "current max charging current"
+#    input_voltage_range:
+#      name: "input voltage range"
+#    output_source_priority:
+#      name: "output source priority"
+#    charger_source_priority:
+#      name: "charger source priority"
+#    parallel_max_num:
+#      name: "parallel max num"
+#    machine_type:
+#      name: "machine type"
+#    topology:
+#      name: "topology"
+#    output_mode:
+#      name: "output mode"
+#    battery_redischarge_voltage:
+#      name: "battery redischarge voltage"
+#    pv_ok_condition_for_parallel:
+#      name: "pv ok condition for parallel"
+#    pv_power_balance:
+#      name: "pv power balance"
+
+    # QPIGS
+    grid_voltage:
+      name: "grid voltage"
+    grid_frequency:
+      name: "grid frequency"
+    ac_output_voltage:
+      name: "ac output voltage"
+    ac_output_frequency:
+      name: "ac output frequency"
+    ac_output_apparent_power:
+      name: "ac output apparent power"
+    ac_output_active_power:
+      name: "ac output active power"
+    output_load_percent:
+      name: "output load percent"
+    bus_voltage:
+      name: "bus voltage"
+    battery_voltage:
+      name: "battery voltage"
+    battery_charging_current:
+      name: "battery charging current"
+    battery_capacity_percent:
+      name: "battery capacity percent"
+    inverter_heat_sink_temperature:
+      name: "inverter heat sink temperature"
+    pv1_input_current:
+      name: "pv1 input current"
+    pv1_input_voltage:
+      name: "pv1 input voltage"
+    battery_voltage_scc:
+      name: "battery voltage scc"
+    battery_discharge_current:
+      name: "battery discharge current"
+    battery_voltage_offset_for_fans_on:
+      name: "battery voltage offset for fans on"
+#    eeprom_version:
+#      name: "eeprom version"
+    pv1_charging_power:
+      name: "pv1 charging power"
+
+    # QPIGS2
+    pv2_input_current:
+      name: "pv2 input current"
+    pv2_input_voltage:
+      name: "pv2 input voltage"
+    pv2_charging_power:
+      name: "pv2 charging power"
+
+text_sensor:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    device_mode:
+      name: "device mode"
+      filters:
+        map:
+          - P -> Power on mode
+          - S -> Standby mode
+          - L -> Line mode
+          - B -> Battery mode
+          - F -> Fault mode
+          - D -> Shutdown mode
+#    last_qpigs:
+#      name: "last qpigs"
+#    last_qpiri:
+#      name: "last qpiri"
+#    last_qmod:
+#      name: "last qmod"
+#    last_qflag:
+#      name: "last qflag"
+#    last_qpigs2:
+#      name: "last qpigs2"
+#    last_qbatcd:
+#      name: "last qbatcd"
+
+binary_sensor:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    add_sbu_priority_version:
+      name: "add sbu priority version"
+    configuration_status:
+      name: "configuration status"
+#    scc_firmware_version:
+#      name: "scc firmware version"
+    load_status:
+      name: "load status"
+    battery_voltage_to_steady_while_charging:
+      name: "battery voltage to steady while charging"
+    charging_status:
+      name: "charging status"
+    scc_charging_status:
+      name: "scc charging status"
+    ac_charging_status:
+      name: "ac charging status"
+    charging_to_floating_mode:
+      name: "charging to floating mode"
+    switch_on:
+      name: "switch on"
+#    dustproof_installed:
+#      name: "dustproof installed"
+    silence_buzzer_open_buzzer:
+      name: "silence buzzer open buzzer"
+    overload_bypass_function:
+      name: "overload bypass function"
+    lcd_escape_to_default:
+      name: "lcd escape to default"
+    overload_restart_function:
+      name: "overload restart function"
+    over_temperature_restart_function:
+      name: "over temperature restart function"
+#    backlight_on:
+#      name: "backlight on"
+    # QBATCD
+    discharge_onoff:
+      name: "discharge onoff"
+    discharge_with_standby_onoff:
+      name: "discharge with standby onoff"
+    charge_onoff:
+      name: "charge onoff"
+
+select:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    output_source_priority:
+      name: "output source priority"
+      optionsmap:
+        "Utility first": "POP00"
+        "Solar first": "POP01"
+        "SBU first": "POP02"
+      statusmap:
+        "0": "Utility first"
+        "1": "Solar first"
+        "2": "SBU first"
+    charger_source_priority:
+      name: "charger source priority"
+      optionsmap:
+#        "Utility first": "PCP00"
+        "Solar first": "PCP01"
+        "Solar and utility": "PCP02"
+        "Solar charging only": "PCP03"
+      statusmap:
+#        "0": "Utility first"
+        "1": "Solar first"
+        "2": "Solar and utility"
+        "3": "Solar charging only"
+    current_max_ac_charging_current:
+      name: "current max ac charging current"
+      optionsmap:
+        "2A": "MUCHGC0002"
+        "10A": "MUCHGC0010"
+        "20A": "MUCHGC0020"
+        "30A": "MUCHGC0030"
+        "40A": "MUCHGC0040"
+        "50A": "MUCHGC0050"
+        "60A": "MUCHGC0060"
+        "70A": "MUCHGC0070"
+        "80A": "MUCHGC0080"
+        "90A": "MUCHGC0090"
+        "100A": "MUCHGC0100"
+        "110A": "MUCHGC0110"
+        "120A": "MUCHGC0120"
+      statusmap:
+        "2": "2A"
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+        "90": "90A"
+        "100": "100A"
+        "110": "110A"
+        "120": "120A"
+    current_max_charging_current:
+      name: "current max charging current"
+      optionsmap:
+        "10A": "MCHGC010"
+        "20A": "MCHGC020"
+        "30A": "MCHGC030"
+        "40A": "MCHGC040"
+        "50A": "MCHGC050"
+        "60A": "MCHGC060"
+        "70A": "MCHGC070"
+        "80A": "MCHGC080"
+        "90A": "MCHGC090"
+        "100A": "MCHGC100"
+        "110A": "MCHGC110"
+        "120A": "MCHGC120"
+      statusmap:
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+        "60": "60A"
+        "70": "70A"
+        "80": "80A"
+        "90": "90A"
+        "100": "100A"
+        "110": "110A"
+        "120": "120A"
+    charging_discharging_control:
+      name: "charging discharging control"
+      optionsmap:
+        "111": "PBATCD111"
+        "011": "PBATCD011"
+        "101": "PBATCD101"
+        "110": "PBATCD110"
+        "010": "PBATCD010"
+        "100": "PBATCD100"
+        "001": "PBATCD001"
+        "000": "PBATCD000"
+      statusmap:
+        "(111": "111"
+        "(011": "011"
+        "(101": "101"
+        "(110": "110"
+        "(010": "010"
+        "(100": "100"
+        "(001": "001"
+        "(000": "000"
+
+switch:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    output_source_priority_utility:
+      name: "output source priority utility"
+    output_source_priority_solar:
+      name: "output source priority solar"
+    output_source_priority_battery:
+      name: "output source priority battery"
+    input_voltage_range:
+      name: "input voltage range"
+    pv_ok_condition_for_parallel:
+      name: "pv ok condition for parallel"
+    pv_power_balance:
+      name: "pv power balance"
+
+output:
+  - platform: pip8048
+    pipsolar_id: inverter0
+    battery_recharge_voltage:
+      id: inverter0_battery_recharge_voltage_out
+  - platform: pip8048
+    pipsolar_id: inverter0
+    battery_bulk_voltage:
+      id: inverter0_battery_bulk_voltage_out
