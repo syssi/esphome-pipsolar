@@ -175,6 +175,8 @@ text_sensor:
 #      name: "last_qmod"
 #    last_qflag:
 #      name: "last_qflag"
+#    last_qbatcd:
+#      name: "last_qbatcd"
 
 binary_sensor:
   - platform: pip2424mse1
@@ -213,6 +215,39 @@ binary_sensor:
       name: "over_temperature_restart_function"
 #    backlight_on:
 #      name: "backlight_on"
+    # QBATCD
+    discharge_onoff:
+      name: "discharge_onoff"
+    discharge_with_standby_onoff:
+      name: "discharge_with_standby_onoff"
+    charge_onoff:
+      name: "charge_onoff"
+
+select:
+  - platform: pip2424mse1
+    pipsolar_id: inverter0
+    output_source_priority:
+      name: "output_source_priority"
+      optionsmap:
+        "Utility first": "POP00"
+        "Solar first": "POP01"
+        "SBU first": "POP02"
+      statusmap:
+        "0": "Utility first"
+        "1": "Solar first"
+        "2": "SBU first"
+    charging_discharging_control:
+      name: "charging_discharging_control"
+      optionsmap:
+        "Charge and discharge enabled": "PBATCD111"
+        "Discharge only": "PBATCD110"
+        "Charge only": "PBATCD001"
+        "Disabled": "PBATCD000"
+      statusmap:
+        "(111": "Charge and discharge enabled"
+        "(110": "Discharge only"
+        "(001": "Charge only"
+        "(000": "Disabled"
 
 switch:
   - platform: pip2424mse1

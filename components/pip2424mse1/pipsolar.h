@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esphome/components/binary_sensor/binary_sensor.h"
+#include "esphome/components/select/select.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/switch/switch.h"
 #include "esphome/components/text_sensor/text_sensor.h"
@@ -12,6 +13,8 @@
 namespace esphome {
 namespace pip2424mse1 {
 
+class PipsolarSelect;
+
 enum ENUMPollingCommand {
   POLLING_QPIRI = 0,
   POLLING_QPIGS = 1,
@@ -20,6 +23,7 @@ enum ENUMPollingCommand {
   POLLING_QPIWS = 4,
   POLLING_QT = 5,
   POLLING_QMN = 6,
+  POLLING_QBATCD = 7,
 };
 struct PollingCommand {
   uint8_t *command;
@@ -56,6 +60,7 @@ struct QFLAGValues {
 #define PIPSOLAR_BINARY_SENSOR(name, polling_command) \
   PIPSOLAR_ENTITY_(binary_sensor::BinarySensor, name, polling_command)
 #define PIPSOLAR_TEXT_SENSOR(name, polling_command) PIPSOLAR_ENTITY_(text_sensor::TextSensor, name, polling_command)
+#define PIPSOLAR_SELECT(name, polling_command) PIPSOLAR_ENTITY_(PipsolarSelect, name, polling_command)
 
 class Pipsolar : public uart::UARTDevice, public PollingComponent {
   // QPIGS values
@@ -169,6 +174,11 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(warning_high_ac_input_during_bus_soft_start, QPIWS)
   PIPSOLAR_BINARY_SENSOR(warning_battery_equalization, QPIWS)
 
+  // QBATCD values
+  PIPSOLAR_BINARY_SENSOR(discharge_onoff, QBATCD)
+  PIPSOLAR_BINARY_SENSOR(discharge_with_standby_onoff, QBATCD)
+  PIPSOLAR_BINARY_SENSOR(charge_onoff, QBATCD)
+
   PIPSOLAR_TEXT_SENSOR(last_qpigs, QPIGS)
   PIPSOLAR_TEXT_SENSOR(last_qpiri, QPIRI)
   PIPSOLAR_TEXT_SENSOR(last_qmod, QMOD)
@@ -176,6 +186,10 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_TEXT_SENSOR(last_qpiws, QPIWS)
   PIPSOLAR_TEXT_SENSOR(last_qt, QT)
   PIPSOLAR_TEXT_SENSOR(last_qmn, QMN)
+  PIPSOLAR_TEXT_SENSOR(last_qbatcd, QBATCD)
+
+  PIPSOLAR_SELECT(output_source_priority_select, QPIRI)
+  PIPSOLAR_SELECT(charging_discharging_control_select, QBATCD)
 
   PIPSOLAR_SWITCH(output_source_priority_utility_switch, QPIRI)
   PIPSOLAR_SWITCH(output_source_priority_solar_switch, QPIRI)
@@ -192,7 +206,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void update() override;
 
  protected:
-  static const size_t PIPSOLAR_READ_BUFFER_LENGTH = 128;  // maximum supported answer length
+  static const size_t PIPSOLAR_READ_BUFFER_LENGTH = 130;  // maximum supported answer length
   static const size_t COMMAND_QUEUE_LENGTH = 10;
   static const size_t COMMAND_TIMEOUT = 5000;
   static const size_t POLLING_COMMANDS_MAX = 15;
@@ -214,6 +228,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void handle_qpiws_(const char *message);
   void handle_qt_(const char *message);
   void handle_qmn_(const char *message);
+  void handle_qbatcd_(const char *message);
 
   void skip_start_(const char *message, size_t *pos);
   void skip_field_(const char *message, size_t *pos);

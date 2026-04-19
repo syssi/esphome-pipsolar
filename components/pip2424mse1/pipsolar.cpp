@@ -1,6 +1,7 @@
 #include "pipsolar.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
+#include "select/pipsolar_select.h"
 
 namespace esphome {
 namespace pip2424mse1 {
@@ -287,6 +288,9 @@ void Pipsolar::handle_poll_response_(ENUMPollingCommand polling_command, const c
     case POLLING_QMN:
       handle_qmn_(message);
       break;
+    case POLLING_QBATCD:
+      handle_qbatcd_(message);
+      break;
     default:
       break;
   }
@@ -323,8 +327,10 @@ void Pipsolar::handle_qpiri_(const char *message) {
   this->read_int_sensor_(message, &pos, this->current_max_ac_charging_current_);
   this->read_int_sensor_(message, &pos, this->current_max_charging_current_);
 
-  esphome::optional<int> input_voltage_range = parse_number<int32_t>(this->read_field_(message, &pos));
-  esphome::optional<int> output_source_priority = parse_number<int32_t>(this->read_field_(message, &pos));
+  std::string input_voltage_range_str = this->read_field_(message, &pos);
+  std::string output_source_priority_str = this->read_field_(message, &pos);
+  esphome::optional<int> input_voltage_range = parse_number<int32_t>(input_voltage_range_str);
+  esphome::optional<int> output_source_priority = parse_number<int32_t>(output_source_priority_str);
 
   this->read_int_sensor_(message, &pos, this->charger_source_priority_);
   this->read_int_sensor_(message, &pos, this->parallel_max_num_);
@@ -347,6 +353,9 @@ void Pipsolar::handle_qpiri_(const char *message) {
 
   if (this->output_source_priority_) {
     this->output_source_priority_->publish_state(output_source_priority.value_or(NAN));
+  }
+  if (this->output_source_priority_select_) {
+    this->output_source_priority_select_->map_and_publish(output_source_priority_str);
   }
   // special for output source priority switches
   if (this->output_source_priority_utility_switch_ && output_source_priority.has_value()) {
@@ -380,6 +389,14 @@ void Pipsolar::handle_qpiri_(const char *message) {
 }
 
 void Pipsolar::handle_qpigs_(const char *message) {
+  // clang-format off
+  // Response format: 21 space-separated fields after '('
+  // (F1   F2   F3   F4   F5   F6  F7  F8  F9    F10 F11 F12  F13  F14   F15   F16   F17       F18 F19 F20   F21
+  // 226.7 49.9 226.7 49.9 0498 0479 016 427 27.00 005 100 0035 01.9 255.1 00.00 00000 10010110 00 00 00510 110 (PIP2424MSE1)
+  // 247.3 50.0 239.0 50.0 0931 0805 025 360 26.10 007 060 0017 04.6 179.2 00.00 00001 00010110 00 00 00831 011 (Axpert VM IV 24v 3600w)
+  // 232.6 50.0 229.9 49.9 0391 0312 007 402 54.40 042 072 0066 0042 284.6 00.00 00000 00010010 00 00 02901 010 (PIP-5048Mg FW71.85, F13 integer)
+  // 218.1 49.9 218.1 49.9 0327 0295 005 360 51.20 000 100 0037 00.0 000.0 00.00 00000 00010000 00 00 00002 011 0 00 0000 (PIP6048MT, 3 extra fields ignored)
+  // clang-format on
   if (this->last_qpigs_) {
     this->last_qpigs_->publish_state(message);
   }
@@ -682,6 +699,31 @@ void Pipsolar::handle_qt_(const char *message) {
 void Pipsolar::handle_qmn_(const char *message) {
   if (this->last_qmn_) {
     this->last_qmn_->publish_state(message);
+  }
+}
+
+void Pipsolar::handle_qbatcd_(const char *message) {
+  // response format: '(000' where each digit is 0/1 for discharge, discharge_standby, charge
+  if (this->last_qbatcd_) {
+    this->last_qbatcd_->publish_state(message);
+  }
+  for (size_t i = 1; i < strlen(message); i++) {
+    esphome::optional<bool> enabled = message[i] == '1';
+    switch (i) {
+      case 1:
+        this->publish_binary_sensor_(enabled, this->discharge_onoff_);
+        break;
+      case 2:
+        this->publish_binary_sensor_(enabled, this->discharge_with_standby_onoff_);
+        break;
+      case 3:
+        this->publish_binary_sensor_(enabled, this->charge_onoff_);
+        break;
+    }
+  }
+  if (this->charging_discharging_control_select_) {
+    std::string tmp = message;
+    this->charging_discharging_control_select_->map_and_publish(tmp);
   }
 }
 
