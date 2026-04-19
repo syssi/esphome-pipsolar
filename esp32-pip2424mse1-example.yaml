@@ -1,15 +1,8 @@
-# Warning:
-#
-# If you configure a lot of the possible sensors etc. it could be that you run
-# out of memory (on esp8266). If you configure nearly all sensors etc. you run
-# in a stack-size issue. In this case you have to increase stack size!
-#
-#  https://github.com/esphome/issues/issues/855
-
 substitutions:
-  name: pipsolar
-  tx_pin: GPIO4
-  rx_pin: GPIO5
+  name: pip2424mse1
+  external_components_source: github://syssi/esphome-pipsolar@reorganize-project
+  tx_pin: GPIO16
+  rx_pin: GPIO17
 
 esphome:
   name: ${name}
@@ -19,8 +12,14 @@ esphome:
     name: "syssi.esphome-pipsolar@main"
     version: 1.0.0
 
-esp8266:
-  board: d1_mini
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: esp-idf
+
+external_components:
+  - source: ${external_components_source}
+    refresh: 0s
 
 wifi:
   ssid: !secret wifi_ssid
@@ -44,24 +43,24 @@ mqtt:
 # api:
 
 uart:
-  id: uart_0
-  baud_rate: 2400
-  tx_pin: ${tx_pin}
-  rx_pin: ${rx_pin}
-#  debug:
-#    direction: BOTH
-#    dummy_receiver: false
-#    after:
-#      delimiter: "\r"
-#    sequence:
-#      - lambda: UARTDebug::log_string(direction, bytes);
+  - id: uart_0
+    baud_rate: 2400
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+#    debug:
+#      direction: BOTH
+#      dummy_receiver: false
+#      after:
+#        delimiter: "\r"
+#      sequence:
+#        - lambda: UARTDebug::log_string(direction, bytes);
 
-pipsolar:
+pip2424mse1:
   uart_id: uart_0
   id: inverter0
 
 sensor:
-  - platform: pipsolar
+  - platform: pip2424mse1
     pipsolar_id: inverter0
     # QPIRI
 #    grid_rating_voltage:
@@ -156,7 +155,7 @@ sensor:
       name: "pv_charging_power"
 
 text_sensor:
-  - platform: pipsolar
+  - platform: pip2424mse1
     pipsolar_id: inverter0
     device_mode:
       name: "device_mode"
@@ -178,7 +177,7 @@ text_sensor:
 #      name: "last_qflag"
 
 binary_sensor:
-  - platform: pipsolar
+  - platform: pip2424mse1
     pipsolar_id: inverter0
     add_sbu_priority_version:
       name: "add_sbu_priority_version"
@@ -216,7 +215,7 @@ binary_sensor:
 #      name: "backlight_on"
 
 switch:
-  - platform: pipsolar
+  - platform: pip2424mse1
     pipsolar_id: inverter0
     output_source_priority_utility:
       name: "output_source_priority_utility"
@@ -232,7 +231,7 @@ switch:
       name: "pv_power_balance"
 
 output:
-  - platform: pipsolar
+  - platform: pip2424mse1
     pipsolar_id: inverter0
     battery_recharge_voltage:
       id: inverter0_battery_recharge_voltage_out

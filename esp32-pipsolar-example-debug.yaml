@@ -1,0 +1,15 @@
+<<: !include esp32-pipsolar-example.yaml
+
+logger:
+  level: VERY_VERBOSE
+  logs:
+    scheduler: DEBUG
+    component: DEBUG
+    sensor: DEBUG
+    mqtt: INFO
+    mqtt.idf: INFO
+    mqtt.component: INFO
+    mqtt.sensor: INFO
+    mqtt.switch: INFO
+    api.service: INFO
+    api: INFO

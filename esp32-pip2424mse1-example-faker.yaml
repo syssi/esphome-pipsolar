@@ -1,0 +1,1 @@
+<<: !include esp32-pip2424mse1-example-debug.yaml
