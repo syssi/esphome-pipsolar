@@ -5,7 +5,6 @@ logger:
   logs:
     scheduler: DEBUG
     component: DEBUG
-    sensor: DEBUG
     mqtt: INFO
     mqtt.idf: INFO
     mqtt.component: INFO
@@ -13,3 +12,16 @@ logger:
     mqtt.switch: INFO
     api.service: INFO
     api: INFO
+
+uart:
+  id: uart_0
+  baud_rate: 2400
+  tx_pin: ${tx_pin}
+  rx_pin: ${rx_pin}
+  debug:
+    direction: BOTH
+    dummy_receiver: false
+    after:
+      delimiter: "\r"
+    sequence:
+      - lambda: UARTDebug::log_string(direction, bytes);
