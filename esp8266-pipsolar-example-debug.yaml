@@ -1,4 +1,4 @@
-<<: !include esp32-pip2424mse1-example.yaml
+<<: !include esp8266-pipsolar-example.yaml
 
 logger:
   level: VERY_VERBOSE
