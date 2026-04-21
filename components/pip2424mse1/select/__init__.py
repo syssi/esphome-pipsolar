@@ -4,7 +4,7 @@ import esphome.config_validation as cv
 from esphome.const import CONF_ID
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
-from ..const import CONF_OUTPUT_SOURCE_PRIORITY
+from ..const import CONF_CHARGER_SOURCE_PRIORITY, CONF_OUTPUT_SOURCE_PRIORITY
 
 DEPENDENCIES = ["uart"]
 
@@ -32,6 +32,7 @@ def ensure_option_map():
 
 TYPES = {
     CONF_OUTPUT_SOURCE_PRIORITY: ("POP00", None),
+    CONF_CHARGER_SOURCE_PRIORITY: ("PCP00", None),
     CONF_CHARGING_DISCHARGING_CONTROL: ("PBATCD111", None),
 }
 

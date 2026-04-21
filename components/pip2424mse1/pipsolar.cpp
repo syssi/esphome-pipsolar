@@ -332,7 +332,10 @@ void Pipsolar::handle_qpiri_(const char *message) {
   esphome::optional<int> input_voltage_range = parse_number<int32_t>(input_voltage_range_str);
   esphome::optional<int> output_source_priority = parse_number<int32_t>(output_source_priority_str);
 
-  this->read_int_sensor_(message, &pos, this->charger_source_priority_);
+  std::string charger_source_priority_str = this->read_field_(message, &pos);
+  if (this->charger_source_priority_) {
+    this->charger_source_priority_->publish_state(parse_number<int32_t>(charger_source_priority_str).value_or(NAN));
+  }
   this->read_int_sensor_(message, &pos, this->parallel_max_num_);
   this->read_int_sensor_(message, &pos, this->machine_type_);
   this->read_int_sensor_(message, &pos, this->topology_);
@@ -356,6 +359,9 @@ void Pipsolar::handle_qpiri_(const char *message) {
   }
   if (this->output_source_priority_select_) {
     this->output_source_priority_select_->map_and_publish(output_source_priority_str);
+  }
+  if (this->charger_source_priority_select_) {
+    this->charger_source_priority_select_->map_and_publish(charger_source_priority_str);
   }
   // special for output source priority switches
   if (this->output_source_priority_utility_switch_ && output_source_priority.has_value()) {

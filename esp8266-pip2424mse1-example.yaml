@@ -233,6 +233,18 @@ select:
         "0": "Utility first"
         "1": "Solar first"
         "2": "SBU first"
+    charger_source_priority:
+      name: "charger source priority"
+      optionsmap:
+#        "Utility first": "PCP00"
+        "Solar first": "PCP01"
+        "Solar and utility": "PCP02"
+        "Solar charging only": "PCP03"
+      statusmap:
+#        "0": "Utility first"
+        "1": "Solar first"
+        "2": "Solar and utility"
+        "3": "Solar charging only"
     charging_discharging_control:
       name: "charging discharging control"
       optionsmap:
