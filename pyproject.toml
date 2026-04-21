@@ -73,3 +73,6 @@ force-sort-within-sections = true
 known-first-party = ["components"]
 combine-as-imports = true
 split-on-trailing-comma = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
