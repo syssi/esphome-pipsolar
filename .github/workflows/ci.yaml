@@ -389,7 +389,6 @@ jobs:
         if: always()
 
   pytest:
-    if: false  # disabled
     name: Run pytest
     runs-on: ubuntu-24.04
     needs:
@@ -414,7 +413,6 @@ jobs:
           pytest tests/ -v
 
   cpp-unit-tests:
-    if: false  # disabled
     name: Run C++ unit tests
     runs-on: ubuntu-24.04
     needs:
@@ -458,7 +456,7 @@ jobs:
       - name: Run C++ unit tests
         run: |
           . venv/bin/activate
-          script/cpp_unit_test.py tianpower_bms_ble
+          script/cpp_unit_test.py pip8048
         env:
           PLATFORMIO_LIBDEPS_DIR: ~/.platformio/libdeps
           ASAN_OPTIONS: detect_leaks=0
