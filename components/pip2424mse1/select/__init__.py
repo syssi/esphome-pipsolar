@@ -10,6 +10,7 @@ DEPENDENCIES = ["uart"]
 
 CONF_OPTIONSMAP = "optionsmap"
 CONF_STATUSMAP = "statusmap"
+CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_CHARGING_DISCHARGING_CONTROL = "charging_discharging_control"
 
 PipsolarSelect = pipsolar_ns.class_("PipsolarSelect", cg.Component, select.Select)
@@ -32,6 +33,7 @@ def ensure_option_map():
 
 TYPES = {
     CONF_OUTPUT_SOURCE_PRIORITY: ("POP00", None),
+    CONF_CHARGER_SOURCE_PRIORITY: ("PCP00", None),
     CONF_CHARGING_DISCHARGING_CONTROL: ("PBATCD111", None),
 }
 
