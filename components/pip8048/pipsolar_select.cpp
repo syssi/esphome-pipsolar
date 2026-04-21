@@ -20,7 +20,7 @@ void PipsolarSelect::control(const std::string &value) {
     this->publish_state(value);
 }
 
-void PipsolarSelect::map_and_publish(std::string &value) {
+void PipsolarSelect::map_and_publish(const std::string &value) {
   ESP_LOGD(TAG, "got value: %s", value.c_str());
   if (this->status_mapping_.contains(value)) {
     ESP_LOGD(TAG, "found mapped option %s for option %s", this->status_mapping_[value].c_str(), value.c_str());

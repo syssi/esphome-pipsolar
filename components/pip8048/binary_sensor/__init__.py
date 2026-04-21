@@ -2,7 +2,7 @@ import esphome.codegen as cg
 from esphome.components import binary_sensor
 import esphome.config_validation as cv
 
-from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
+from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, deprecated_renames
 
 DEPENDENCIES = ["uart"]
 
@@ -63,6 +63,7 @@ CONF_WARNING_BATTERY_TOO_LOW_TO_CHARGE = "warning_battery_too_low_to_charge"
 CONF_FAULT_DC_DC_OVER_CURRENT = "fault_dc_dc_over_current"
 CONF_FAULT_CODE = "fault_code"
 CONF_WARNING_LOW_PV_ENERGY = "warning_low_pv_energy"
+CONF_WARNING_BATTERY_WEAK = "warning_battery_weak"
 CONF_WARNING_HIGH_AC_INPUT_DURING_BUS_SOFT_START = (
     "warning_high_ac_input_during_bus_soft_start"
 )
@@ -71,6 +72,21 @@ CONF_WARNING_BATTERY_EQUALIZATION = "warning_battery_equalization"
 CONF_DISCHARGE_ONOFF = "discharge_onoff"
 CONF_DISCHARGE_WITH_STANDBY_ONOFF = "discharge_with_standby_onoff"
 CONF_CHARGE_ONOFF = "charge_onoff"
+
+CONF_SOLAR_FEED_TO_GRID_STATUS = "solar_feed_to_grid_status"
+
+CONF_PARALLEL_NUM_0 = "parallel_num_0"
+CONF_INVERTER_STATUS_SCC_0 = "inverter_status_scc_0"
+CONF_INVERTER_STATUS_AC_CHARGING_0 = "inverter_status_ac_charging_0"
+CONF_INVERTER_STATUS_SCC_CHARGING_0 = "inverter_status_scc_charging_0"
+CONF_INVERTER_STATUS_LINE_0 = "inverter_status_line_0"
+CONF_INVERTER_STATUS_LOAD_0 = "inverter_status_load_0"
+CONF_INVERTER_STATUS_CONFIGURATION_0 = "inverter_status_configuration_0"
+
+CONF_SCC_FLAG = "scc_flag"
+CONF_ALLOW_SCC_ON = "allow_scc_on"
+CONF_FAN_LOCK_STATUS = "fan_lock_status"
+CONF_PARALLEL_WARNING = "parallel_warning"
 
 TYPES = [
     CONF_ADD_SBU_PRIORITY_VERSION,
@@ -126,16 +142,42 @@ TYPES = [
     CONF_WARNING_BATTERY_TOO_LOW_TO_CHARGE,
     CONF_FAULT_DC_DC_OVER_CURRENT,
     CONF_FAULT_CODE,
-    CONF_WARNING_LOW_PV_ENERGY,
+    CONF_WARNING_BATTERY_WEAK,
     CONF_WARNING_HIGH_AC_INPUT_DURING_BUS_SOFT_START,
     CONF_WARNING_BATTERY_EQUALIZATION,
     CONF_DISCHARGE_ONOFF,
     CONF_DISCHARGE_WITH_STANDBY_ONOFF,
     CONF_CHARGE_ONOFF,
+    CONF_SOLAR_FEED_TO_GRID_STATUS,
+    CONF_PARALLEL_NUM_0,
+    CONF_INVERTER_STATUS_SCC_0,
+    CONF_INVERTER_STATUS_AC_CHARGING_0,
+    CONF_INVERTER_STATUS_SCC_CHARGING_0,
+    CONF_INVERTER_STATUS_LINE_0,
+    CONF_INVERTER_STATUS_LOAD_0,
+    CONF_INVERTER_STATUS_CONFIGURATION_0,
+    CONF_SCC_FLAG,
+    CONF_ALLOW_SCC_ON,
+    CONF_FAN_LOCK_STATUS,
+    CONF_PARALLEL_WARNING,
 ]
 
-CONFIG_SCHEMA = PIPSOLAR_COMPONENT_SCHEMA.extend(
-    {cv.Optional(type): binary_sensor.binary_sensor_schema() for type in TYPES}
+_DEPRECATED_RENAMES = {
+    CONF_WARNING_LOW_PV_ENERGY: (
+        CONF_WARNING_BATTERY_WEAK,
+        "'warning_low_pv_energy' has been renamed to 'warning_battery_weak' and reads a "
+        "different bit position in the QPIWS response (bit 31 instead of bit 33). "
+        "The old sensor was incorrectly reading a fault code digit, not a flag. "
+        "Replace 'warning_low_pv_energy' with 'warning_battery_weak' in your config. "
+        "Will be removed in a future release.",
+    ),
+}
+
+CONFIG_SCHEMA = cv.All(
+    deprecated_renames(_DEPRECATED_RENAMES),
+    PIPSOLAR_COMPONENT_SCHEMA.extend(
+        {cv.Optional(type): binary_sensor.binary_sensor_schema() for type in TYPES}
+    ),
 )
 
 
