@@ -638,8 +638,8 @@ void Pipsolar::handle_qpiws_(const char *message) {
   bool value_faults_present = false;
 
   for (size_t i = 0; i < 36; i++) {
-    if (i == 31 || i == 32) {
-      // special case for fault code
+    if (i == 32 || i == 33) {
+      // special case for fault code (2 chars at positions 32-33)
       continue;
     }
     enabled = this->get_bit_(flags, i);
@@ -764,8 +764,8 @@ void Pipsolar::handle_qpiws_(const char *message) {
         this->publish_binary_sensor_(enabled, this->fault_dc_dc_over_current_);
         value_faults_present |= enabled.value_or(false);
         break;
-      case 33:
-        this->publish_binary_sensor_(enabled, this->warning_low_pv_energy_);
+      case 31:
+        this->publish_binary_sensor_(enabled, this->warning_battery_weak_);
         value_warnings_present |= enabled.value_or(false);
         break;
       case 34:
@@ -783,10 +783,10 @@ void Pipsolar::handle_qpiws_(const char *message) {
   this->publish_binary_sensor_(value_faults_present, this->faults_present_);
 
   if (this->fault_code_) {
-    if (flags.length() < 33) {
+    if (flags.length() < 35) {
       this->fault_code_->publish_state(NAN);
     } else {
-      std::string fc(flags, 31, 2);
+      std::string fc(flags, 32, 2);
       this->fault_code_->publish_state(parse_number<int>(fc).value_or(NAN));
     }
   }
@@ -865,7 +865,9 @@ void Pipsolar::handle_qpgs0_(const char *message) {
 
   {
     std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->parallel_num_0_);
+    auto val = parse_number<int32_t>(field);
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{}, this->parallel_num_0_);
   }
 
   {
@@ -912,25 +914,7 @@ void Pipsolar::handle_qpgs0_(const char *message) {
     std::string field = this->read_field_(message, &pos);
     this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_scc_charging_0_);
   }
-
-  this->skip_field_(message, &pos);
-  this->skip_field_(message, &pos);
-  this->skip_field_(message, &pos);
-  this->skip_field_(message, &pos);
-  this->skip_field_(message, &pos);
-  {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_line_0_);
-  }
-  {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_load_0_);
-  }
-  {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_configuration_0_);
-  }
-
+  this->read_int_sensor_(message, &pos, this->inverter_status_battery_0_);
   {
     std::string field = this->read_field_(message, &pos);
     this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_line_0_);
@@ -967,12 +951,14 @@ void Pipsolar::handle_q1_(const char *message) {
   this->read_int_sensor_(message, &pos, this->time_until_float_charging_);
 
   {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->scc_flag_);
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{}, this->scc_flag_);
   }
   {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->allow_scc_on_);
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{}, this->allow_scc_on_);
   }
 
   this->read_int_sensor_(message, &pos, this->charge_average_current_);
@@ -983,8 +969,10 @@ void Pipsolar::handle_q1_(const char *message) {
   this->skip_field_(message, &pos);
 
   {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->fan_lock_status_);
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{},
+        this->fan_lock_status_);
   }
 
   this->skip_field_(message, &pos);
@@ -992,8 +980,10 @@ void Pipsolar::handle_q1_(const char *message) {
   this->read_int_sensor_(message, &pos, this->scc_charge_power_);
 
   {
-    std::string field = this->read_field_(message, &pos);
-    this->publish_binary_sensor_(this->get_bit_(field, 0), this->parallel_warning_);
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{},
+        this->parallel_warning_);
   }
   this->read_float_sensor_(message, &pos, this->sync_frequency_);
   std::string inverter_charge_status_str = this->read_field_(message, &pos);
@@ -1056,32 +1046,31 @@ void Pipsolar::skip_start_(const char *message, size_t *pos) {
   }
 }
 void Pipsolar::skip_field_(const char *message, size_t *pos) {
-  // find delimiter or end of string
+  while (message[*pos] == ' ') {
+    (*pos)++;
+  }
   while (message[*pos] != '\0' && message[*pos] != ' ') {
     (*pos)++;
   }
   if (message[*pos] != '\0') {
-    // skip delimiter after this field if there is one
     (*pos)++;
   }
 }
 std::string Pipsolar::read_field_(const char *message, size_t *pos) {
+  while (message[*pos] == ' ') {
+    (*pos)++;
+  }
   size_t begin = *pos;
-  // find delimiter or end of string
   while (message[*pos] != '\0' && message[*pos] != ' ') {
     (*pos)++;
   }
   if (*pos == begin) {
     return "";
   }
-
   std::string field(message, begin, *pos - begin);
-
   if (message[*pos] != '\0') {
-    // skip delimiter after this field if there is one
     (*pos)++;
   }
-
   return field;
 }
 

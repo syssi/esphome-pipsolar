@@ -152,9 +152,10 @@ class TestBinarySensorTypes:
         assert binary_sensor.CONF_FAULT_CODE_RECORD in binary_sensor.TYPES
         assert binary_sensor.CONF_POWER_SAVING in binary_sensor.TYPES
 
-    def test_qpiws_summary_sensors_present(self):
+    def test_qpiws_binary_sensors_present(self):
         assert binary_sensor.CONF_WARNINGS_PRESENT in binary_sensor.TYPES
         assert binary_sensor.CONF_FAULTS_PRESENT in binary_sensor.TYPES
+        assert binary_sensor.CONF_WARNING_BATTERY_WEAK in binary_sensor.TYPES
 
     def test_qbatcd_binary_sensors_present(self):
         assert binary_sensor.CONF_DISCHARGE_ONOFF in binary_sensor.TYPES
