@@ -1,6 +1,5 @@
 import esphome.codegen as cg
 from esphome.components import sensor
-from esphome.components.const import ICON_CURRENT_DC, ICON_SOLAR_PANEL, ICON_SOLAR_POWER
 import esphome.config_validation as cv
 from esphome.const import (
     CONF_BATTERY_VOLTAGE,
@@ -8,6 +7,8 @@ from esphome.const import (
     DEVICE_CLASS_APPARENT_POWER,
     DEVICE_CLASS_BATTERY,
     DEVICE_CLASS_CURRENT,
+    DEVICE_CLASS_DURATION,
+    DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_FREQUENCY,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
@@ -20,16 +21,23 @@ from esphome.const import (
     UNIT_AMPERE,
     UNIT_CELSIUS,
     UNIT_HERTZ,
+    UNIT_MINUTE,
     UNIT_PERCENT,
+    UNIT_SECOND,
     UNIT_VOLT,
     UNIT_VOLT_AMPS,
     UNIT_WATT,
+    UNIT_WATT_HOURS,
 )
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
 from ..const import CONF_CHARGER_SOURCE_PRIORITY, CONF_OUTPUT_SOURCE_PRIORITY
 
 DEPENDENCIES = ["uart"]
+
+ICON_CURRENT_DC = "mdi:current-dc"
+ICON_SOLAR_PANEL = "mdi:solar-panel"
+ICON_SOLAR_POWER = "mdi:solar-power"
 
 
 # QPIRI sensors
@@ -80,6 +88,54 @@ CONF_PV1_CHARGING_POWER = "pv1_charging_power"
 CONF_PV2_INPUT_CURRENT = "pv2_input_current"
 CONF_PV2_INPUT_VOLTAGE = "pv2_input_voltage"
 CONF_PV2_CHARGING_POWER = "pv2_charging_power"
+
+CONF_SOLAR_FEED_TO_GRID_POWER = "solar_feed_to_grid_power"
+CONF_COUNTRY_CUSTOMIZED_REGULATION = "country_customized_regulation"
+
+CONF_MAX_CHARGING_TIME_AT_CV_STAGE = "max_charging_time_at_cv_stage"
+CONF_MAX_DISCHARGING_CURRENT = "max_discharging_current"
+
+CONF_TOTAL_PV_GENERATED_ENERGY = "total_pv_generated_energy"
+CONF_TOTAL_OUTPUT_LOAD_ENERGY = "total_output_load_energy"
+
+CONF_SERIAL_NUMBER_0 = "serial_number_0"
+CONF_FAULT_CODE_0 = "fault_code_0"
+CONF_GRID_VOLTAGE_0 = "grid_voltage_0"
+CONF_GRID_FREQUENCY_0 = "grid_frequency_0"
+CONF_AC_OUTPUT_VOLTAGE_0 = "ac_output_voltage_0"
+CONF_AC_OUTPUT_FREQUENCY_0 = "ac_output_frequency_0"
+CONF_AC_OUTPUT_APPARENT_POWER_0 = "ac_output_apparent_power_0"
+CONF_AC_OUTPUT_ACTIVE_POWER_0 = "ac_output_active_power_0"
+CONF_LOAD_PERCENT_0 = "load_percent_0"
+CONF_BATTERY_VOLTAGE_0 = "battery_voltage_0"
+CONF_BATTERY_CHARGING_CURRENT_0 = "battery_charging_current_0"
+CONF_BATTERY_CAPACITY_0 = "battery_capacity_0"
+CONF_PV1_INPUT_VOLTAGE_0 = "pv1_input_voltage_0"
+CONF_TOTAL_CHARGING_CURRENT_0 = "total_charging_current_0"
+CONF_TOTAL_AC_OUTPUT_APPARENT_POWER_0 = "total_ac_output_apparent_power_0"
+CONF_TOTAL_OUTPUT_ACTIVE_POWER_0 = "total_output_active_power_0"
+CONF_TOTAL_AC_OUTPUT_PERCENTAGE_0 = "total_ac_output_percentage_0"
+CONF_INVERTER_STATUS_BATTERY_0 = "inverter_status_battery_0"
+CONF_OUTPUT_MODE_0 = "output_mode_0"
+CONF_CHARGER_SOURCE_PRIORITY_0 = "charger_source_priority_0"
+CONF_MAX_CHARGER_CURRENT_0 = "max_charger_current_0"
+CONF_MAX_CHARGER_RANGE_0 = "max_charger_range_0"
+CONF_MAX_AC_CHARGER_CURRENT_0 = "max_ac_charger_current_0"
+CONF_PV1_INPUT_CURRENT_0 = "pv1_input_current_0"
+CONF_BATTERY_DISCHARGE_CURRENT_0 = "battery_discharge_current_0"
+CONF_PV2_INPUT_VOLTAGE_0 = "pv2_input_voltage_0"
+CONF_PV2_INPUT_CURRENT_0 = "pv2_input_current_0"
+
+CONF_TIME_UNTIL_ABSORB_CHARGING = "time_until_absorb_charging"
+CONF_TIME_UNTIL_FLOAT_CHARGING = "time_until_float_charging"
+CONF_CHARGE_AVERAGE_CURRENT = "charge_average_current"
+CONF_SCC_PWM_TEMPERATURE = "scc_pwm_temperature"
+CONF_INVERTER_TEMPERATURE = "inverter_temperature"
+CONF_BATTERY_TEMPERATURE = "battery_temperature"
+CONF_TRANSFORMER_TEMPERATURE = "transformer_temperature"
+CONF_FAN_PWM_SPEED = "fan_pwm_speed"
+CONF_SCC_CHARGE_POWER = "scc_charge_power"
+CONF_SYNC_FREQUENCY = "sync_frequency"
 
 TYPES = {
     CONF_GRID_RATING_VOLTAGE: sensor.sensor_schema(
@@ -339,6 +395,246 @@ TYPES = {
         icon=ICON_SOLAR_POWER,
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_SOLAR_FEED_TO_GRID_POWER: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_COUNTRY_CUSTOMIZED_REGULATION: sensor.sensor_schema(
+        accuracy_decimals=0,
+    ),
+    CONF_MAX_CHARGING_TIME_AT_CV_STAGE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_MINUTE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_DURATION,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_MAX_DISCHARGING_CURRENT: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TOTAL_PV_GENERATED_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT_HOURS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TOTAL_OUTPUT_LOAD_ENERGY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT_HOURS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_SERIAL_NUMBER_0: sensor.sensor_schema(
+        accuracy_decimals=0,
+    ),
+    CONF_FAULT_CODE_0: sensor.sensor_schema(
+        accuracy_decimals=0,
+    ),
+    CONF_GRID_VOLTAGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_GRID_FREQUENCY_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_HERTZ,
+        accuracy_decimals=2,
+        icon=ICON_CURRENT_AC,
+        device_class=DEVICE_CLASS_FREQUENCY,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_OUTPUT_VOLTAGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_OUTPUT_FREQUENCY_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_HERTZ,
+        accuracy_decimals=2,
+        icon=ICON_CURRENT_AC,
+        device_class=DEVICE_CLASS_FREQUENCY,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_OUTPUT_APPARENT_POWER_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT_AMPS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_APPARENT_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_OUTPUT_ACTIVE_POWER_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_LOAD_PERCENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_PERCENT,
+        accuracy_decimals=0,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_BATTERY_VOLTAGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_BATTERY_CHARGING_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_BATTERY_CAPACITY_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_PERCENT,
+        accuracy_decimals=0,
+        icon=ICON_BATTERY,
+        device_class=DEVICE_CLASS_BATTERY,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_PV1_INPUT_VOLTAGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TOTAL_CHARGING_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TOTAL_AC_OUTPUT_APPARENT_POWER_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT_AMPS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_APPARENT_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TOTAL_OUTPUT_ACTIVE_POWER_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TOTAL_AC_OUTPUT_PERCENTAGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_PERCENT,
+        accuracy_decimals=0,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_INVERTER_STATUS_BATTERY_0: sensor.sensor_schema(
+        accuracy_decimals=0,
+    ),
+    CONF_OUTPUT_MODE_0: sensor.sensor_schema(
+        accuracy_decimals=0,
+    ),
+    CONF_CHARGER_SOURCE_PRIORITY_0: sensor.sensor_schema(
+        accuracy_decimals=0,
+    ),
+    CONF_MAX_CHARGER_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_MAX_CHARGER_RANGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_MAX_AC_CHARGER_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_PV1_INPUT_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_BATTERY_DISCHARGE_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_PV2_INPUT_VOLTAGE_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_PV2_INPUT_CURRENT_0: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TIME_UNTIL_ABSORB_CHARGING: sensor.sensor_schema(
+        unit_of_measurement=UNIT_SECOND,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_DURATION,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TIME_UNTIL_FLOAT_CHARGING: sensor.sensor_schema(
+        unit_of_measurement=UNIT_SECOND,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_DURATION,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_CHARGE_AVERAGE_CURRENT: sensor.sensor_schema(
+        unit_of_measurement=UNIT_AMPERE,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_CURRENT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_SCC_PWM_TEMPERATURE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_CELSIUS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_TEMPERATURE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_INVERTER_TEMPERATURE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_CELSIUS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_TEMPERATURE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_BATTERY_TEMPERATURE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_CELSIUS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_TEMPERATURE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TRANSFORMER_TEMPERATURE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_CELSIUS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_TEMPERATURE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_FAN_PWM_SPEED: sensor.sensor_schema(
+        unit_of_measurement=UNIT_PERCENT,
+        accuracy_decimals=0,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_SCC_CHARGE_POWER: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_SYNC_FREQUENCY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_HERTZ,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_FREQUENCY,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
 }

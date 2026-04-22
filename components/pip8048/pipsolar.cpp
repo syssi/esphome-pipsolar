@@ -294,6 +294,27 @@ void Pipsolar::handle_poll_response_(ENUMPollingCommand polling_command, const c
     case POLLING_QBATCD:
       handle_qbatcd_(message);
       break;
+    case POLLING_QPGS0:
+      handle_qpgs0_(message);
+      break;
+    case POLLING_Q1:
+      handle_q1_(message);
+      break;
+    case POLLING_QBMS:
+      handle_qbms_(message);
+      break;
+    case POLLING_QET:
+      handle_qet_(message);
+      break;
+    case POLLING_QLT:
+      handle_qlt_(message);
+      break;
+    case POLLING_QMCHGCR:
+      handle_qmchgcr_(message);
+      break;
+    case POLLING_QMUCHGCR:
+      handle_qmuchgcr_(message);
+      break;
     default:
       break;
   }
@@ -321,12 +342,12 @@ void Pipsolar::handle_qpiri_(const char *message) {
   this->read_int_sensor_(message, &pos, this->ac_output_rating_active_power_);
 
   this->read_float_sensor_(message, &pos, this->battery_rating_voltage_);
-  this->read_float_sensor_(message, &pos, this->battery_recharge_voltage_);
-  this->read_float_sensor_(message, &pos, this->battery_under_voltage_);
-  this->read_float_sensor_(message, &pos, this->battery_bulk_voltage_);
-  this->read_float_sensor_(message, &pos, this->battery_float_voltage_);
+  std::string battery_recharge_voltage_str = this->read_field_(message, &pos);
+  std::string battery_under_voltage_str = this->read_field_(message, &pos);
+  std::string battery_bulk_voltage_str = this->read_field_(message, &pos);
+  std::string battery_float_voltage_str = this->read_field_(message, &pos);
 
-  this->read_int_sensor_(message, &pos, this->battery_type_);
+  std::string battery_type_str = this->read_field_(message, &pos);
   std::string current_max_ac_charging_current_str = this->read_field_(message, &pos);
   std::string current_max_charging_current_str = this->read_field_(message, &pos);
   if (this->current_max_ac_charging_current_) {
@@ -352,10 +373,14 @@ void Pipsolar::handle_qpiri_(const char *message) {
   this->read_int_sensor_(message, &pos, this->topology_);
   this->read_int_sensor_(message, &pos, this->output_mode_);
 
-  this->read_float_sensor_(message, &pos, this->battery_redischarge_voltage_);
+  std::string battery_redischarge_voltage_str = this->read_field_(message, &pos);
 
   esphome::optional<int> pv_ok_condition_for_parallel = parse_number<int32_t>(this->read_field_(message, &pos));
   esphome::optional<int> pv_power_balance = parse_number<int32_t>(this->read_field_(message, &pos));
+
+  std::string max_charging_time_at_cv_stage_str = this->read_field_(message, &pos);
+  std::string operation_logic_str = this->read_field_(message, &pos);
+  std::string max_discharging_current_str = this->read_field_(message, &pos);
 
   if (this->input_voltage_range_) {
     this->input_voltage_range_->publish_state(input_voltage_range.value_or(NAN));
@@ -408,6 +433,60 @@ void Pipsolar::handle_qpiri_(const char *message) {
   // special for power balance switch
   if (this->pv_power_balance_switch_ && pv_power_balance.has_value()) {
     this->pv_power_balance_switch_->publish_state(pv_power_balance.value() == 1);
+  }
+
+  if (this->operation_logic_) {
+    this->operation_logic_->publish_state(operation_logic_str);
+  }
+  if (this->max_discharging_current_) {
+    this->max_discharging_current_->publish_state(parse_number<int32_t>(max_discharging_current_str).value_or(NAN));
+  }
+  if (this->max_discharging_current_select_) {
+    this->max_discharging_current_select_->map_and_publish(max_discharging_current_str);
+  }
+  if (this->battery_recharge_voltage_) {
+    this->battery_recharge_voltage_->publish_state(parse_number<float>(battery_recharge_voltage_str).value_or(NAN));
+  }
+  if (this->battery_recharge_voltage_select_) {
+    this->battery_recharge_voltage_select_->map_and_publish(battery_recharge_voltage_str);
+  }
+  if (this->battery_under_voltage_) {
+    this->battery_under_voltage_->publish_state(parse_number<float>(battery_under_voltage_str).value_or(NAN));
+  }
+  if (this->battery_cutoff_voltage_select_) {
+    this->battery_cutoff_voltage_select_->map_and_publish(battery_under_voltage_str);
+  }
+  if (this->battery_bulk_voltage_) {
+    this->battery_bulk_voltage_->publish_state(parse_number<float>(battery_bulk_voltage_str).value_or(NAN));
+  }
+  if (this->battery_bulk_voltage_select_) {
+    this->battery_bulk_voltage_select_->map_and_publish(battery_bulk_voltage_str);
+  }
+  if (this->battery_float_voltage_) {
+    this->battery_float_voltage_->publish_state(parse_number<float>(battery_float_voltage_str).value_or(NAN));
+  }
+  if (this->battery_float_voltage_select_) {
+    this->battery_float_voltage_select_->map_and_publish(battery_float_voltage_str);
+  }
+  if (this->battery_type_) {
+    this->battery_type_->publish_state(parse_number<int32_t>(battery_type_str).value_or(NAN));
+  }
+  if (this->battery_type_select_) {
+    this->battery_type_select_->map_and_publish(battery_type_str);
+  }
+  if (this->battery_redischarge_voltage_) {
+    this->battery_redischarge_voltage_->publish_state(
+        parse_number<float>(battery_redischarge_voltage_str).value_or(NAN));
+  }
+  if (this->battery_redischarge_voltage_select_) {
+    this->battery_redischarge_voltage_select_->map_and_publish(battery_redischarge_voltage_str);
+  }
+  if (this->max_charging_time_at_cv_stage_) {
+    this->max_charging_time_at_cv_stage_->publish_state(
+        parse_number<int32_t>(max_charging_time_at_cv_stage_str).value_or(NAN));
+  }
+  if (this->battery_max_bulk_charging_time_select_) {
+    this->battery_max_bulk_charging_time_select_->map_and_publish(max_charging_time_at_cv_stage_str);
   }
 }
 
@@ -462,6 +541,14 @@ void Pipsolar::handle_qpigs_(const char *message) {
   this->publish_binary_sensor_(this->get_bit_(device_status_2, 0), this->charging_to_floating_mode_);
   this->publish_binary_sensor_(this->get_bit_(device_status_2, 1), this->switch_on_);
   this->publish_binary_sensor_(this->get_bit_(device_status_2, 2), this->dustproof_installed_);
+
+  esphome::optional<int> solar_feed_to_grid_status_val = parse_number<int32_t>(this->read_field_(message, &pos));
+  this->publish_binary_sensor_(solar_feed_to_grid_status_val.has_value()
+                                   ? esphome::optional<bool>(solar_feed_to_grid_status_val.value() != 0)
+                                   : esphome::optional<bool>{},
+                               this->solar_feed_to_grid_status_);
+  this->read_int_sensor_(message, &pos, this->country_customized_regulation_);
+  this->read_int_sensor_(message, &pos, this->solar_feed_to_grid_power_);
 }
 
 void Pipsolar::handle_qmod_(const char *message) {
@@ -551,8 +638,8 @@ void Pipsolar::handle_qpiws_(const char *message) {
   bool value_faults_present = false;
 
   for (size_t i = 0; i < 36; i++) {
-    if (i == 31 || i == 32) {
-      // special case for fault code
+    if (i == 32 || i == 33) {
+      // special case for fault code (2 chars at positions 32-33)
       continue;
     }
     enabled = this->get_bit_(flags, i);
@@ -677,8 +764,8 @@ void Pipsolar::handle_qpiws_(const char *message) {
         this->publish_binary_sensor_(enabled, this->fault_dc_dc_over_current_);
         value_faults_present |= enabled.value_or(false);
         break;
-      case 33:
-        this->publish_binary_sensor_(enabled, this->warning_low_pv_energy_);
+      case 31:
+        this->publish_binary_sensor_(enabled, this->warning_battery_weak_);
         value_warnings_present |= enabled.value_or(false);
         break;
       case 34:
@@ -696,10 +783,10 @@ void Pipsolar::handle_qpiws_(const char *message) {
   this->publish_binary_sensor_(value_faults_present, this->faults_present_);
 
   if (this->fault_code_) {
-    if (flags.length() < 33) {
+    if (flags.length() < 35) {
       this->fault_code_->publish_state(NAN);
     } else {
-      std::string fc(flags, 31, 2);
+      std::string fc(flags, 32, 2);
       this->fault_code_->publish_state(parse_number<int>(fc).value_or(NAN));
     }
   }
@@ -708,6 +795,18 @@ void Pipsolar::handle_qpiws_(const char *message) {
 void Pipsolar::handle_qt_(const char *message) {
   if (this->last_qt_) {
     this->last_qt_->publish_state(message);
+  }
+  if (strlen(message) >= 15) {
+    if (this->inverter_date_) {
+      std::string date =
+          std::string(message + 1, 4) + "-" + std::string(message + 5, 2) + "-" + std::string(message + 7, 2);
+      this->inverter_date_->publish_state(date);
+    }
+    if (this->inverter_time_) {
+      std::string time =
+          std::string(message + 9, 2) + ":" + std::string(message + 11, 2) + ":" + std::string(message + 13, 2);
+      this->inverter_time_->publish_state(time);
+    }
   }
 }
 
@@ -756,38 +855,222 @@ void Pipsolar::handle_qbatcd_(const char *message) {
   }
 }
 
+void Pipsolar::handle_qpgs0_(const char *message) {
+  if (this->last_qpgs0_) {
+    this->last_qpgs0_->publish_state(message);
+  }
+
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    auto val = parse_number<int32_t>(field);
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{}, this->parallel_num_0_);
+  }
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    if (this->serial_number_0_) {
+      esphome::optional<int32_t> parsed = parse_number<int32_t>(field);
+      this->serial_number_0_->publish_state(parsed.has_value() ? (float) parsed.value() : NAN);
+    }
+  }
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    if (this->work_mode_0_ && !field.empty()) {
+      this->work_mode_0_->publish_state(std::string(1, field[0]));
+    }
+  }
+
+  this->read_int_sensor_(message, &pos, this->fault_code_0_);
+  this->read_float_sensor_(message, &pos, this->grid_voltage_0_);
+  this->read_float_sensor_(message, &pos, this->grid_frequency_0_);
+  this->read_float_sensor_(message, &pos, this->ac_output_voltage_0_);
+  this->read_float_sensor_(message, &pos, this->ac_output_frequency_0_);
+  this->read_int_sensor_(message, &pos, this->ac_output_apparent_power_0_);
+  this->read_int_sensor_(message, &pos, this->ac_output_active_power_0_);
+  this->read_int_sensor_(message, &pos, this->load_percent_0_);
+  this->read_float_sensor_(message, &pos, this->battery_voltage_0_);
+  this->read_int_sensor_(message, &pos, this->battery_charging_current_0_);
+  this->read_int_sensor_(message, &pos, this->battery_capacity_0_);
+  this->read_float_sensor_(message, &pos, this->pv1_input_voltage_0_);
+  this->read_int_sensor_(message, &pos, this->total_charging_current_0_);
+  this->read_int_sensor_(message, &pos, this->total_ac_output_apparent_power_0_);
+  this->read_int_sensor_(message, &pos, this->total_output_active_power_0_);
+  this->read_int_sensor_(message, &pos, this->total_ac_output_percentage_0_);
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_scc_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_ac_charging_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_scc_charging_0_);
+  }
+  this->read_int_sensor_(message, &pos, this->inverter_status_battery_0_);
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_line_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_load_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_configuration_0_);
+  }
+
+  this->read_int_sensor_(message, &pos, this->output_mode_0_);
+  this->read_int_sensor_(message, &pos, this->charger_source_priority_0_);
+  this->read_int_sensor_(message, &pos, this->max_charger_current_0_);
+  this->read_int_sensor_(message, &pos, this->max_charger_range_0_);
+  this->read_int_sensor_(message, &pos, this->max_ac_charger_current_0_);
+  this->read_int_sensor_(message, &pos, this->pv1_input_current_0_);
+  this->read_int_sensor_(message, &pos, this->battery_discharge_current_0_);
+  this->read_float_sensor_(message, &pos, this->pv2_input_voltage_0_);
+  this->read_int_sensor_(message, &pos, this->pv2_input_current_0_);
+}
+
+void Pipsolar::handle_q1_(const char *message) {
+  if (this->last_q1_) {
+    this->last_q1_->publish_state(message);
+  }
+
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+
+  this->read_int_sensor_(message, &pos, this->time_until_absorb_charging_);
+  this->read_int_sensor_(message, &pos, this->time_until_float_charging_);
+
+  {
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{}, this->scc_flag_);
+  }
+  {
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{}, this->allow_scc_on_);
+  }
+
+  this->read_int_sensor_(message, &pos, this->charge_average_current_);
+  this->read_int_sensor_(message, &pos, this->scc_pwm_temperature_);
+  this->read_int_sensor_(message, &pos, this->inverter_temperature_);
+  this->read_int_sensor_(message, &pos, this->battery_temperature_);
+  this->read_int_sensor_(message, &pos, this->transformer_temperature_);
+  this->skip_field_(message, &pos);
+
+  {
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{},
+        this->fan_lock_status_);
+  }
+
+  this->skip_field_(message, &pos);
+  this->read_int_sensor_(message, &pos, this->fan_pwm_speed_);
+  this->read_int_sensor_(message, &pos, this->scc_charge_power_);
+
+  {
+    auto val = parse_number<int32_t>(this->read_field_(message, &pos));
+    this->publish_binary_sensor_(
+        val.has_value() ? esphome::optional<bool>(val.value() != 0) : esphome::optional<bool>{},
+        this->parallel_warning_);
+  }
+  this->read_float_sensor_(message, &pos, this->sync_frequency_);
+  std::string inverter_charge_status_str = this->read_field_(message, &pos);
+  if (this->inverter_charge_status_) {
+    this->inverter_charge_status_->publish_state(inverter_charge_status_str);
+  }
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+}
+
+void Pipsolar::handle_qbms_(const char *message) {
+  if (this->last_qbms_) {
+    this->last_qbms_->publish_state(message);
+  }
+  if (this->bms_values_select_) {
+    this->bms_values_select_->map_and_publish(std::string(message));
+  }
+}
+
+void Pipsolar::handle_qet_(const char *message) {
+  if (this->last_qet_) {
+    this->last_qet_->publish_state(message);
+  }
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+  this->read_int_sensor_(message, &pos, this->total_pv_generated_energy_);
+}
+
+void Pipsolar::handle_qlt_(const char *message) {
+  if (this->last_qlt_) {
+    this->last_qlt_->publish_state(message);
+  }
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+  this->read_int_sensor_(message, &pos, this->total_output_load_energy_);
+}
+
+void Pipsolar::handle_qmchgcr_(const char *message) {
+  if (this->last_qmchgcr_) {
+    this->last_qmchgcr_->publish_state(message);
+  }
+}
+
+void Pipsolar::handle_qmuchgcr_(const char *message) {
+  if (this->last_qmuchgcr_) {
+    this->last_qmuchgcr_->publish_state(message);
+  }
+}
+
 void Pipsolar::skip_start_(const char *message, size_t *pos) {
   if (message[*pos] == '(') {
     (*pos)++;
   }
 }
 void Pipsolar::skip_field_(const char *message, size_t *pos) {
-  // find delimiter or end of string
+  while (message[*pos] == ' ') {
+    (*pos)++;
+  }
   while (message[*pos] != '\0' && message[*pos] != ' ') {
     (*pos)++;
   }
   if (message[*pos] != '\0') {
-    // skip delimiter after this field if there is one
     (*pos)++;
   }
 }
 std::string Pipsolar::read_field_(const char *message, size_t *pos) {
+  while (message[*pos] == ' ') {
+    (*pos)++;
+  }
   size_t begin = *pos;
-  // find delimiter or end of string
   while (message[*pos] != '\0' && message[*pos] != ' ') {
     (*pos)++;
   }
   if (*pos == begin) {
     return "";
   }
-
   std::string field(message, begin, *pos - begin);
-
   if (message[*pos] != '\0') {
-    // skip delimiter after this field if there is one
     (*pos)++;
   }
-
   return field;
 }
 

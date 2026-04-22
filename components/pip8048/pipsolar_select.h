@@ -19,7 +19,7 @@ class PipsolarSelect : public Component, public select::Select {
   void add_status_mapping(const std::string &key, std::string value) { this->status_mapping_[key] = std::move(value); }
   void dump_config() override;
   void control(const std::string &value) override;
-  void map_and_publish(std::string &value);
+  void map_and_publish(const std::string &value);
 
  protected:
   std::map<std::string, std::string> mapping_;
