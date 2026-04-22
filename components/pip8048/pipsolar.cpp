@@ -840,202 +840,156 @@ void Pipsolar::handle_qpgs0_(const char *message) {
   if (this->last_qpgs0_) {
     this->last_qpgs0_->publish_state(message);
   }
-  char tmp[160];
-  snprintf(tmp, sizeof(tmp), "%s", message);
 
-  int value_parallel_num_0;
-  long value_serial_number_0;
-  char value_work_mode_0;
-  int value_fault_code_0;
-  float value_grid_voltage_0;
-  float value_grid_frequency_0;
-  float value_ac_output_voltage_0;
-  float value_ac_output_frequency_0;
-  int value_ac_output_apparent_power_0;
-  int value_ac_output_active_power_0;
-  int value_load_percent_0;
-  float value_battery_voltage_0;
-  int value_battery_charging_current_0;
-  int value_battery_capacity_0;
-  float value_pv1_input_voltage_0;
-  int value_total_charging_current_0;
-  int value_total_ac_output_apparent_power_0;
-  int value_total_output_active_power_0;
-  int value_total_ac_output_percentage_0;
-  int value_inverter_status_scc_0;
-  int value_inverter_status_ac_charging_0;
-  int value_inverter_status_scc_charging_0;
-  int value_inverter_status_battery_0;
-  int value_inverter_status_line_0;
-  int value_inverter_status_load_0;
-  int value_inverter_status_configuration_0;
-  int value_output_mode_0;
-  int value_charger_source_priority_0;
-  int value_max_charger_current_0;
-  int value_max_charger_range_0;
-  int value_max_ac_charger_current_0;
-  int value_pv1_input_current_0;
-  int value_battery_discharge_current_0;
-  float value_pv2_input_voltage_0;
-  int value_pv2_input_current_0;
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
 
-  sscanf(
-      tmp,  // NOLINT
-      "(%d %ld %c %d %f %f %f %f %d %d %d %f %d %d %f %d %d %d %d %1d%1d%1d%2d%1d%1d%1d %d %d %d %d %d %d %f %d",  // NOLINT
-      &value_parallel_num_0, &value_serial_number_0, &value_work_mode_0, &value_fault_code_0,    // NOLINT
-      &value_grid_voltage_0, &value_grid_frequency_0, &value_ac_output_voltage_0,                // NOLINT
-      &value_ac_output_frequency_0, &value_ac_output_apparent_power_0,                           // NOLINT
-      &value_ac_output_active_power_0, &value_load_percent_0, &value_battery_voltage_0,          // NOLINT
-      &value_battery_charging_current_0, &value_battery_capacity_0, &value_pv1_input_voltage_0,  // NOLINT
-      &value_total_charging_current_0, &value_total_ac_output_apparent_power_0,                  // NOLINT
-      &value_total_output_active_power_0, &value_total_ac_output_percentage_0,                   // NOLINT
-      &value_inverter_status_scc_0, &value_inverter_status_ac_charging_0,                        // NOLINT
-      &value_inverter_status_scc_charging_0, &value_inverter_status_battery_0,                   // NOLINT
-      &value_inverter_status_line_0, &value_inverter_status_load_0,                              // NOLINT
-      &value_inverter_status_configuration_0, &value_output_mode_0,                              // NOLINT
-      &value_charger_source_priority_0, &value_max_charger_current_0,                            // NOLINT
-      &value_max_charger_range_0, &value_max_ac_charger_current_0,                               // NOLINT
-      &value_pv1_input_current_0, &value_battery_discharge_current_0,                            // NOLINT
-      &value_pv2_input_voltage_0, &value_pv2_input_current_0);                                   // NOLINT
+  this->read_int_sensor_(message, &pos, this->parallel_num_0_);
 
-  if (this->parallel_num_0_)
-    this->parallel_num_0_->publish_state(value_parallel_num_0 != 0);
-  if (this->serial_number_0_)
-    this->serial_number_0_->publish_state((float) value_serial_number_0);
-  if (this->work_mode_0_) {
-    std::string mode(1, value_work_mode_0);
-    this->work_mode_0_->publish_state(mode);
+  {
+    std::string field = this->read_field_(message, &pos);
+    if (this->serial_number_0_) {
+      esphome::optional<int32_t> parsed = parse_number<int32_t>(field);
+      this->serial_number_0_->publish_state(parsed.has_value() ? (float) parsed.value() : NAN);
+    }
   }
-  if (this->fault_code_0_)
-    this->fault_code_0_->publish_state(value_fault_code_0);
-  if (this->grid_voltage_0_)
-    this->grid_voltage_0_->publish_state(value_grid_voltage_0);
-  if (this->grid_frequency_0_)
-    this->grid_frequency_0_->publish_state(value_grid_frequency_0);
-  if (this->ac_output_voltage_0_)
-    this->ac_output_voltage_0_->publish_state(value_ac_output_voltage_0);
-  if (this->ac_output_frequency_0_)
-    this->ac_output_frequency_0_->publish_state(value_ac_output_frequency_0);
-  if (this->ac_output_apparent_power_0_)
-    this->ac_output_apparent_power_0_->publish_state(value_ac_output_apparent_power_0);
-  if (this->ac_output_active_power_0_)
-    this->ac_output_active_power_0_->publish_state(value_ac_output_active_power_0);
-  if (this->load_percent_0_)
-    this->load_percent_0_->publish_state(value_load_percent_0);
-  if (this->battery_voltage_0_)
-    this->battery_voltage_0_->publish_state(value_battery_voltage_0);
-  if (this->battery_charging_current_0_)
-    this->battery_charging_current_0_->publish_state(value_battery_charging_current_0);
-  if (this->battery_capacity_0_)
-    this->battery_capacity_0_->publish_state(value_battery_capacity_0);
-  if (this->pv1_input_voltage_0_)
-    this->pv1_input_voltage_0_->publish_state(value_pv1_input_voltage_0);
-  if (this->total_charging_current_0_)
-    this->total_charging_current_0_->publish_state(value_total_charging_current_0);
-  if (this->total_ac_output_apparent_power_0_)
-    this->total_ac_output_apparent_power_0_->publish_state(value_total_ac_output_apparent_power_0);
-  if (this->total_output_active_power_0_)
-    this->total_output_active_power_0_->publish_state(value_total_output_active_power_0);
-  if (this->total_ac_output_percentage_0_)
-    this->total_ac_output_percentage_0_->publish_state(value_total_ac_output_percentage_0);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_inverter_status_scc_0 != 0), this->inverter_status_scc_0_);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_inverter_status_ac_charging_0 != 0),
-                               this->inverter_status_ac_charging_0_);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_inverter_status_scc_charging_0 != 0),
-                               this->inverter_status_scc_charging_0_);
-  if (this->inverter_status_battery_0_)
-    this->inverter_status_battery_0_->publish_state(value_inverter_status_battery_0);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_inverter_status_line_0 != 0),
-                               this->inverter_status_line_0_);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_inverter_status_load_0 != 0),
-                               this->inverter_status_load_0_);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_inverter_status_configuration_0 != 0),
-                               this->inverter_status_configuration_0_);
-  if (this->output_mode_0_)
-    this->output_mode_0_->publish_state(value_output_mode_0);
-  if (this->charger_source_priority_0_)
-    this->charger_source_priority_0_->publish_state(value_charger_source_priority_0);
-  if (this->max_charger_current_0_)
-    this->max_charger_current_0_->publish_state(value_max_charger_current_0);
-  if (this->max_charger_range_0_)
-    this->max_charger_range_0_->publish_state(value_max_charger_range_0);
-  if (this->max_ac_charger_current_0_)
-    this->max_ac_charger_current_0_->publish_state(value_max_ac_charger_current_0);
-  if (this->pv1_input_current_0_)
-    this->pv1_input_current_0_->publish_state(value_pv1_input_current_0);
-  if (this->battery_discharge_current_0_)
-    this->battery_discharge_current_0_->publish_state(value_battery_discharge_current_0);
-  if (this->pv2_input_voltage_0_)
-    this->pv2_input_voltage_0_->publish_state(value_pv2_input_voltage_0);
-  if (this->pv2_input_current_0_)
-    this->pv2_input_current_0_->publish_state(value_pv2_input_current_0);
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    if (this->work_mode_0_ && !field.empty()) {
+      this->work_mode_0_->publish_state(std::string(1, field[0]));
+    }
+  }
+
+  this->read_int_sensor_(message, &pos, this->fault_code_0_);
+  this->read_float_sensor_(message, &pos, this->grid_voltage_0_);
+  this->read_float_sensor_(message, &pos, this->grid_frequency_0_);
+  this->read_float_sensor_(message, &pos, this->ac_output_voltage_0_);
+  this->read_float_sensor_(message, &pos, this->ac_output_frequency_0_);
+  this->read_int_sensor_(message, &pos, this->ac_output_apparent_power_0_);
+  this->read_int_sensor_(message, &pos, this->ac_output_active_power_0_);
+  this->read_int_sensor_(message, &pos, this->load_percent_0_);
+  this->read_float_sensor_(message, &pos, this->battery_voltage_0_);
+  this->read_int_sensor_(message, &pos, this->battery_charging_current_0_);
+  this->read_int_sensor_(message, &pos, this->battery_capacity_0_);
+  this->read_float_sensor_(message, &pos, this->pv1_input_voltage_0_);
+  this->read_int_sensor_(message, &pos, this->total_charging_current_0_);
+  this->read_int_sensor_(message, &pos, this->total_ac_output_apparent_power_0_);
+  this->read_int_sensor_(message, &pos, this->total_output_active_power_0_);
+  this->read_int_sensor_(message, &pos, this->total_ac_output_percentage_0_);
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_scc_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_ac_charging_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_scc_charging_0_);
+  }
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->skip_field_(message, &pos);
+  }
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_line_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_load_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_configuration_0_);
+  }
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_line_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_load_0_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_configuration_0_);
+  }
+
+  this->read_int_sensor_(message, &pos, this->output_mode_0_);
+  this->read_int_sensor_(message, &pos, this->charger_source_priority_0_);
+  this->read_int_sensor_(message, &pos, this->max_charger_current_0_);
+  this->read_int_sensor_(message, &pos, this->max_charger_range_0_);
+  this->read_int_sensor_(message, &pos, this->max_ac_charger_current_0_);
+  this->read_int_sensor_(message, &pos, this->pv1_input_current_0_);
+  this->read_int_sensor_(message, &pos, this->battery_discharge_current_0_);
+  this->read_float_sensor_(message, &pos, this->pv2_input_voltage_0_);
+  this->read_int_sensor_(message, &pos, this->pv2_input_current_0_);
 }
 
 void Pipsolar::handle_q1_(const char *message) {
   if (this->last_q1_) {
     this->last_q1_->publish_state(message);
   }
-  char tmp[160];
-  snprintf(tmp, sizeof(tmp), "%s", message);
 
-  int value_time_until_absorb_charging;
-  int value_time_until_float_charging;
-  int value_scc_flag;
-  int value_allow_scc_on;
-  int value_charge_average_current;
-  int value_scc_pwm_temperature;
-  int value_inverter_temperature;
-  int value_battery_temperature;
-  int value_transformer_temperature;
-  int gpio13;
-  int value_fan_lock_status;
-  int not_used;
-  int value_fan_pwm_speed;
-  int value_scc_charge_power;
-  int value_parallel_warning;
-  float value_sync_frequency;
-  int value_inverter_charge_status;
-  int unknown_18, unknown_19, unknown_20, unknown_21, unknown_22, unknown_23, unknown_24, unknown_25, unknown_26,
-      unknown_27;  // NOLINT
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
 
-  sscanf(tmp,                                                                                        // NOLINT
-         "(%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %f %d %d %d %d %d %d %d %d %f %d %d %d %d",  // NOLINT
-         &value_time_until_absorb_charging, &value_time_until_float_charging,                        // NOLINT
-         &value_scc_flag, &value_allow_scc_on, &value_charge_average_current,                        // NOLINT
-         &value_scc_pwm_temperature, &value_inverter_temperature,                                    // NOLINT
-         &value_battery_temperature, &value_transformer_temperature,                                 // NOLINT
-         &gpio13, &value_fan_lock_status, &not_used,                                                 // NOLINT
-         &value_fan_pwm_speed, &value_scc_charge_power, &value_parallel_warning,                     // NOLINT
-         &value_sync_frequency, &value_inverter_charge_status,                                       // NOLINT
-         &unknown_18, &unknown_19, &unknown_20, &unknown_21, &unknown_22,                            // NOLINT
-         &unknown_23, &unknown_24, &unknown_25, &unknown_26, &unknown_27);                           // NOLINT
+  this->read_int_sensor_(message, &pos, this->time_until_absorb_charging_);
+  this->read_int_sensor_(message, &pos, this->time_until_float_charging_);
 
-  if (this->time_until_absorb_charging_)
-    this->time_until_absorb_charging_->publish_state(value_time_until_absorb_charging);
-  if (this->time_until_float_charging_)
-    this->time_until_float_charging_->publish_state(value_time_until_float_charging);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_scc_flag != 0), this->scc_flag_);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_allow_scc_on != 0), this->allow_scc_on_);
-  if (this->charge_average_current_)
-    this->charge_average_current_->publish_state(value_charge_average_current);
-  if (this->scc_pwm_temperature_)
-    this->scc_pwm_temperature_->publish_state(value_scc_pwm_temperature);
-  if (this->inverter_temperature_)
-    this->inverter_temperature_->publish_state(value_inverter_temperature);
-  if (this->battery_temperature_)
-    this->battery_temperature_->publish_state(value_battery_temperature);
-  if (this->transformer_temperature_)
-    this->transformer_temperature_->publish_state(value_transformer_temperature);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_fan_lock_status != 0), this->fan_lock_status_);
-  if (this->fan_pwm_speed_)
-    this->fan_pwm_speed_->publish_state(value_fan_pwm_speed);
-  if (this->scc_charge_power_)
-    this->scc_charge_power_->publish_state(value_scc_charge_power);
-  this->publish_binary_sensor_(esphome::optional<bool>(value_parallel_warning != 0), this->parallel_warning_);
-  if (this->sync_frequency_)
-    this->sync_frequency_->publish_state(value_sync_frequency);
-  if (this->inverter_charge_status_)
-    this->inverter_charge_status_->publish_state(std::to_string(value_inverter_charge_status));
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->scc_flag_);
+  }
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->allow_scc_on_);
+  }
+
+  this->read_int_sensor_(message, &pos, this->charge_average_current_);
+  this->read_int_sensor_(message, &pos, this->scc_pwm_temperature_);
+  this->read_int_sensor_(message, &pos, this->inverter_temperature_);
+  this->read_int_sensor_(message, &pos, this->battery_temperature_);
+  this->read_int_sensor_(message, &pos, this->transformer_temperature_);
+  this->skip_field_(message, &pos);
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->fan_lock_status_);
+  }
+
+  this->skip_field_(message, &pos);
+  this->read_int_sensor_(message, &pos, this->fan_pwm_speed_);
+  this->read_int_sensor_(message, &pos, this->scc_charge_power_);
+
+  {
+    std::string field = this->read_field_(message, &pos);
+    this->publish_binary_sensor_(this->get_bit_(field, 0), this->parallel_warning_);
+  }
+  this->read_float_sensor_(message, &pos, this->sync_frequency_);
+  std::string inverter_charge_status_str = this->read_field_(message, &pos);
+  if (this->inverter_charge_status_) {
+    this->inverter_charge_status_->publish_state(inverter_charge_status_str);
+  }
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
+  this->skip_field_(message, &pos);
 }
 
 void Pipsolar::handle_qbms_(const char *message) {
@@ -1051,24 +1005,18 @@ void Pipsolar::handle_qet_(const char *message) {
   if (this->last_qet_) {
     this->last_qet_->publish_state(message);
   }
-  if (this->total_pv_generated_energy_) {
-    int value;
-    if (sscanf(message, "(%d", &value) == 1) {  // NOLINT
-      this->total_pv_generated_energy_->publish_state(value);
-    }
-  }
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+  this->read_int_sensor_(message, &pos, this->total_pv_generated_energy_);
 }
 
 void Pipsolar::handle_qlt_(const char *message) {
   if (this->last_qlt_) {
     this->last_qlt_->publish_state(message);
   }
-  if (this->total_output_load_energy_) {
-    int value;
-    if (sscanf(message, "(%d", &value) == 1) {  // NOLINT
-      this->total_output_load_energy_->publish_state(value);
-    }
-  }
+  size_t pos = 0;
+  this->skip_start_(message, &pos);
+  this->read_int_sensor_(message, &pos, this->total_output_load_energy_);
 }
 
 void Pipsolar::handle_qmchgcr_(const char *message) {
