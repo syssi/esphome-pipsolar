@@ -1,6 +1,5 @@
 import esphome.codegen as cg
 from esphome.components import sensor
-from esphome.components.const import ICON_CURRENT_DC, ICON_SOLAR_PANEL, ICON_SOLAR_POWER
 import esphome.config_validation as cv
 from esphome.const import (
     CONF_BATTERY_VOLTAGE,
@@ -35,6 +34,10 @@ from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
 from ..const import CONF_CHARGER_SOURCE_PRIORITY, CONF_OUTPUT_SOURCE_PRIORITY
 
 DEPENDENCIES = ["uart"]
+
+ICON_CURRENT_DC = "mdi:current-dc"
+ICON_SOLAR_PANEL = "mdi:solar-panel"
+ICON_SOLAR_POWER = "mdi:solar-power"
 
 
 # QPIRI sensors
