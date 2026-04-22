@@ -913,10 +913,7 @@ void Pipsolar::handle_qpgs0_(const char *message) {
     this->publish_binary_sensor_(this->get_bit_(field, 0), this->inverter_status_scc_charging_0_);
   }
 
-  {
-    std::string field = this->read_field_(message, &pos);
-    this->skip_field_(message, &pos);
-  }
+  this->skip_field_(message, &pos);
   this->skip_field_(message, &pos);
   this->skip_field_(message, &pos);
   this->skip_field_(message, &pos);
