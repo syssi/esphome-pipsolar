@@ -457,6 +457,7 @@ jobs:
         run: |
           . venv/bin/activate
           script/cpp_unit_test.py pip8048
+          script/cpp_unit_test.py pip2424mse1
         env:
           PLATFORMIO_LIBDEPS_DIR: ~/.platformio/libdeps
           ASAN_OPTIONS: detect_leaks=0
