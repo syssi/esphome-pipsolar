@@ -18,6 +18,7 @@ esphome:
 
 esp8266:
   board: d1_mini
+  enable_scanf_float: true
 
 external_components:
   - source: github://syssi/esphome-pipsolar@2424mse1
