@@ -38,6 +38,8 @@ class TestSensorTypes:
         assert sensor.CONF_BATTERY_REDISCHARGE_VOLTAGE in sensor.TYPES
         assert sensor.CONF_PV_OK_CONDITION_FOR_PARALLEL in sensor.TYPES
         assert sensor.CONF_PV_POWER_BALANCE in sensor.TYPES
+        assert sensor.CONF_MAX_CHARGING_TIME_AT_CV_STAGE in sensor.TYPES
+        assert sensor.CONF_MAX_DISCHARGING_CURRENT in sensor.TYPES
 
     def test_qpigs_sensors_present(self):
         assert sensor.CONF_GRID_VOLTAGE in sensor.TYPES
@@ -59,14 +61,61 @@ class TestSensorTypes:
         assert sensor.CONF_BATTERY_VOLTAGE_OFFSET_FOR_FANS_ON in sensor.TYPES
         assert sensor.CONF_EEPROM_VERSION in sensor.TYPES
         assert sensor.CONF_PV1_CHARGING_POWER in sensor.TYPES
+        assert sensor.CONF_SOLAR_FEED_TO_GRID_POWER in sensor.TYPES
+        assert sensor.CONF_COUNTRY_CUSTOMIZED_REGULATION in sensor.TYPES
 
     def test_qpigs2_sensors_present(self):
         assert sensor.CONF_PV2_INPUT_CURRENT in sensor.TYPES
         assert sensor.CONF_PV2_INPUT_VOLTAGE in sensor.TYPES
         assert sensor.CONF_PV2_CHARGING_POWER in sensor.TYPES
 
+    def test_qet_qlt_sensors_present(self):
+        assert sensor.CONF_TOTAL_PV_GENERATED_ENERGY in sensor.TYPES
+        assert sensor.CONF_TOTAL_OUTPUT_LOAD_ENERGY in sensor.TYPES
+
+    def test_qpgs0_sensors_present(self):
+        assert sensor.CONF_SERIAL_NUMBER_0 in sensor.TYPES
+        assert sensor.CONF_FAULT_CODE_0 in sensor.TYPES
+        assert sensor.CONF_GRID_VOLTAGE_0 in sensor.TYPES
+        assert sensor.CONF_GRID_FREQUENCY_0 in sensor.TYPES
+        assert sensor.CONF_AC_OUTPUT_VOLTAGE_0 in sensor.TYPES
+        assert sensor.CONF_AC_OUTPUT_FREQUENCY_0 in sensor.TYPES
+        assert sensor.CONF_AC_OUTPUT_APPARENT_POWER_0 in sensor.TYPES
+        assert sensor.CONF_AC_OUTPUT_ACTIVE_POWER_0 in sensor.TYPES
+        assert sensor.CONF_LOAD_PERCENT_0 in sensor.TYPES
+        assert sensor.CONF_BATTERY_VOLTAGE_0 in sensor.TYPES
+        assert sensor.CONF_BATTERY_CHARGING_CURRENT_0 in sensor.TYPES
+        assert sensor.CONF_BATTERY_CAPACITY_0 in sensor.TYPES
+        assert sensor.CONF_PV1_INPUT_VOLTAGE_0 in sensor.TYPES
+        assert sensor.CONF_TOTAL_CHARGING_CURRENT_0 in sensor.TYPES
+        assert sensor.CONF_TOTAL_AC_OUTPUT_APPARENT_POWER_0 in sensor.TYPES
+        assert sensor.CONF_TOTAL_OUTPUT_ACTIVE_POWER_0 in sensor.TYPES
+        assert sensor.CONF_TOTAL_AC_OUTPUT_PERCENTAGE_0 in sensor.TYPES
+        assert sensor.CONF_INVERTER_STATUS_BATTERY_0 in sensor.TYPES
+        assert sensor.CONF_OUTPUT_MODE_0 in sensor.TYPES
+        assert sensor.CONF_CHARGER_SOURCE_PRIORITY_0 in sensor.TYPES
+        assert sensor.CONF_MAX_CHARGER_CURRENT_0 in sensor.TYPES
+        assert sensor.CONF_MAX_CHARGER_RANGE_0 in sensor.TYPES
+        assert sensor.CONF_MAX_AC_CHARGER_CURRENT_0 in sensor.TYPES
+        assert sensor.CONF_PV1_INPUT_CURRENT_0 in sensor.TYPES
+        assert sensor.CONF_BATTERY_DISCHARGE_CURRENT_0 in sensor.TYPES
+        assert sensor.CONF_PV2_INPUT_VOLTAGE_0 in sensor.TYPES
+        assert sensor.CONF_PV2_INPUT_CURRENT_0 in sensor.TYPES
+
+    def test_q1_sensors_present(self):
+        assert sensor.CONF_TIME_UNTIL_ABSORB_CHARGING in sensor.TYPES
+        assert sensor.CONF_TIME_UNTIL_FLOAT_CHARGING in sensor.TYPES
+        assert sensor.CONF_CHARGE_AVERAGE_CURRENT in sensor.TYPES
+        assert sensor.CONF_SCC_PWM_TEMPERATURE in sensor.TYPES
+        assert sensor.CONF_INVERTER_TEMPERATURE in sensor.TYPES
+        assert sensor.CONF_BATTERY_TEMPERATURE in sensor.TYPES
+        assert sensor.CONF_TRANSFORMER_TEMPERATURE in sensor.TYPES
+        assert sensor.CONF_FAN_PWM_SPEED in sensor.TYPES
+        assert sensor.CONF_SCC_CHARGE_POWER in sensor.TYPES
+        assert sensor.CONF_SYNC_FREQUENCY in sensor.TYPES
+
     def test_sensor_types_count(self):
-        assert len(sensor.TYPES) == 47
+        assert len(sensor.TYPES) == 90
 
 
 class TestBinarySensorTypes:
@@ -85,6 +134,7 @@ class TestBinarySensorTypes:
         assert binary_sensor.CONF_CHARGING_TO_FLOATING_MODE in binary_sensor.TYPES
         assert binary_sensor.CONF_SWITCH_ON in binary_sensor.TYPES
         assert binary_sensor.CONF_DUSTPROOF_INSTALLED in binary_sensor.TYPES
+        assert binary_sensor.CONF_SOLAR_FEED_TO_GRID_STATUS in binary_sensor.TYPES
 
     def test_qflag_binary_sensors_present(self):
         assert binary_sensor.CONF_SILENCE_BUZZER_OPEN_BUZZER in binary_sensor.TYPES
@@ -102,17 +152,33 @@ class TestBinarySensorTypes:
         assert binary_sensor.CONF_FAULT_CODE_RECORD in binary_sensor.TYPES
         assert binary_sensor.CONF_POWER_SAVING in binary_sensor.TYPES
 
-    def test_qpiws_summary_sensors_present(self):
+    def test_qpiws_binary_sensors_present(self):
         assert binary_sensor.CONF_WARNINGS_PRESENT in binary_sensor.TYPES
         assert binary_sensor.CONF_FAULTS_PRESENT in binary_sensor.TYPES
+        assert binary_sensor.CONF_WARNING_BATTERY_WEAK in binary_sensor.TYPES
 
     def test_qbatcd_binary_sensors_present(self):
         assert binary_sensor.CONF_DISCHARGE_ONOFF in binary_sensor.TYPES
         assert binary_sensor.CONF_DISCHARGE_WITH_STANDBY_ONOFF in binary_sensor.TYPES
         assert binary_sensor.CONF_CHARGE_ONOFF in binary_sensor.TYPES
 
+    def test_qpgs0_binary_sensors_present(self):
+        assert binary_sensor.CONF_PARALLEL_NUM_0 in binary_sensor.TYPES
+        assert binary_sensor.CONF_INVERTER_STATUS_SCC_0 in binary_sensor.TYPES
+        assert binary_sensor.CONF_INVERTER_STATUS_AC_CHARGING_0 in binary_sensor.TYPES
+        assert binary_sensor.CONF_INVERTER_STATUS_SCC_CHARGING_0 in binary_sensor.TYPES
+        assert binary_sensor.CONF_INVERTER_STATUS_LINE_0 in binary_sensor.TYPES
+        assert binary_sensor.CONF_INVERTER_STATUS_LOAD_0 in binary_sensor.TYPES
+        assert binary_sensor.CONF_INVERTER_STATUS_CONFIGURATION_0 in binary_sensor.TYPES
+
+    def test_q1_binary_sensors_present(self):
+        assert binary_sensor.CONF_SCC_FLAG in binary_sensor.TYPES
+        assert binary_sensor.CONF_ALLOW_SCC_ON in binary_sensor.TYPES
+        assert binary_sensor.CONF_FAN_LOCK_STATUS in binary_sensor.TYPES
+        assert binary_sensor.CONF_PARALLEL_WARNING in binary_sensor.TYPES
+
     def test_binary_sensor_types_count(self):
-        assert len(binary_sensor.TYPES) == 59
+        assert len(binary_sensor.TYPES) == 71
 
     def test_binary_sensor_values_are_strings(self):
         for key in binary_sensor.TYPES:

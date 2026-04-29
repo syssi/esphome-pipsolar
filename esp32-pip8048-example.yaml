@@ -112,6 +112,10 @@ sensor:
 #      name: "pv ok condition for parallel"
 #    pv_power_balance:
 #      name: "pv power balance"
+    max_charging_time_at_cv_stage:
+      name: "max charging time at cv stage"
+    max_discharging_current:
+      name: "max discharging current"
 
     # QPIGS
     grid_voltage:
@@ -152,6 +156,10 @@ sensor:
 #      name: "eeprom version"
     pv1_charging_power:
       name: "pv1 charging power"
+    solar_feed_to_grid_power:
+      name: "solar feed to grid power"
+    country_customized_regulation:
+      name: "country customized regulation"
 
     # QPIGS2
     pv2_input_current:
@@ -160,6 +168,92 @@ sensor:
       name: "pv2 input voltage"
     pv2_charging_power:
       name: "pv2 charging power"
+
+    # QET
+    total_pv_generated_energy:
+      name: "total pv generated energy"
+
+    # QLT
+    total_output_load_energy:
+      name: "total output load energy"
+
+    # QPGS0
+    serial_number_0:
+      name: "serial number 0"
+    fault_code_0:
+      name: "fault code 0"
+    grid_voltage_0:
+      name: "grid voltage 0"
+    grid_frequency_0:
+      name: "grid frequency 0"
+    ac_output_voltage_0:
+      name: "ac output voltage 0"
+    ac_output_frequency_0:
+      name: "ac output frequency 0"
+    ac_output_apparent_power_0:
+      name: "ac output apparent power 0"
+    ac_output_active_power_0:
+      name: "ac output active power 0"
+    load_percent_0:
+      name: "load percent 0"
+    battery_voltage_0:
+      name: "battery voltage 0"
+    battery_charging_current_0:
+      name: "battery charging current 0"
+    battery_capacity_0:
+      name: "battery capacity 0"
+    pv1_input_voltage_0:
+      name: "pv1 input voltage 0"
+    total_charging_current_0:
+      name: "total charging current 0"
+    total_ac_output_apparent_power_0:
+      name: "total ac output apparent power 0"
+    total_output_active_power_0:
+      name: "total output active power 0"
+    total_ac_output_percentage_0:
+      name: "total ac output percentage 0"
+    inverter_status_battery_0:
+      name: "inverter status battery 0"
+    output_mode_0:
+      name: "output mode 0"
+    charger_source_priority_0:
+      name: "charger source priority 0"
+    max_charger_current_0:
+      name: "max charger current 0"
+    max_charger_range_0:
+      name: "max charger range 0"
+    max_ac_charger_current_0:
+      name: "max ac charger current 0"
+    pv1_input_current_0:
+      name: "pv1 input current 0"
+    battery_discharge_current_0:
+      name: "battery discharge current 0"
+    pv2_input_voltage_0:
+      name: "pv2 input voltage 0"
+    pv2_input_current_0:
+      name: "pv2 input current 0"
+
+    # Q1
+    time_until_absorb_charging:
+      name: "time until absorb charging"
+    time_until_float_charging:
+      name: "time until float charging"
+    charge_average_current:
+      name: "charge average current"
+    scc_pwm_temperature:
+      name: "scc pwm temperature"
+    inverter_temperature:
+      name: "inverter temperature"
+    battery_temperature:
+      name: "battery temperature"
+    transformer_temperature:
+      name: "transformer temperature"
+    fan_pwm_speed:
+      name: "fan pwm speed"
+    scc_charge_power:
+      name: "scc charge power"
+    sync_frequency:
+      name: "sync frequency"
 
 text_sensor:
   - platform: pip8048
@@ -186,6 +280,30 @@ text_sensor:
 #      name: "last qpigs2"
 #    last_qbatcd:
 #      name: "last qbatcd"
+    last_qpgs0:
+      name: "last qpgs0"
+    last_qet:
+      name: "last qet"
+    last_qlt:
+      name: "last qlt"
+    last_qmchgcr:
+      name: "last qmchgcr"
+    last_qmuchgcr:
+      name: "last qmuchgcr"
+    last_q1:
+      name: "last q1"
+    last_qbms:
+      name: "last qbms"
+    inverter_date:
+      name: "inverter date"
+    inverter_time:
+      name: "inverter time"
+    operation_logic:
+      name: "operation logic"
+    work_mode_0:
+      name: "work mode 0"
+    inverter_charge_status:
+      name: "inverter charge status"
 
 binary_sensor:
   - platform: pip8048
@@ -231,6 +349,32 @@ binary_sensor:
       name: "discharge with standby onoff"
     charge_onoff:
       name: "charge onoff"
+    solar_feed_to_grid_status:
+      name: "solar feed to grid status"
+    # QPGS0
+    parallel_num_0:
+      name: "parallel num 0"
+    inverter_status_scc_0:
+      name: "inverter status scc 0"
+    inverter_status_ac_charging_0:
+      name: "inverter status ac charging 0"
+    inverter_status_scc_charging_0:
+      name: "inverter status scc charging 0"
+    inverter_status_line_0:
+      name: "inverter status line 0"
+    inverter_status_load_0:
+      name: "inverter status load 0"
+    inverter_status_configuration_0:
+      name: "inverter status configuration 0"
+    # Q1
+    scc_flag:
+      name: "scc flag"
+    allow_scc_on:
+      name: "allow scc on"
+    fan_lock_status:
+      name: "fan lock status"
+    parallel_warning:
+      name: "parallel warning"
 
 select:
   - platform: pip8048
@@ -335,6 +479,112 @@ select:
         "(100": "100"
         "(001": "001"
         "(000": "000"
+    battery_type:
+      name: "battery type"
+      optionsmap:
+        "AGM": "PBT00"
+        "Flooded": "PBT01"
+        "User": "PBT02"
+        "Pylontech": "PBT09"
+      statusmap:
+        "0": "AGM"
+        "1": "Flooded"
+        "2": "User"
+        "9": "Pylontech"
+    battery_recharge_voltage:
+      name: "battery recharge voltage"
+      optionsmap:
+        "44.0V": "PBCV44.0"
+        "45.0V": "PBCV45.0"
+        "46.0V": "PBCV46.0"
+        "47.0V": "PBCV47.0"
+        "48.0V": "PBCV48.0"
+      statusmap:
+        "44.0": "44.0V"
+        "45.0": "45.0V"
+        "46.0": "46.0V"
+        "47.0": "47.0V"
+        "48.0": "48.0V"
+    battery_redischarge_voltage:
+      name: "battery redischarge voltage"
+      optionsmap:
+        "48.0V": "PBDV48.0"
+        "49.0V": "PBDV49.0"
+        "50.0V": "PBDV50.0"
+        "51.0V": "PBDV51.0"
+      statusmap:
+        "48.0": "48.0V"
+        "49.0": "49.0V"
+        "50.0": "50.0V"
+        "51.0": "51.0V"
+    battery_cutoff_voltage:
+      name: "battery cutoff voltage"
+      optionsmap:
+        "40.0V": "PSDV40.0"
+        "41.0V": "PSDV41.0"
+        "42.0V": "PSDV42.0"
+        "43.0V": "PSDV43.0"
+        "44.0V": "PSDV44.0"
+      statusmap:
+        "40.0": "40.0V"
+        "41.0": "41.0V"
+        "42.0": "42.0V"
+        "43.0": "43.0V"
+        "44.0": "44.0V"
+    battery_bulk_voltage:
+      name: "battery bulk voltage"
+      optionsmap:
+        "56.4V": "PCVV56.4"
+        "57.6V": "PCVV57.6"
+        "58.4V": "PCVV58.4"
+      statusmap:
+        "56.4": "56.4V"
+        "57.6": "57.6V"
+        "58.4": "58.4V"
+    battery_float_voltage:
+      name: "battery float voltage"
+      optionsmap:
+        "54.0V": "PBFT54.0"
+        "55.2V": "PBFT55.2"
+        "56.4V": "PBFT56.4"
+        "57.6V": "PBFT57.6"
+      statusmap:
+        "54.0": "54.0V"
+        "55.2": "55.2V"
+        "56.4": "56.4V"
+        "57.6": "57.6V"
+    battery_max_bulk_charging_time:
+      name: "battery max bulk charging time"
+      optionsmap:
+        "60min": "PCVT060"
+        "120min": "PCVT120"
+        "180min": "PCVT180"
+        "240min": "PCVT240"
+      statusmap:
+        "60": "60min"
+        "120": "120min"
+        "180": "180min"
+        "240": "240min"
+    max_discharging_current:
+      name: "max discharging current"
+      optionsmap:
+        "0A (disabled)": "PBATMAXDISC000"
+        "10A": "PBATMAXDISC010"
+        "20A": "PBATMAXDISC020"
+        "30A": "PBATMAXDISC030"
+        "40A": "PBATMAXDISC040"
+        "50A": "PBATMAXDISC050"
+      statusmap:
+        "0": "0A (disabled)"
+        "10": "10A"
+        "20": "20A"
+        "30": "30A"
+        "40": "40A"
+        "50": "50A"
+    bms_values:
+      name: "bms values"
+      optionsmap:
+        "1 100 0 1 1 560 560 480 500 500": "PBMS1 100 0 1 1 560 560 480 500 500"
 
 switch:
   - platform: pip8048
