@@ -10,8 +10,7 @@
 #include "esphome/core/component.h"
 #include "esphome/core/helpers.h"
 
-namespace esphome {
-namespace pip2424mse1 {
+namespace esphome::pip2424mse1 {
 
 class PipsolarSelect;
 
@@ -262,5 +261,4 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PollingCommand enabled_polling_commands_[POLLING_COMMANDS_MAX];
 };
 
-}  // namespace pip2424mse1
-}  // namespace esphome
+}  // namespace esphome::pip2424mse1

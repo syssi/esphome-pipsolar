@@ -3,8 +3,7 @@
 #include "esphome/core/log.h"
 #include "pipsolar_select.h"
 
-namespace esphome {
-namespace pip8048 {
+namespace esphome::pip8048 {
 
 static const char *const TAG = "pip8048";
 
@@ -878,5 +877,4 @@ uint16_t Pipsolar::pipsolar_crc_(uint8_t *msg, uint8_t len) {
   return crc;
 }
 
-}  // namespace pip8048
-}  // namespace esphome
+}  // namespace esphome::pip8048

@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/application.h"
 
-namespace esphome {
-namespace pip8048 {
+namespace esphome::pip8048 {
 
 static const char *const TAG = "pip8048.switch";
 
@@ -15,5 +14,4 @@ void PipsolarSwitch::write_state(bool state) {
   }
 }
 
-}  // namespace pip8048
-}  // namespace esphome
+}  // namespace esphome::pip8048
