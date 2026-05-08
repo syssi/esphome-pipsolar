@@ -1,8 +1,7 @@
 #include "pipsolar_select.h"
 #include "esphome/core/log.h"
 
-namespace esphome {
-namespace pip8048 {
+namespace esphome::pip8048 {
 
 static const char *const TAG = "pip8048.select";
 
@@ -31,5 +30,4 @@ void PipsolarSelect::map_and_publish(std::string &value) {
   }
 }
 
-}  // namespace pip8048
-}  // namespace esphome
+}  // namespace esphome::pip8048

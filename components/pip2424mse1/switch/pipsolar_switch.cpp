@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/application.h"
 
-namespace esphome {
-namespace pip2424mse1 {
+namespace esphome::pip2424mse1 {
 
 static const char *const TAG = "pip2424mse1.switch";
 
@@ -15,5 +14,4 @@ void PipsolarSwitch::write_state(bool state) {
   }
 }
 
-}  // namespace pip2424mse1
-}  // namespace esphome
+}  // namespace esphome::pip2424mse1
