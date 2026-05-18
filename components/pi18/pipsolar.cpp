@@ -676,7 +676,10 @@ void Pipsolar::handle_p007pgs0_(const char *message) {
   read_sensor_(message, &pos, this->total_battery_charging_current_);
 }
 
-void Pipsolar::skip_start_(const char *message, size_t *pos) { *pos = 5; }
+void Pipsolar::skip_start_(const char *message, size_t *pos) {
+  const size_t len = strlen(message);
+  *pos = (len >= 5) ? 5 : len;
+}
 
 void Pipsolar::skip_field_(const char *message, size_t *pos) {
   while (message[*pos] != '\0' && message[*pos] != ',')
