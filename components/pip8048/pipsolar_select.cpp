@@ -9,7 +9,7 @@ void PipsolarSelect::dump_config() { LOG_SELECT(TAG, "Pipsolar Controller Select
 
 void PipsolarSelect::control(const std::string &value) {
   ESP_LOGD(TAG, "got option: %s", value.c_str());
-  if (this->mapping_.find(value) != this->mapping_.end()) {
+  if (this->mapping_.contains(value)) {
     ESP_LOGD(TAG, "found mapped option %s for option %s", this->mapping_[value].c_str(), value.c_str());
     this->parent_->queue_command(this->mapping_[value]);
   } else {
@@ -22,7 +22,7 @@ void PipsolarSelect::control(const std::string &value) {
 
 void PipsolarSelect::map_and_publish(std::string &value) {
   ESP_LOGD(TAG, "got value: %s", value.c_str());
-  if (this->status_mapping_.find(value) != this->status_mapping_.end()) {
+  if (this->status_mapping_.contains(value)) {
     ESP_LOGD(TAG, "found mapped option %s for option %s", this->status_mapping_[value].c_str(), value.c_str());
     this->publish_state(this->status_mapping_[value]);
   } else {
