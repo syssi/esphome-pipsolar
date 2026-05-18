@@ -1,0 +1,140 @@
+# Traffic pi18, MppSolar LV5048 Hybrid V2 / compatible PI18 inverters
+# Source: https://github.com/syssi/esphome-pipsolar/issues/54
+#
+# PI18 protocol: queries use ^P<len><cmd> + CRC16 + CR (0x0D)
+#                responses use ^D<len><data> + CRC16 + CR (0x0D)
+#                set commands use ^S<len><cmd> + CRC16 + CR (0x0D)
+#                ACK/NAK responses use (ACK or (NAK + CRC16 + CR (0x0D)
+#
+# Contributed by BanannaJoe and BeckoPopov via GitHub issue #54
+# BanannaJoe's inverter: LV5048 Hybrid V2, 5600W, 48V system
+# BeckoPopov's inverter: LV5048 compatible, 5600W, 48V system
+
+# --- ^P005GS (General Status, 28 comma-separated fields) ---
+#
+# Field mapping (sscanf "^D%3d%f,%f,%f,%f,%d,%d,%d,%f,%f,%f,%d,%d,%d,%d,%f, %f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d"):
+#  1: grid_voltage          ×0.1 V
+#  2: grid_frequency        ×0.1 Hz
+#  3: ac_output_voltage     ×0.1 V
+#  4: ac_output_frequency   ×0.1 Hz
+#  5: ac_output_apparent_power  VA
+#  6: ac_output_active_power    W
+#  7: output_load_percent       %
+#  8: battery_voltage       ×0.1 V
+#  9: battery_voltage_scc   ×0.1 V
+# 10: battery_voltage_scc2  ×0.1 V
+# 11: battery_discharge_current  A (×−1 when publishing)
+# 12: battery_charging_current   A
+# 13: battery_capacity_percent   %
+# 14: inverter_heat_sink_temperature  °C
+# 15: mppt1_charger_temperature  °C (no ×0.1)
+# 16: mppt2_charger_temperature  °C (no ×0.1, note space before in format)
+# 17: pv1_charging_power    W
+# 18: pv2_charging_power    W
+# 19: pv1_input_voltage     ×0.1 V
+# 20: pv2_input_voltage     ×0.1 V
+# 21: setting_value_configuration_state  (binary)
+# 22: mppt1_charger_status  0=abnormal 1=normal_not_charging 2=charging
+# 23: mppt2_charger_status  0=abnormal 1=normal_not_charging 2=charging
+# 24: load_connection       0=disconnect 1=connect
+# 25: battery_power_direction  0=donothing 1=charge 2=discharge
+# 26: dc_ac_power_direction    0=donothing 1=AC-DC 2=DC-AC
+# 27: line_power_direction     0=donothing 1=input 2=output
+# 28: local_parallel_id
+
+# BanannaJoe — standby, PV charging only (no AC output)
+# Decoded: grid=231.2V/50.0Hz, output=0V, battery=51.8V/36%/4A_charging, pv1=30.2V/302W
+>>> 5E:50:30:30:35:47:53:58:14:0D
+<<< 5E:44:31:30:36:32:33:31:32:2C:35:30:30:2C:30:30:30:30:2C:30:30:30:2C:30:30:30:30:2C:30:30:30:30:2C:30:30:30:2C:35:31:38:2C:30:30:30:2C:30:30:30:2C:30:30:30:2C:30:30:34:2C:30:33:36:2C:30:32:37:2C:30:30:30:2C:30:30:30:2C:30:33:30:32:2C:30:30:30:30:2C:32:34:33:38:2C:30:30:30:30:2C:30:2C:32:2C:30:2C:30:2C:31:2C:32:2C:32:2C:30:DC:8E:0D
+
+# BeckoPopov — active load, solar+grid, 48V battery
+# Decoded: grid=242.2V/49.9Hz, output=230.5V/1475VA/1458W/26%, battery=52.6V/7%/0A, pv1=192.4V/0W
+>>> 5E:50:30:30:35:47:53:58:14:0D
+<<< 5E:44:31:30:36:32:34:32:32:2C:34:39:39:2C:32:33:30:35:2C:34:39:39:2C:31:34:37:35:2C:31:34:35:38:2C:30:32:36:2C:35:32:36:2C:30:30:30:2C:30:30:30:2C:30:30:30:2C:30:30:37:2C:30:38:34:2C:30:34:36:2C:30:30:30:2C:30:30:30:2C:31:39:32:34:2C:30:30:30:30:2C:32:36:35:34:2C:30:30:30:30:2C:30:2C:32:2C:30:2C:31:2C:31:2C:32:2C:30:2C:31:5C:E8:0D
+
+# BanannaJoe — repeated measurements (battery charging, standby AC output)
+# Decoded: grid=230.1V/49.9Hz, battery=52.2V/36%/9A_charging, pv1=243.6V/557W
+>>> 5E:50:30:30:35:47:53:58:14:0D
+<<< 5E:44:31:30:36:32:33:30:31:2C:34:39:39:2C:30:30:30:30:2C:30:30:30:2C:30:30:30:30:2C:30:30:30:30:2C:30:30:30:2C:35:32:32:2C:30:30:30:2C:30:30:30:2C:30:30:30:2C:30:30:39:2C:30:34:30:2C:30:33:32:2C:30:30:30:2C:30:30:30:2C:30:35:35:37:2C:30:30:30:30:2C:32:34:33:36:2C:30:30:30:30:2C:30:2C:32:2C:30:2C:30:2C:31:2C:32:2C:32:2C:30:13:0C:0D
+
+# --- ^P007PIRI (Device Ratings, 25 fields) ---
+#
+# Field mapping (sscanf "^D%3d%f,%f,%f,%f,%f,%d,%d,%f,%f,%f,%f,%f,%f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d"):
+#  1: grid_rating_voltage      ×0.1 V
+#  2: grid_rating_current      ×0.1 A
+#  3: ac_output_rating_voltage ×0.1 V
+#  4: ac_output_rating_frequency ×0.1 Hz
+#  5: ac_output_rating_current ×0.1 A
+#  6: ac_output_rating_apparent_power  VA
+#  7: ac_output_rating_active_power    W
+#  8: battery_rating_voltage   ×0.1 V
+#  9: battery_recharge_voltage ×0.1 V
+# 10: battery_redischarge_voltage ×0.1 V
+# 11: battery_under_voltage    ×0.1 V
+# 12: battery_bulk_voltage     ×0.1 V
+# 13: battery_float_voltage    ×0.1 V
+# 14: battery_type             0=AGM 1=Flooded 2=User
+# 15: current_max_ac_charging_current  A
+# 16: current_max_charging_current     A
+# 17: input_voltage_range      0=Appliances 1=UPS
+# 18: output_source_priority   0=Utility 1=Solar 2=SBU
+# 19: charger_source_priority  0=Utility 1=Solar 2=SolarFirst 3=SolarOnly
+# 20: parallel_max_num
+# 21: machine_type
+# 22: topology
+# 23: output_mode
+# 24: solar_power_priority
+# 25: mppt_string
+
+# BanannaJoe — 5600W 48V system, solar-first charger, 60A max charging
+# Decoded: rated 230V/24.3A/5600VA, battery 48V, bulk 55.4V, float 54.0V, charger=solar-first
+>>> 5E:50:30:30:37:50:49:52:49:EE:38:0D
+<<< 5E:44:30:38:39:32:33:30:30:2C:32:34:33:2C:32:33:30:30:2C:35:30:30:2C:32:34:33:2C:35:36:30:30:2C:35:36:30:30:2C:34:38:30:2C:35:30:30:2C:35:32:30:2C:34:38:30:2C:35:35:34:2C:35:34:30:2C:32:2C:30:31:30:2C:30:36:30:2C:30:2C:30:2C:32:2C:39:2C:31:2C:30:2C:30:2C:30:2C:31:2C:30:30:D6:78:0D
+
+# BeckoPopov — 5600W 48V, 90A max charging, solar+utility charger priority 2
+# Decoded: rated 230V/24.3A/5600VA, battery 48V, bulk 55.5V, float 54.4V, max_charge=90A
+>>> 5E:50:30:30:37:50:49:52:49:EE:38:0D
+<<< 5E:44:30:38:39:32:33:30:30:2C:32:34:33:2C:32:33:30:30:2C:35:30:30:2C:32:34:33:2C:35:36:30:30:2C:35:36:30:30:2C:34:38:30:2C:34:37:30:2C:35:33:30:2C:34:34:30:2C:35:35:35:2C:35:34:34:2C:32:2C:30:33:30:2C:30:39:30:2C:31:2C:31:2C:32:2C:39:2C:30:2C:30:2C:31:2C:30:2C:31:2C:30:30:82:AE:0D
+
+# --- ^P006MOD (Device Mode, single char) ---
+#
+# Response: ^D005<mode_code>  where mode code is a single digit
+# Known codes: 0=PowerOn 1=Standby 2=LinePower 3=BatteryMode 4=Fault 5=HybridMode
+
+# BeckoPopov — mode 3 (battery/hybrid)
+>>> 5E:50:30:30:36:4D:4F:44:B1:25:0D
+<<< 5E:44:30:30:35:30:33:B9:59:0D
+
+# BanannaJoe — mode 5 (hybrid)
+>>> 5E:50:30:30:36:4D:4F:44:B1:25:0D
+<<< 5E:44:30:30:35:30:35:D9:9F:0D
+
+# --- ^P007FLAG (Flags, 9 comma-separated 0/1 values) ---
+#
+# Fields: silence_buzzer, overload_bypass, lcd_escape, overload_restart,
+#         over_temp_restart, backlight_on, alarm_primary_interrupt, fault_record, power_saving
+
+# BeckoPopov — most flags enabled
+>>> 5E:50:30:30:37:46:4C:41:47:F5:E9:0D
+<<< 5E:44:30:32:30:31:2C:31:2C:31:2C:30:2C:30:2C:31:2C:30:2C:31:2C:30:F6:3D:0D
+
+# --- ^P005FWS (Fault/Warning Status) ---
+#
+# Response: ^D039<fault_code_2digits>,<w1>,<w2>,...,<w17>
+# Warnings: line_fail, output_short, over_temp, fan_lock, bat_high, bat_low_alarm,
+#           bat_shutdown, overload, eeprom, power_limit, pv1_high, pv2_high,
+#           mppt1_overload, mppt2_overload, scc1_low, scc2_low, (unused)
+
+# BeckoPopov / BanannaJoe — no active faults, eeprom warning only (w9=1)
+>>> 5E:50:30:30:35:46:57:53:17:5D:0D
+<<< 5E:44:30:33:39:30:30:2C:30:2C:30:2C:30:2C:30:2C:30:2C:30:2C:30:2C:30:2C:31:2C:30:2C:30:2C:30:2C:30:2C:30:2C:30:2C:30:2C:30:A6:7C:0D
+
+# --- ^P005ET (Total Generated Energy, 8-digit value in kWh) ---
+
+# BeckoPopov — 802946 kWh total
+>>> 5E:50:30:30:35:45:54:13:D9:0D
+<<< 5E:44:30:31:31:30:30:38:30:32:39:34:36:0E:79:0D
+
+# BanannaJoe — 320400 kWh total
+>>> 5E:50:30:30:35:45:54:13:D9:0D
+<<< 5E:44:30:31:31:30:30:33:32:30:34:30:30:8A:63:0D

@@ -12,7 +12,23 @@ Kudos to [@andreashergert1984](https://github.com/andreashergert1984) for the gr
 
 ## Supported devices
 
+The project provides three components for different protocol variants:
+
+### pip8048 (Q-command protocol)
+
 * PIP4048 compatible PV Inverter
+
+### pip2424mse1 (Q-command protocol, extended)
+
+* PIP2424MSE1 and compatible inverters
+
+### pi18 (PI18 protocol, `^P`/`^D` framing)
+
+* MPP Solar LV5048 Hybrid V2
+* SunGoldPower 6048
+* Voltronic InfiniSolar V 4 (3.6 kW / 5.6 kW / 6 kW)
+* AXIOMA 5 kW
+* MppSolar compatible units responding to `^P005GS`
 
 
 ## Requirements
