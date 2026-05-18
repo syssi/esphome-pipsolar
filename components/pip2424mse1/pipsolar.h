@@ -262,3 +262,10 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
 };
 
 }  // namespace esphome::pip2424mse1
+
+#undef PIPSOLAR_ENTITY_
+#undef PIPSOLAR_SENSOR
+#undef PIPSOLAR_SWITCH
+#undef PIPSOLAR_BINARY_SENSOR
+#undef PIPSOLAR_TEXT_SENSOR
+#undef PIPSOLAR_SELECT

@@ -1,0 +1,1 @@
+<<: !include esp32-pi18-example-debug.yaml

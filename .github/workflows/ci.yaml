@@ -264,7 +264,7 @@ jobs:
 
       - name: Do not suggest to move consts
         run: |
-          sed -i 's#if len(uses) < 3:#if len(uses) < 8:#' script/ci-custom.py
+          sed -i 's#if len(uses) < 3:#if len(uses) < 12:#' script/ci-custom.py
           git update-index --assume-unchanged script/ci-custom.py
 
       - name: Run script/ci-custom
@@ -463,7 +463,7 @@ jobs:
       - name: Run C++ unit tests
         run: |
           . venv/bin/activate
-          script/cpp_unit_test.py pip8048 pip2424mse1
+          script/cpp_unit_test.py pip8048 pip2424mse1 pi18
         env:
           PLATFORMIO_LIBDEPS_DIR: ~/.platformio/libdeps
           ASAN_OPTIONS: detect_leaks=0
