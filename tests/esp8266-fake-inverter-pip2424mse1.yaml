@@ -1,0 +1,148 @@
+# Fake pip2424mse1 inverter — simulates real inverter responses over UART.
+#
+# Responses extracted from docs/pdus/pip2424mse1/easun-5500w-1ph.txt (EASUN 5.5 kW, Cycle 2).
+# Cycle 1 QPIGS response has a corrupt CRC and was skipped.
+#
+# Wiring (crossover):
+#   fake-inverter TX (GPIO4) → pip2424mse1 RX
+#   fake-inverter RX (GPIO5) ← pip2424mse1 TX
+#   GND ←→ GND
+
+substitutions:
+  name: fake-inverter-pip2424mse1
+  tx_pin: GPIO4
+  rx_pin: GPIO5
+
+esphome:
+  name: ${name}
+
+esp8266:
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+  platform: esphome
+
+logger:
+  level: DEBUG
+
+api:
+  reboot_timeout: 0s
+
+globals:
+  - id: pending_cmd
+    type: int
+    restore_value: false
+    initial_value: '0'
+
+uart:
+  id: uart_0
+  baud_rate: 2400
+  tx_pin: ${tx_pin}
+  rx_pin: ${rx_pin}
+  debug:
+    direction: RX
+    dummy_receiver: true
+    after:
+      delimiter: "\r"
+    sequence:
+      - lambda: |-
+          UARTDebug::log_string(direction, bytes);
+
+          // All queries start with 0x51 ('Q').
+          // QPIGS/QPIRI/QPIWS share prefix 51:50:49 — differentiate via bytes[3].
+          // QMOD/QMN share prefix 51:4D — differentiate via bytes[2].
+          id(pending_cmd) = 0;
+          if (bytes.size() >= 3 && bytes[0] == 0x51) {
+            if (bytes[1] == 0x50 && bytes[2] == 0x49 && bytes.size() >= 6) {
+              if      (bytes[3] == 0x47) id(pending_cmd) = 1;  // QPIGS
+              else if (bytes[3] == 0x52) id(pending_cmd) = 2;  // QPIRI
+              else if (bytes[3] == 0x57) id(pending_cmd) = 5;  // QPIWS
+            } else if (bytes[1] == 0x4D) {
+              if      (bytes[2] == 0x4F) id(pending_cmd) = 3;  // QMOD
+              else if (bytes[2] == 0x4E) id(pending_cmd) = 7;  // QMN
+            } else if (bytes[1] == 0x46 && bytes.size() >= 7) {
+                                         id(pending_cmd) = 4;  // QFLAG
+            } else if (bytes[1] == 0x54) {
+                                         id(pending_cmd) = 6;  // QT
+            } else if (bytes[1] == 0x42 && bytes.size() >= 8) {
+                                         id(pending_cmd) = 8;  // QBATCD
+            }
+          }
+      - delay: 150ms
+      - lambda: |-
+          // QPIGS (Cycle 2): grid=238.3V/50.0Hz, output=230.2V/0322VA/0205W, bat=42.2V/050%, pv=224.7V/00473W
+          static const uint8_t resp_qpigs[] = {
+            0x28, 0x32, 0x33, 0x38, 0x2E, 0x33, 0x20, 0x35, 0x30, 0x2E, 0x30, 0x20, 0x32, 0x33, 0x30,
+            0x2E, 0x32, 0x20, 0x35, 0x30, 0x2E, 0x30, 0x20, 0x30, 0x33, 0x32, 0x32, 0x20, 0x30, 0x32,
+            0x30, 0x35, 0x20, 0x30, 0x30, 0x35, 0x20, 0x34, 0x32, 0x32, 0x20, 0x35, 0x33, 0x2E, 0x32,
+            0x30, 0x20, 0x30, 0x30, 0x30, 0x20, 0x30, 0x35, 0x30, 0x20, 0x30, 0x30, 0x35, 0x36, 0x20,
+            0x30, 0x32, 0x2E, 0x31, 0x20, 0x32, 0x32, 0x34, 0x2E, 0x37, 0x20, 0x30, 0x30, 0x2E, 0x30,
+            0x30, 0x20, 0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x30, 0x30, 0x30, 0x31, 0x30, 0x31, 0x31,
+            0x30, 0x20, 0x30, 0x30, 0x20, 0x30, 0x30, 0x20, 0x30, 0x30, 0x34, 0x37, 0x33, 0x20, 0x30,
+            0x31, 0x30, 0xA9, 0x79, 0x0D,
+          };
+          // QPIRI: 230V/23.9A rated, 48V bat, bulk=55.3V float=55.3V, 60A max charge, solar-first
+          static const uint8_t resp_qpiri[] = {
+            0x28, 0x32, 0x33, 0x30, 0x2E, 0x30, 0x20, 0x32, 0x33, 0x2E, 0x39, 0x20, 0x32, 0x33, 0x30,
+            0x2E, 0x30, 0x20, 0x35, 0x30, 0x2E, 0x30, 0x20, 0x32, 0x33, 0x2E, 0x39, 0x20, 0x35, 0x35,
+            0x30, 0x30, 0x20, 0x35, 0x35, 0x30, 0x30, 0x20, 0x34, 0x38, 0x2E, 0x30, 0x20, 0x35, 0x31,
+            0x2E, 0x30, 0x20, 0x34, 0x38, 0x2E, 0x30, 0x20, 0x35, 0x35, 0x2E, 0x33, 0x20, 0x35, 0x35,
+            0x2E, 0x33, 0x20, 0x32, 0x20, 0x30, 0x32, 0x20, 0x31, 0x30, 0x30, 0x20, 0x30, 0x20, 0x32,
+            0x20, 0x33, 0x20, 0x31, 0x20, 0x30, 0x31, 0x20, 0x30, 0x20, 0x30, 0x20, 0x35, 0x33, 0x2E,
+            0x30, 0x20, 0x30, 0x20, 0x31, 0x0E, 0x3E, 0x0D,
+          };
+          // QMOD: B (battery mode)
+          static const uint8_t resp_qmod[] = {
+            0x28, 0x42, 0xE7, 0xC9, 0x0D,
+          };
+          // QFLAG: EzDabjkuvxy
+          static const uint8_t resp_qflag[] = {
+            0x28, 0x45, 0x7A, 0x44, 0x61, 0x62, 0x6A, 0x6B, 0x75, 0x76, 0x78, 0x79, 0xFF, 0xD8, 0x0D,
+          };
+          // NAK — for QPIWS, QT, QMN, QBATCD (not present in EASUN trace)
+          static const uint8_t resp_nak[] = {
+            0x28, 0x4E, 0x41, 0x4B, 0x73, 0x73, 0x0D,
+          };
+
+          switch (id(pending_cmd)) {
+            case 1:
+              ESP_LOGD("fake_inv", "Responding to QPIGS (%d bytes)", sizeof(resp_qpigs));
+              id(uart_0).write_array(resp_qpigs, sizeof(resp_qpigs));
+              break;
+            case 2:
+              ESP_LOGD("fake_inv", "Responding to QPIRI (%d bytes)", sizeof(resp_qpiri));
+              id(uart_0).write_array(resp_qpiri, sizeof(resp_qpiri));
+              break;
+            case 3:
+              ESP_LOGD("fake_inv", "Responding to QMOD (%d bytes)", sizeof(resp_qmod));
+              id(uart_0).write_array(resp_qmod, sizeof(resp_qmod));
+              break;
+            case 4:
+              ESP_LOGD("fake_inv", "Responding to QFLAG (%d bytes)", sizeof(resp_qflag));
+              id(uart_0).write_array(resp_qflag, sizeof(resp_qflag));
+              break;
+            case 5:
+              ESP_LOGD("fake_inv", "Responding to QPIWS with NAK");
+              id(uart_0).write_array(resp_nak, sizeof(resp_nak));
+              break;
+            case 6:
+              ESP_LOGD("fake_inv", "Responding to QT with NAK");
+              id(uart_0).write_array(resp_nak, sizeof(resp_nak));
+              break;
+            case 7:
+              ESP_LOGD("fake_inv", "Responding to QMN with NAK");
+              id(uart_0).write_array(resp_nak, sizeof(resp_nak));
+              break;
+            case 8:
+              ESP_LOGD("fake_inv", "Responding to QBATCD with NAK");
+              id(uart_0).write_array(resp_nak, sizeof(resp_nak));
+              break;
+            default:
+              ESP_LOGW("fake_inv", "Unknown command (pending_cmd=%d), no response", id(pending_cmd));
+              break;
+          }
+          id(pending_cmd) = 0;
