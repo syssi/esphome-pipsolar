@@ -4,8 +4,8 @@
 # Cycle 1 QPIGS response has a corrupt CRC and was skipped.
 #
 # Wiring (crossover):
-#   fake-inverter TX (GPIO4) → pip2424mse1 device RX
-#   fake-inverter RX (GPIO5) ← pip2424mse1 device TX
+#   fake-inverter TX (GPIO4) → pip2424mse1 RX
+#   fake-inverter RX (GPIO5) ← pip2424mse1 TX
 #   GND ←→ GND
 
 substitutions:

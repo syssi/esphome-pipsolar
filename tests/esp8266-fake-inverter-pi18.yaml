@@ -5,8 +5,8 @@
 # PI18 protocol: queries use ^P<len><cmd>+CRC16+CR, responses use ^D<len><data>+CRC16+CR.
 #
 # Wiring (crossover):
-#   fake-inverter TX (GPIO4) → pi18 device RX
-#   fake-inverter RX (GPIO5) ← pi18 device TX
+#   fake-inverter TX (GPIO4) → pi18 RX
+#   fake-inverter RX (GPIO5) ← pi18 TX
 #   GND ←→ GND
 
 substitutions:

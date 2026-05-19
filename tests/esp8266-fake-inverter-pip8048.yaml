@@ -1,17 +1,17 @@
-# Fake pip8048 (PI30 protocol) inverter — simulates real inverter responses over UART.
+# Fake pip8048 inverter — simulates real inverter responses over UART.
+#
+# Responses extracted from pipsolar-working-esphome-2025.12.7.txt (jopl's inverter).
 #
 # Purpose: Reproduce the ESPHome 2026.3.x stale-FIFO bug without a physical inverter.
-#   At boot this device immediately sends a QMOD response so the pipsolar device
+#   At boot this device immediately sends a QMOD response so the pip8048 component
 #   finds stale bytes in its hardware UART FIFO on startup. With ESPHome ≥ 2026.3.x
 #   empty_uart_buffer_() fails to drain them because available() returns 0 for
 #   hardware-FIFO bytes that haven't been moved to the software ring buffer yet.
 #
 # Wiring (crossover):
-#   fake-inverter TX (GPIO4) → pipsolar RX
-#   fake-inverter RX (GPIO5) ← pipsolar TX
+#   fake-inverter TX (GPIO4) → pip8048 RX
+#   fake-inverter RX (GPIO5) ← pip8048 TX
 #   GND ←→ GND
-#
-# Responses extracted from pipsolar-working-esphome-2025.12.7.txt (jopl's inverter).
 
 substitutions:
   name: fake-inverter-pip8048
@@ -21,8 +21,8 @@ substitutions:
 esphome:
   name: ${name}
   on_boot:
-    # Run at hardware-init priority so bytes arrive in pipsolar's FIFO before
-    # pipsolar's setup() calls empty_uart_buffer_().
+    # Run at hardware-init priority so bytes arrive in pip8048's FIFO before
+    # pip8048's setup() calls empty_uart_buffer_().
     priority: 800.0
     then:
       - logger.log:
@@ -68,46 +68,29 @@ uart:
       - lambda: |-
           UARTDebug::log_string(direction, bytes);
 
-          // Detect command from pipsolar (check QPIGS2 before QPIGS — same prefix)
-          if (bytes.size() >= 6 &&
-              bytes[0]==0x51 && bytes[1]==0x42 && bytes[2]==0x41 &&
-              bytes[3]==0x54 && bytes[4]==0x43 && bytes[5]==0x44) {
-            id(pending_cmd) = 6;  // QBATCD
-          } else if (bytes.size() >= 6 &&
-              bytes[0]==0x51 && bytes[1]==0x50 && bytes[2]==0x49 &&
-              bytes[3]==0x47 && bytes[4]==0x53 && bytes[5]==0x32) {
-            id(pending_cmd) = 2;  // QPIGS2
-          } else if (bytes.size() >= 5 &&
-              bytes[0]==0x51 && bytes[1]==0x50 && bytes[2]==0x49 &&
-              bytes[3]==0x47 && bytes[4]==0x53) {
-            id(pending_cmd) = 1;  // QPIGS
-          } else if (bytes.size() >= 5 &&
-              bytes[0]==0x51 && bytes[1]==0x50 && bytes[2]==0x49 &&
-              bytes[3]==0x52 && bytes[4]==0x49) {
-            id(pending_cmd) = 3;  // QPIRI
-          } else if (bytes.size() >= 4 &&
-              bytes[0]==0x51 && bytes[1]==0x4D && bytes[2]==0x4F && bytes[3]==0x44) {
-            id(pending_cmd) = 4;  // QMOD
-          } else if (bytes.size() >= 5 &&
-              bytes[0]==0x51 && bytes[1]==0x46 && bytes[2]==0x4C &&
-              bytes[3]==0x41 && bytes[4]==0x47) {
-            id(pending_cmd) = 5;  // QFLAG
-          } else if (bytes.size() >= 5 &&
-              bytes[0]==0x51 && bytes[1]==0x50 && bytes[2]==0x49 &&
-              bytes[3]==0x57 && bytes[4]==0x53) {
-            id(pending_cmd) = 7;  // QPIWS
-          } else if (bytes.size() >= 3 &&
-              bytes[0]==0x51 && bytes[1]==0x4D && bytes[2]==0x4E) {
-            id(pending_cmd) = 8;  // QMN
-          } else if (bytes.size() >= 2 &&
-              bytes[0]==0x51 && bytes[1]==0x54) {
-            id(pending_cmd) = 9;  // QT
-          } else {
-            id(pending_cmd) = 0;
+          // Check QPIGS2 before QPIGS — both share bytes[0..4], QPIGS2 adds '2' (0x32) at bytes[5].
+          id(pending_cmd) = 0;
+          if (bytes.size() >= 2 && bytes[0] == 0x51) {
+            if (bytes[1] == 0x42 && bytes.size() >= 8) {
+                                               id(pending_cmd) = 6;  // QBATCD
+            } else if (bytes[1] == 0x50 && bytes.size() >= 6 && bytes[2] == 0x49) {
+              if      (bytes[3] == 0x47 && bytes.size() >= 9 && bytes[5] == 0x32)
+                                               id(pending_cmd) = 2;  // QPIGS2
+              else if (bytes[3] == 0x47)       id(pending_cmd) = 1;  // QPIGS
+              else if (bytes[3] == 0x52)       id(pending_cmd) = 3;  // QPIRI
+              else if (bytes[3] == 0x57)       id(pending_cmd) = 7;  // QPIWS
+            } else if (bytes[1] == 0x4D && bytes.size() >= 3) {
+              if      (bytes[2] == 0x4F)       id(pending_cmd) = 4;  // QMOD
+              else if (bytes[2] == 0x4E)       id(pending_cmd) = 8;  // QMN
+            } else if (bytes[1] == 0x46 && bytes.size() >= 7) {
+                                               id(pending_cmd) = 5;  // QFLAG
+            } else if (bytes[1] == 0x54) {
+                                               id(pending_cmd) = 9;  // QT
+            }
           }
       - delay: 150ms
       - lambda: |-
-          // QPIGS: (243.0 49.8 230.1 50.0 00276 00147 002 375 53.20 000 050 0032 00.8 091.5 00.00 00000 00010110 00 00 00080 010 0 00 0000-L\r
+          // QPIGS: grid=243.0V/49.8Hz, output=230.1V/276VA/147W, bat=53.20V/50%, pv=91.5V/80W
           static const uint8_t resp_qpigs[] = {
             0x28, 0x32, 0x34, 0x33, 0x2E, 0x30, 0x20, 0x34, 0x39, 0x2E, 0x38, 0x20, 0x32, 0x33, 0x30,
             0x2E, 0x31, 0x20, 0x35, 0x30, 0x2E, 0x30, 0x20, 0x30, 0x30, 0x32, 0x37, 0x36, 0x20, 0x30,
@@ -117,14 +100,14 @@ uart:
             0x2E, 0x30, 0x30, 0x20, 0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x30, 0x30, 0x30, 0x31, 0x30,
             0x31, 0x31, 0x30, 0x20, 0x30, 0x30, 0x20, 0x30, 0x30, 0x20, 0x30, 0x30, 0x30, 0x38, 0x30,
             0x20, 0x30, 0x31, 0x30, 0x20, 0x30, 0x20, 0x30, 0x30, 0x20, 0x30, 0x30, 0x30, 0x30, 0x2D,
-            0x4C, 0x0D
+            0x4C, 0x0D,
           };
-          // QPIGS2: (00.8 091.9 00080 <CRC>\r
+          // QPIGS2: pv2_current=00.8A, pv2_voltage=091.9V, pv2_power=00080W
           static const uint8_t resp_qpigs2[] = {
             0x28, 0x30, 0x30, 0x2E, 0x38, 0x20, 0x30, 0x39, 0x31, 0x2E, 0x39, 0x20, 0x30, 0x30, 0x30,
-            0x38, 0x30, 0x20, 0xCB, 0xD2, 0x0D
+            0x38, 0x30, 0x20, 0xCB, 0xD2, 0x0D,
           };
-          // QPIRI: (230.0 47.8 230.0 50.0 47.8 11000 11000 48.0 50.0 48.0 56.0 55.2 2 010 100 1 2 1 9 01 0 0 52.0 0 1 480 0 000<CRC>\r
+          // QPIRI: 230V/47.8A rated, 48V bat, bulk=56.0V float=55.2V, 100A max charge, SBU priority
           static const uint8_t resp_qpiri[] = {
             0x28, 0x32, 0x33, 0x30, 0x2E, 0x30, 0x20, 0x34, 0x37, 0x2E, 0x38, 0x20, 0x32, 0x33, 0x30,
             0x2E, 0x30, 0x20, 0x35, 0x30, 0x2E, 0x30, 0x20, 0x34, 0x37, 0x2E, 0x38, 0x20, 0x31, 0x31,
@@ -133,25 +116,25 @@ uart:
             0x35, 0x35, 0x2E, 0x32, 0x20, 0x32, 0x20, 0x30, 0x31, 0x30, 0x20, 0x31, 0x30, 0x30, 0x20,
             0x31, 0x20, 0x32, 0x20, 0x31, 0x20, 0x39, 0x20, 0x30, 0x31, 0x20, 0x30, 0x20, 0x30, 0x20,
             0x35, 0x32, 0x2E, 0x30, 0x20, 0x30, 0x20, 0x31, 0x20, 0x34, 0x38, 0x30, 0x20, 0x30, 0x20,
-            0x30, 0x30, 0x30, 0xC3, 0xF1, 0x0D
+            0x30, 0x30, 0x30, 0xC3, 0xF1, 0x0D,
           };
-          // QMOD: (B<CRC>\r
+          // QMOD: B (battery mode)
           static const uint8_t resp_qmod[] = {
-            0x28, 0x42, 0xE7, 0xC9, 0x0D
+            0x28, 0x42, 0xE7, 0xC9, 0x0D,
           };
-          // QFLAG: (EkuvxyzDabdjln<CRC>\r  (CRC-OK version)
+          // QFLAG: EkuvxyzDabdjln
           static const uint8_t resp_qflag[] = {
             0x28, 0x45, 0x6B, 0x75, 0x76, 0x78, 0x79, 0x7A, 0x44, 0x61, 0x62, 0x64, 0x6A, 0x6C, 0x6E,
-            0xEE, 0xCC, 0x0D
+            0xEE, 0xCC, 0x0D,
           };
-          // QBATCD / unsupported: (NAKss\r
-          static const uint8_t resp_nak[] = {
-            0x28, 0x4E, 0x41, 0x4B, 0x73, 0x73, 0x0D
-          };
-          // QT: (20200422172244m<CRC>\r
+          // QT: 20200422172244
           static const uint8_t resp_qt[] = {
             0x28, 0x32, 0x30, 0x32, 0x30, 0x30, 0x34, 0x32, 0x32, 0x31, 0x37, 0x32, 0x32, 0x34, 0x34,
-            0x6D, 0x9C, 0x0D
+            0x6D, 0x9C, 0x0D,
+          };
+          // NAK — for QBATCD, QPIWS, QMN
+          static const uint8_t resp_nak[] = {
+            0x28, 0x4E, 0x41, 0x4B, 0x73, 0x73, 0x0D,
           };
 
           switch (id(pending_cmd)) {
