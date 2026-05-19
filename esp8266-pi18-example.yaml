@@ -55,213 +55,213 @@ sensor:
     pipsolar_id: inverter0
     # ^P005GS
     grid_voltage:
-      name: "${name} Grid voltage"
+      name: "grid voltage"
     grid_frequency:
-      name: "${name} Grid frequency"
+      name: "grid frequency"
     ac_output_voltage:
-      name: "${name} AC output voltage"
+      name: "ac output voltage"
     ac_output_frequency:
-      name: "${name} AC output frequency"
+      name: "ac output frequency"
     ac_output_apparent_power:
-      name: "${name} AC output apparent power"
+      name: "ac output apparent power"
     ac_output_active_power:
-      name: "${name} AC output active power"
+      name: "ac output active power"
     output_load_percent:
-      name: "${name} Output load percent"
+      name: "output load percent"
     battery_voltage:
-      name: "${name} Battery voltage"
+      name: "battery voltage"
     battery_voltage_scc:
-      name: "${name} Battery voltage SCC1"
+      name: "battery voltage scc1"
     battery_voltage_scc2:
-      name: "${name} Battery voltage SCC2"
+      name: "battery voltage scc2"
     battery_discharge_current:
-      name: "${name} Battery discharge current"
+      name: "battery discharge current"
     battery_charging_current:
-      name: "${name} Battery charging current"
+      name: "battery charging current"
     battery_capacity_percent:
-      name: "${name} Battery capacity"
+      name: "battery capacity"
     inverter_heat_sink_temperature:
-      name: "${name} Inverter heat sink temperature"
+      name: "inverter heat sink temperature"
     mppt1_charger_temperature:
-      name: "${name} MPPT1 charger temperature"
+      name: "mppt1 charger temperature"
     mppt2_charger_temperature:
-      name: "${name} MPPT2 charger temperature"
+      name: "mppt2 charger temperature"
     pv1_input_power:
-      name: "${name} PV1 input power"
+      name: "pv1 input power"
     pv2_input_power:
-      name: "${name} PV2 input power"
+      name: "pv2 input power"
     pv1_input_voltage:
-      name: "${name} PV1 input voltage"
+      name: "pv1 input voltage"
     pv2_input_voltage:
-      name: "${name} PV2 input voltage"
+      name: "pv2 input voltage"
     # ^P007PIRI
     grid_rating_voltage:
-      name: "${name} Grid rating voltage"
+      name: "grid rating voltage"
     grid_rating_current:
-      name: "${name} Grid rating current"
+      name: "grid rating current"
     ac_output_rating_voltage:
-      name: "${name} AC output rating voltage"
+      name: "ac output rating voltage"
     ac_output_rating_frequency:
-      name: "${name} AC output rating frequency"
+      name: "ac output rating frequency"
     ac_output_rating_current:
-      name: "${name} AC output rating current"
+      name: "ac output rating current"
     ac_output_rating_apparent_power:
-      name: "${name} AC output rating apparent power"
+      name: "ac output rating apparent power"
     ac_output_rating_active_power:
-      name: "${name} AC output rating active power"
+      name: "ac output rating active power"
     battery_rating_voltage:
-      name: "${name} Battery rating voltage"
+      name: "battery rating voltage"
     battery_recharge_voltage:
-      name: "${name} Battery recharge voltage"
+      name: "battery recharge voltage"
     battery_redischarge_voltage:
-      name: "${name} Battery redischarge voltage"
+      name: "battery redischarge voltage"
     battery_under_voltage:
-      name: "${name} Battery under voltage"
+      name: "battery under voltage"
     battery_bulk_voltage:
-      name: "${name} Battery bulk voltage"
+      name: "battery bulk voltage"
     battery_float_voltage:
-      name: "${name} Battery float voltage"
+      name: "battery float voltage"
     battery_type:
-      name: "${name} Battery type"
+      name: "battery type"
     current_max_ac_charging_current:
-      name: "${name} Max AC charging current"
+      name: "max ac charging current"
     current_max_charging_current:
-      name: "${name} Max charging current"
+      name: "max charging current"
     input_voltage_range:
-      name: "${name} Input voltage range"
+      name: "input voltage range"
     output_source_priority:
-      name: "${name} Output source priority"
+      name: "output source priority"
     charger_source_priority:
-      name: "${name} Charger source priority"
+      name: "charger source priority"
     parallel_max_num:
-      name: "${name} Parallel max num"
+      name: "parallel max num"
     machine_type:
-      name: "${name} Machine type"
+      name: "machine type"
     topology:
-      name: "${name} Topology"
+      name: "topology"
     output_mode:
-      name: "${name} Output mode"
+      name: "output mode"
     solar_power_priority:
-      name: "${name} Solar power priority"
+      name: "solar power priority"
     mppt_string:
-      name: "${name} MPPT string"
+      name: "mppt string"
     # ^P006MOD
     device_mode_id:
-      name: "${name} Device mode id"
+      name: "device mode id"
     # ^P005ET
     total_generated_energy:
-      name: "${name} Total generated energy"
+      name: "total generated energy"
     # ^P005FWS
     fault_code:
-      name: "${name} Fault code"
+      name: "fault code"
     # ^P007PGS0 — parallel unit aggregate (only relevant for parallel setups)
 #    total_ac_output_apparent_power:
-#      name: "${name} Total AC output apparent power"
+#      name: "total ac output apparent power"
 #    total_ac_output_active_power:
-#      name: "${name} Total AC output active power"
+#      name: "total ac output active power"
 #    total_output_load_percent:
-#      name: "${name} Total output load percent"
+#      name: "total output load percent"
 #    total_battery_charging_current:
-#      name: "${name} Total battery charging current"
+#      name: "total battery charging current"
 
 text_sensor:
   - platform: pi18
     pipsolar_id: inverter0
     # ^P005GS
     mppt1_charger_status:
-      name: "${name} MPPT1 charger status"
+      name: "mppt1 charger status"
     mppt2_charger_status:
-      name: "${name} MPPT2 charger status"
+      name: "mppt2 charger status"
     load_connection:
-      name: "${name} Load connection"
+      name: "load connection"
     battery_power_direction:
-      name: "${name} Battery power direction"
+      name: "battery power direction"
     dc_ac_power_direction:
-      name: "${name} DC/AC power direction"
+      name: "dc/ac power direction"
     line_power_direction:
-      name: "${name} Line power direction"
+      name: "line power direction"
     # ^P006MOD
     device_mode:
-      name: "${name} Device mode"
+      name: "device mode"
     # Raw responses (useful for debugging)
 #    last_p005gs:
-#      name: "${name} Last P005GS"
+#      name: "last p005gs"
 #    last_p007piri:
-#      name: "${name} Last P007PIRI"
+#      name: "last p007piri"
 #    last_p006mod:
-#      name: "${name} Last P006MOD"
+#      name: "last p006mod"
 #    last_p007flag:
-#      name: "${name} Last P007FLAG"
+#      name: "last p007flag"
 #    last_p005fws:
-#      name: "${name} Last P005FWS"
+#      name: "last p005fws"
 #    last_p005et:
-#      name: "${name} Last P005ET"
+#      name: "last p005et"
 
 binary_sensor:
   - platform: pi18
     pipsolar_id: inverter0
     # ^P005GS
     setting_value_configuration_state:
-      name: "${name} Setting value configuration state"
+      name: "setting value configuration state"
     # ^P007FLAG
     silence_buzzer_open_buzzer:
-      name: "${name} Buzzer"
+      name: "buzzer"
     overload_bypass_function:
-      name: "${name} Overload bypass"
+      name: "overload bypass"
     lcd_escape_to_default:
-      name: "${name} LCD escape to default"
+      name: "lcd escape to default"
     overload_restart_function:
-      name: "${name} Overload restart"
+      name: "overload restart"
     over_temperature_restart_function:
-      name: "${name} Over temperature restart"
+      name: "over temperature restart"
     backlight_on:
-      name: "${name} Backlight"
+      name: "backlight"
     alarm_on_when_primary_source_interrupt:
-      name: "${name} Alarm on primary source interrupt"
+      name: "alarm on primary source interrupt"
     fault_code_record:
-      name: "${name} Fault code record"
+      name: "fault code record"
     power_saving:
-      name: "${name} Power saving"
+      name: "power saving"
     # ^P005FWS
     warning_line_fail:
-      name: "${name} Warning line fail"
+      name: "warning line fail"
     warning_output_circuit_short:
-      name: "${name} Warning output circuit short"
+      name: "warning output circuit short"
     warning_over_temperature:
-      name: "${name} Warning over temperature"
+      name: "warning over temperature"
     warning_fan_lock:
-      name: "${name} Warning fan lock"
+      name: "warning fan lock"
     warning_battery_voltage_high:
-      name: "${name} Warning battery voltage high"
+      name: "warning battery voltage high"
     warning_battery_low_alarm:
-      name: "${name} Warning battery low alarm"
+      name: "warning battery low alarm"
     warning_battery_under_shutdown:
-      name: "${name} Warning battery under shutdown"
+      name: "warning battery under shutdown"
     warning_over_load:
-      name: "${name} Warning over load"
+      name: "warning over load"
     warning_eeprom_failed:
-      name: "${name} Warning EEPROM failed"
+      name: "warning eeprom failed"
     warning_power_limit:
-      name: "${name} Warning power limit"
+      name: "warning power limit"
     warning_pv1_voltage_high:
-      name: "${name} Warning PV1 voltage high"
+      name: "warning pv1 voltage high"
     warning_pv2_voltage_high:
-      name: "${name} Warning PV2 voltage high"
+      name: "warning pv2 voltage high"
     warning_mppt1_overload:
-      name: "${name} Warning MPPT1 overload"
+      name: "warning mppt1 overload"
     warning_mppt2_overload:
-      name: "${name} Warning MPPT2 overload"
+      name: "warning mppt2 overload"
     warning_scc1_battery_too_low_to_charge:
-      name: "${name} Warning SCC1 battery too low to charge"
+      name: "warning scc1 battery too low to charge"
     warning_scc2_battery_too_low_to_charge:
-      name: "${name} Warning SCC2 battery too low to charge"
+      name: "warning scc2 battery too low to charge"
 
 select:
   - platform: pi18
     pipsolar_id: inverter0
     output_source_priority:
       id: inverter0_output_source_priority_select
-      name: "${name} Output source priority"
+      name: "output source priority"
       optionsmap:
         "Solar-Utility-Battery": "^S007POP0"
         "Solar-Battery-Utility": "^S007POP1"
@@ -272,7 +272,7 @@ select:
     pipsolar_id: inverter0
     charger_source_priority:
       id: inverter0_charger_source_priority_select
-      name: "${name} Charger source priority"
+      name: "charger source priority"
       optionsmap:
         "Solar first": "^S009PCP0,0"
         "Solar and Utility": "^S009PCP0,1"
@@ -285,7 +285,7 @@ select:
     pipsolar_id: inverter0
     solar_power_priority:
       id: inverter0_solar_power_priority_select
-      name: "${name} Solar power priority"
+      name: "solar power priority"
       optionsmap:
         "Battery-Load-Utility (+AC Charge)": "^S007PSP0"
         "Load-Battery-Utility": "^S007PSP1"
@@ -296,7 +296,7 @@ select:
     pipsolar_id: inverter0
     input_voltage_range:
       id: inverter0_input_voltage_range_select
-      name: "${name} Input voltage range"
+      name: "input voltage range"
       optionsmap:
         "Appliances 90-280V": "^S007PGR0"
         "UPS 170-280V": "^S007PGR1"
@@ -307,7 +307,7 @@ select:
     pipsolar_id: inverter0
     machine_type:
       id: inverter0_machine_type_select
-      name: "${name} Machine type"
+      name: "machine type"
       optionsmap:
         "OFF-Grid": "^S006PDI"
         "Grid-Tie": "^S006PEI"
@@ -318,7 +318,7 @@ select:
     pipsolar_id: inverter0
     current_max_ac_charging_current:
       id: inverter0_current_max_ac_charging_current_select
-      name: "${name} Max AC charging current"
+      name: "max ac charging current"
       optionsmap:
         "2A": "^S014MUCHGC0,002"
         "10A": "^S014MUCHGC0,010"
@@ -343,7 +343,7 @@ select:
     pipsolar_id: inverter0
     current_max_charging_current:
       id: inverter0_current_max_charging_current_select
-      name: "${name} Max charging current"
+      name: "max charging current"
       optionsmap:
         "10A": "^S013MCHGC0,010"
         "20A": "^S013MCHGC0,020"
@@ -368,7 +368,7 @@ select:
     pipsolar_id: inverter0
     battery_under_voltage:
       id: inverter0_battery_under_voltage_select
-      name: "${name} Battery cut-off voltage"
+      name: "battery cut-off voltage"
       optionsmap:
         "40V": "^S010PSDV400"
         "41V": "^S010PSDV410"
@@ -406,30 +406,30 @@ switch:
   - platform: pi18
     pipsolar_id: inverter0
     output_source_priority:
-      name: "${name} Output source priority (solar first)"
+      name: "output source priority (solar first)"
     solar_power_priority:
-      name: "${name} Solar power priority (load first)"
+      name: "solar power priority (load first)"
     charger_source_priority_solarfirst:
-      name: "${name} Charger source priority solar first"
+      name: "charger source priority solar first"
     charger_source_priority_utility:
-      name: "${name} Charger source priority utility"
+      name: "charger source priority utility"
     charger_source_priority_solaronly:
-      name: "${name} Charger source priority solar only"
+      name: "charger source priority solar only"
     silence_buzzer_open_buzzer:
-      name: "${name} Buzzer"
+      name: "buzzer"
     overload_bypass_function:
-      name: "${name} Overload bypass"
+      name: "overload bypass"
     lcd_escape_to_default:
-      name: "${name} LCD escape to default"
+      name: "lcd escape to default"
     overload_restart_function:
-      name: "${name} Overload restart"
+      name: "overload restart"
     over_temperature_restart_function:
-      name: "${name} Over temperature restart"
+      name: "over temperature restart"
     backlight_on:
-      name: "${name} Backlight"
+      name: "backlight"
     alarm_on_when_primary_source_interrupt:
-      name: "${name} Alarm on primary source interrupt"
+      name: "alarm on primary source interrupt"
     fault_code_record:
-      name: "${name} Fault code record"
+      name: "fault code record"
     power_saving:
-      name: "${name} Power saving"
+      name: "power saving"
