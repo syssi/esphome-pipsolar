@@ -123,6 +123,18 @@ void Pipsolar::loop() {
         // end of answer
         if (byte == 0x0D) {
           this->read_buffer_[this->read_pos_] = 0;
+
+          // Echo filter: a legitimate Q-protocol response always starts with '(' (0x28).
+          // If the frame starts with anything else, it is the local echo of the command
+          // we just sent (looped back through the inverter's communication board) or
+          // line noise. Discard it and keep reading for the real response.
+          if (this->read_buffer_[0] != '(') {
+            ESP_LOGV(TAG, "Discarding %zu-byte non-response frame (likely echo): %s", this->read_pos_ - 1,
+                     this->read_buffer_);
+            this->read_pos_ = 0;
+            continue;
+          }
+
           this->empty_uart_buffer_();
           if (this->state_ == STATE_POLL) {
             this->state_ = STATE_POLL_COMPLETE;
