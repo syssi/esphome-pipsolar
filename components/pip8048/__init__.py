@@ -1,7 +1,32 @@
+import logging
+
 import esphome.codegen as cg
 from esphome.components import uart
 import esphome.config_validation as cv
 from esphome.const import CONF_ID
+
+_LOGGER = logging.getLogger(__name__)
+
+
+def deprecated_renames(renames: dict[str, str | tuple[str, str]]):
+    """Accept old→new or old→(new, custom_message) pairs."""
+
+    def validator(config):
+        config = config.copy()
+        for old, spec in renames.items():
+            if old not in config:
+                continue
+            if isinstance(spec, tuple):
+                new, msg = spec
+            else:
+                new = spec
+                msg = f"'{old}' is deprecated, use '{new}' instead. Will be removed in a future release."
+            _LOGGER.warning(msg)
+            config[new] = config.pop(old)
+        return config
+
+    return validator
+
 
 DEPENDENCIES = ["uart"]
 CODEOWNERS = ["@andreashergert1984"]
