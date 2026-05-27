@@ -85,6 +85,7 @@ void Pipsolar::loop() {
         return;
       }
       // crc ok
+      this->consecutive_timeouts_ = 0;
       this->enabled_polling_commands_[this->last_polling_command_].needs_update = false;
       this->state_ = STATE_POLL_CHECKED;
       return;
@@ -156,6 +157,11 @@ void Pipsolar::loop() {
       // command timeout
       ESP_LOGD(TAG, "poll %s timeout", this->enabled_polling_commands_[this->last_polling_command_].command);
       this->handle_poll_error_(this->enabled_polling_commands_[this->last_polling_command_].identifier);
+      if (++this->consecutive_timeouts_ >= 3) {
+        this->write(0x0D);
+        this->consecutive_timeouts_ = 0;
+        ESP_LOGW(TAG, "multiple timeouts, sending CR to recover inverter communication");
+      }
       this->state_ = STATE_IDLE;
     }
   }
