@@ -251,7 +251,7 @@ select:
         "1": "Solar first"
         "2": "Solar and utility"
         "3": "Solar charging only"
-    # POWMR 4200W: 3-digit MUCHGC format; QPIRI reports non-padded values; 100A NAKs
+    # POWMR 4200W: 3+4-digit MUCHGC format; QPIRI reports non-padded values
     current_max_ac_charging_current:
       name: "current max ac charging current"
       optionsmap:
@@ -264,6 +264,7 @@ select:
         "70A": "MUCHGC070"
         "80A": "MUCHGC080"
         "90A": "MUCHGC090"
+        "100A": "MNCHGC0100"
       statusmap:
         "10": "10A"
         "20": "20A"
