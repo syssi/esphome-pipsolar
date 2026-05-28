@@ -18,6 +18,7 @@ The project provides three components for different protocol variants:
 
 * PIP4048 compatible PV Inverter
 * Axpert King II 6.2KW TWIN (reported by [@voronin10](https://github.com/syssi/esphome-pipsolar/issues/196))
+* Powmr 4.2KW (reported by [@Martyn911](https://github.com/syssi/esphome-pipsolar/issues/231))
 
 ### pip2424mse1 (Q-command protocol, extended)
 
