@@ -274,6 +274,38 @@ TEST(Pip8048Powmr4200wTest, QflagDisabledFlags) {
   EXPECT_FALSE(over_temp.state);
 }
 
+TEST(Pip8048Powmr4200wTest, QflagSwitchEnabledFlags) {
+  TestablePipsolar inv;
+  // "(EauxyzDbjkv;" — a,u,x,y,z enabled
+  MockSwitch buzzer, overload_restart, backlight, alarm, fault_rec;
+  inv.set_buzzer_switch(&buzzer);
+  inv.set_overload_restart_switch(&overload_restart);
+  inv.set_backlight_switch(&backlight);
+  inv.set_alarm_on_primary_source_interrupt_switch(&alarm);
+  inv.set_fault_code_record_switch(&fault_rec);
+  inv.handle_qflag_(POWMR_4200W_QFLAG);
+  EXPECT_TRUE(buzzer.state);
+  EXPECT_TRUE(overload_restart.state);
+  EXPECT_TRUE(backlight.state);
+  EXPECT_TRUE(alarm.state);
+  EXPECT_TRUE(fault_rec.state);
+}
+
+TEST(Pip8048Powmr4200wTest, QflagSwitchDisabledFlags) {
+  TestablePipsolar inv;
+  // "(EauxyzDbjkv;" — b,j,k,v disabled
+  MockSwitch bypass, power_save, lcd, over_temp;
+  inv.set_overload_bypass_switch(&bypass);
+  inv.set_power_saving_switch(&power_save);
+  inv.set_lcd_escape_to_default_switch(&lcd);
+  inv.set_over_temperature_restart_switch(&over_temp);
+  inv.handle_qflag_(POWMR_4200W_QFLAG);
+  EXPECT_FALSE(bypass.state);
+  EXPECT_FALSE(power_save.state);
+  EXPECT_FALSE(lcd.state);
+  EXPECT_FALSE(over_temp.state);
+}
+
 // ── QMCHGCR / QMUCHGCR ───────────────────────────────────────────────────────
 
 TEST(Pip8048Powmr4200wTest, QmchgcrRawFrame) {

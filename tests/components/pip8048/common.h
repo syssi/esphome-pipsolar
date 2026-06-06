@@ -3,6 +3,11 @@
 
 namespace esphome::pip8048::testing {
 
+class MockSwitch : public switch_::Switch {
+ protected:
+  void write_state(bool state) override { this->publish_state(state); }
+};
+
 class TestablePipsolar : public Pipsolar {
  public:
   using Pipsolar::handle_qbatcd_;

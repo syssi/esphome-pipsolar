@@ -297,6 +297,15 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_SWITCH(input_voltage_range_switch, QPIRI)
   PIPSOLAR_SWITCH(pv_ok_condition_for_parallel_switch, QPIRI)
   PIPSOLAR_SWITCH(pv_power_balance_switch, QPIRI)
+  PIPSOLAR_SWITCH(buzzer_switch, QFLAG)
+  PIPSOLAR_SWITCH(overload_bypass_switch, QFLAG)
+  PIPSOLAR_SWITCH(lcd_escape_to_default_switch, QFLAG)
+  PIPSOLAR_SWITCH(overload_restart_switch, QFLAG)
+  PIPSOLAR_SWITCH(over_temperature_restart_switch, QFLAG)
+  PIPSOLAR_SWITCH(backlight_switch, QFLAG)
+  PIPSOLAR_SWITCH(alarm_on_primary_source_interrupt_switch, QFLAG)
+  PIPSOLAR_SWITCH(fault_code_record_switch, QFLAG)
+  PIPSOLAR_SWITCH(power_saving_switch, QFLAG)
 
   void queue_command(const std::string &command);
   void setup() override;

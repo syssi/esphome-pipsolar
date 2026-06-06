@@ -619,6 +619,27 @@ void Pipsolar::handle_qflag_(const char *message) {
                                this->alarm_on_when_primary_source_interrupt_);
   this->publish_binary_sensor_(values.fault_code_record, this->fault_code_record_);
   this->publish_binary_sensor_(values.power_saving, this->power_saving_);
+
+  if (this->buzzer_switch_ && values.silence_buzzer_open_buzzer.has_value())
+    this->buzzer_switch_->publish_state(values.silence_buzzer_open_buzzer.value());
+  if (this->overload_bypass_switch_ && values.overload_bypass_function.has_value())
+    this->overload_bypass_switch_->publish_state(values.overload_bypass_function.value());
+  if (this->lcd_escape_to_default_switch_ && values.lcd_escape_to_default.has_value())
+    this->lcd_escape_to_default_switch_->publish_state(values.lcd_escape_to_default.value());
+  if (this->overload_restart_switch_ && values.overload_restart_function.has_value())
+    this->overload_restart_switch_->publish_state(values.overload_restart_function.value());
+  if (this->over_temperature_restart_switch_ && values.over_temperature_restart_function.has_value())
+    this->over_temperature_restart_switch_->publish_state(values.over_temperature_restart_function.value());
+  if (this->backlight_switch_ && values.backlight_on.has_value())
+    this->backlight_switch_->publish_state(values.backlight_on.value());
+  if (this->alarm_on_primary_source_interrupt_switch_ && values.alarm_on_when_primary_source_interrupt.has_value()) {
+    this->alarm_on_primary_source_interrupt_switch_->publish_state(
+        values.alarm_on_when_primary_source_interrupt.value());
+  }
+  if (this->fault_code_record_switch_ && values.fault_code_record.has_value())
+    this->fault_code_record_switch_->publish_state(values.fault_code_record.value());
+  if (this->power_saving_switch_ && values.power_saving.has_value())
+    this->power_saving_switch_->publish_state(values.power_saving.value());
 }
 
 void Pipsolar::handle_qpiws_(const char *message) {
