@@ -632,9 +632,10 @@ void Pipsolar::handle_qflag_(const char *message) {
     this->over_temperature_restart_switch_->publish_state(values.over_temperature_restart_function.value());
   if (this->backlight_switch_ && values.backlight_on.has_value())
     this->backlight_switch_->publish_state(values.backlight_on.value());
-  if (this->alarm_on_primary_source_interrupt_switch_ && values.alarm_on_when_primary_source_interrupt.has_value())
+  if (this->alarm_on_primary_source_interrupt_switch_ && values.alarm_on_when_primary_source_interrupt.has_value()) {
     this->alarm_on_primary_source_interrupt_switch_->publish_state(
         values.alarm_on_when_primary_source_interrupt.value());
+  }
   if (this->fault_code_record_switch_ && values.fault_code_record.has_value())
     this->fault_code_record_switch_->publish_state(values.fault_code_record.value());
   if (this->power_saving_switch_ && values.power_saving.has_value())
