@@ -427,6 +427,24 @@ switch:
       name: "pv ok condition for parallel"
     pv_power_balance:
       name: "pv power balance"
+    silence_buzzer_open_buzzer:
+      name: "silence buzzer open buzzer"
+    overload_bypass_function:
+      name: "overload bypass function"
+    lcd_escape_to_default:
+      name: "lcd escape to default"
+    overload_restart_function:
+      name: "overload restart function"
+    over_temperature_restart_function:
+      name: "over temperature restart function"
+    backlight_on:
+      name: "backlight on"
+    alarm_on_when_primary_source_interrupt:
+      name: "alarm on when primary source interrupt"
+    fault_code_record:
+      name: "fault code record"
+    power_saving:
+      name: "power saving"
 
 output:
   - platform: pip8048
