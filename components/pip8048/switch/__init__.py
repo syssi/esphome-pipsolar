@@ -14,13 +14,13 @@ CONF_OUTPUT_SOURCE_PRIORITY_HYBRID = "output_source_priority_hybrid"
 CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
 CONF_PV_OK_CONDITION_FOR_PARALLEL = "pv_ok_condition_for_parallel"
 CONF_PV_POWER_BALANCE = "pv_power_balance"
-CONF_SILENCE_BUZZER_OPEN_BUZZER = "silence_buzzer_open_buzzer"
-CONF_OVERLOAD_BYPASS_FUNCTION = "overload_bypass_function"
+CONF_BUZZER = "buzzer"
+CONF_OVERLOAD_BYPASS = "overload_bypass"
 CONF_LCD_ESCAPE_TO_DEFAULT = "lcd_escape_to_default"
-CONF_OVERLOAD_RESTART_FUNCTION = "overload_restart_function"
-CONF_OVER_TEMPERATURE_RESTART_FUNCTION = "over_temperature_restart_function"
-CONF_BACKLIGHT_ON = "backlight_on"
-CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
+CONF_OVERLOAD_RESTART = "overload_restart"
+CONF_OVER_TEMPERATURE_RESTART = "over_temperature_restart"
+CONF_BACKLIGHT = "backlight"
+CONF_ALARM_ON_PRIMARY_SOURCE_INTERRUPT = "alarm_on_primary_source_interrupt"
 CONF_FAULT_CODE_RECORD = "fault_code_record"
 CONF_POWER_SAVING = "power_saving"
 
@@ -32,13 +32,13 @@ TYPES = {
     CONF_INPUT_VOLTAGE_RANGE: ("PGR01", "PGR00"),
     CONF_PV_OK_CONDITION_FOR_PARALLEL: ("PPVOKC1", "PPVOKC0"),
     CONF_PV_POWER_BALANCE: ("PSPB1", "PSPB0"),
-    CONF_SILENCE_BUZZER_OPEN_BUZZER: ("PEa", "PDa"),
-    CONF_OVERLOAD_BYPASS_FUNCTION: ("PEb", "PDb"),
+    CONF_BUZZER: ("PEa", "PDa"),
+    CONF_OVERLOAD_BYPASS: ("PEb", "PDb"),
     CONF_LCD_ESCAPE_TO_DEFAULT: ("PEk", "PDk"),
-    CONF_OVERLOAD_RESTART_FUNCTION: ("PEu", "PDu"),
-    CONF_OVER_TEMPERATURE_RESTART_FUNCTION: ("PEv", "PDv"),
-    CONF_BACKLIGHT_ON: ("PEx", "PDx"),
-    CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT: ("PEy", "PDy"),
+    CONF_OVERLOAD_RESTART: ("PEu", "PDu"),
+    CONF_OVER_TEMPERATURE_RESTART: ("PEv", "PDv"),
+    CONF_BACKLIGHT: ("PEx", "PDx"),
+    CONF_ALARM_ON_PRIMARY_SOURCE_INTERRUPT: ("PEy", "PDy"),
     CONF_FAULT_CODE_RECORD: ("PEz", "PDz"),
     CONF_POWER_SAVING: ("PEj", "PDj"),
 }
