@@ -141,6 +141,38 @@ TEST(Pip8048Axpert11kwTest, QflagBypassDisabled) {
   EXPECT_FALSE(buzzer.state);
 }
 
+TEST(Pip8048Axpert11kwTest, QflagSwitchEnabledFlags) {
+  TestablePipsolar inv;
+  // 11kW: (EkuvxyzDabdjln — k,u,v,x,y,z enabled
+  MockSwitch lcd, overload_restart, over_temp, backlight, alarm, fault_rec;
+  inv.set_lcd_escape_to_default_switch(&lcd);
+  inv.set_overload_restart_switch(&overload_restart);
+  inv.set_over_temperature_restart_switch(&over_temp);
+  inv.set_backlight_switch(&backlight);
+  inv.set_alarm_on_primary_source_interrupt_switch(&alarm);
+  inv.set_fault_code_record_switch(&fault_rec);
+  inv.handle_qflag_(AXPERT_11KW_QFLAG);
+  EXPECT_TRUE(lcd.state);
+  EXPECT_TRUE(overload_restart.state);
+  EXPECT_TRUE(over_temp.state);
+  EXPECT_TRUE(backlight.state);
+  EXPECT_TRUE(alarm.state);
+  EXPECT_TRUE(fault_rec.state);
+}
+
+TEST(Pip8048Axpert11kwTest, QflagSwitchDisabledFlags) {
+  TestablePipsolar inv;
+  // 11kW: (EkuvxyzDabdjln — a,b,j disabled
+  MockSwitch buzzer, bypass, power_save;
+  inv.set_buzzer_switch(&buzzer);
+  inv.set_overload_bypass_switch(&bypass);
+  inv.set_power_saving_switch(&power_save);
+  inv.handle_qflag_(AXPERT_11KW_QFLAG);
+  EXPECT_FALSE(buzzer.state);
+  EXPECT_FALSE(bypass.state);
+  EXPECT_FALSE(power_save.state);
+}
+
 // ── QBATCD ───────────────────────────────────────────────────────────────────
 
 TEST(Pip8048Axpert11kwTest, QbatcdNaoResponseAllFalse) {

@@ -267,6 +267,38 @@ TEST(Pip8048Axpert8kwTest, QflagDisabledFlags) {
   EXPECT_FALSE(alarm.state);
 }
 
+TEST(Pip8048Axpert8kwTest, QflagSwitchEnabledFlags) {
+  TestablePipsolar inv;
+  // 8kW: (EbkuzDajvxy — b,k,u,z enabled
+  MockSwitch bypass, lcd, overload_restart, fault_rec;
+  inv.set_overload_bypass_switch(&bypass);
+  inv.set_lcd_escape_to_default_switch(&lcd);
+  inv.set_overload_restart_switch(&overload_restart);
+  inv.set_fault_code_record_switch(&fault_rec);
+  inv.handle_qflag_(AXPERT_8KW_QFLAG);
+  EXPECT_TRUE(bypass.state);
+  EXPECT_TRUE(lcd.state);
+  EXPECT_TRUE(overload_restart.state);
+  EXPECT_TRUE(fault_rec.state);
+}
+
+TEST(Pip8048Axpert8kwTest, QflagSwitchDisabledFlags) {
+  TestablePipsolar inv;
+  // 8kW: (EbkuzDajvxy — a,j,v,x,y disabled
+  MockSwitch buzzer, power_save, over_temp, backlight, alarm;
+  inv.set_buzzer_switch(&buzzer);
+  inv.set_power_saving_switch(&power_save);
+  inv.set_over_temperature_restart_switch(&over_temp);
+  inv.set_backlight_switch(&backlight);
+  inv.set_alarm_on_primary_source_interrupt_switch(&alarm);
+  inv.handle_qflag_(AXPERT_8KW_QFLAG);
+  EXPECT_FALSE(buzzer.state);
+  EXPECT_FALSE(power_save.state);
+  EXPECT_FALSE(over_temp.state);
+  EXPECT_FALSE(backlight.state);
+  EXPECT_FALSE(alarm.state);
+}
+
 // ── Robustness ───────────────────────────────────────────────────────────────
 
 TEST(Pip8048Axpert8kwTest, NullSensorsDoNotCrash) {
