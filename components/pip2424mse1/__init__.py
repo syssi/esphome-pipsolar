@@ -5,6 +5,7 @@ from esphome.const import CONF_ID
 
 DEPENDENCIES = ["uart"]
 CODEOWNERS = ["@andreashergert1984"]
+DOMAIN = "pip2424mse1"
 AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "output", "select"]
 MULTI_CONF = True
 
