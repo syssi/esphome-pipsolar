@@ -3,9 +3,14 @@
 #include "esphome/core/log.h"
 #include "pipsolar_select.h"
 
+// Fallback for ESPHome < 2026.10.0
+#ifndef ESPHOME_LOG_TAG
+#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
+#endif
+
 namespace esphome::pip2424mse1 {
 
-static const char *const TAG = "pip2424mse1";
+ESPHOME_LOG_TAG(TAG, "pip2424mse1");
 
 void Pipsolar::setup() {
   this->state_ = STATE_IDLE;
