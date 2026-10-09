@@ -30,6 +30,7 @@ def deprecated_renames(renames: dict[str, str | tuple[str, str]]):
 
 DEPENDENCIES = ["uart"]
 CODEOWNERS = ["@andreashergert1984"]
+DOMAIN = "pip8048"
 AUTO_LOAD = ["binary_sensor", "text_sensor", "sensor", "switch", "output", "select"]
 MULTI_CONF = True
 
