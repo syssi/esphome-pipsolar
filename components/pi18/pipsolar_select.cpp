@@ -1,9 +1,14 @@
 #include "pipsolar_select.h"
 #include "esphome/core/log.h"
 
+// Fallback for ESPHome < 2026.10.0
+#ifndef ESPHOME_LOG_TAG
+#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
+#endif
+
 namespace esphome::pi18 {
 
-static const char *const TAG = "pi18.select";
+ESPHOME_LOG_TAG(TAG, "pi18.select");
 
 void PipsolarSelect::dump_config() { LOG_SELECT(TAG, "PI18 Controller Select", this); }
 

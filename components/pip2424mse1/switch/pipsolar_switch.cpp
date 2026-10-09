@@ -2,9 +2,14 @@
 #include "esphome/core/log.h"
 #include "esphome/core/application.h"
 
+// Fallback for ESPHome < 2026.10.0
+#ifndef ESPHOME_LOG_TAG
+#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
+#endif
+
 namespace esphome::pip2424mse1 {
 
-static const char *const TAG = "pip2424mse1.switch";
+ESPHOME_LOG_TAG(TAG, "pip2424mse1.switch");
 
 void PipsolarSwitch::dump_config() { LOG_SWITCH("", "Pipsolar Switch", this); }
 void PipsolarSwitch::write_state(bool state) {
