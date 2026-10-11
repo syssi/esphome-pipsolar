@@ -35,7 +35,7 @@ The project provides three components for different protocol variants:
 
 ## Requirements
 
-* [ESPHome 2024.6.0 or higher](https://github.com/esphome/esphome/releases).
+* [ESPHome 2026.3.0 or higher](https://github.com/esphome/esphome/releases).
 * One half of an ethernet cable with RJ45 connector
 * RS232-to-TTL module (`MAX3232CSE` f.e.)
 * Generic ESP32 or ESP8266 board
