@@ -1,9 +1,9 @@
 """Schema structure tests for pip8048 ESPHome component modules."""
 
-import os
+from pathlib import Path
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from esphome.const import CONF_BATTERY_VOLTAGE, CONF_BUS_VOLTAGE  # noqa: E402
 

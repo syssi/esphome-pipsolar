@@ -165,11 +165,13 @@ TYPES = [
 _DEPRECATED_RENAMES = {
     CONF_WARNING_LOW_PV_ENERGY: (
         CONF_WARNING_BATTERY_WEAK,
-        "'warning_low_pv_energy' has been renamed to 'warning_battery_weak' and reads a "
-        "different bit position in the QPIWS response (bit 31 instead of bit 33). "
-        "The old sensor was incorrectly reading a fault code digit, not a flag. "
-        "Replace 'warning_low_pv_energy' with 'warning_battery_weak' in your config. "
-        "Will be removed in a future release.",
+        (
+            "'warning_low_pv_energy' has been renamed to 'warning_battery_weak' and reads a "
+            "different bit position in the QPIWS response (bit 31 instead of bit 33). "
+            "The old sensor was incorrectly reading a fault code digit, not a flag. "
+            "Replace 'warning_low_pv_energy' with 'warning_battery_weak' in your config. "
+            "Will be removed in a future release."
+        ),
     ),
 }
 
