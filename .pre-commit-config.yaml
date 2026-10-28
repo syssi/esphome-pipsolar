@@ -39,3 +39,12 @@ repos:
         args: [--persistent=n, components]
         pass_filenames: false
         additional_dependencies: [esphome]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [pytest, esphome]
