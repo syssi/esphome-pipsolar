@@ -4,6 +4,11 @@ import esphome.config_validation as cv
 from esphome.const import ICON_POWER
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
+from ..const import (
+    CONF_INPUT_VOLTAGE_RANGE,
+    CONF_PV_OK_CONDITION_FOR_PARALLEL,
+    CONF_PV_POWER_BALANCE,
+)
 
 DEPENDENCIES = ["uart"]
 
@@ -11,9 +16,6 @@ CONF_OUTPUT_SOURCE_PRIORITY_UTILITY = "output_source_priority_utility"
 CONF_OUTPUT_SOURCE_PRIORITY_SOLAR = "output_source_priority_solar"
 CONF_OUTPUT_SOURCE_PRIORITY_BATTERY = "output_source_priority_battery"
 CONF_OUTPUT_SOURCE_PRIORITY_HYBRID = "output_source_priority_hybrid"
-CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
-CONF_PV_OK_CONDITION_FOR_PARALLEL = "pv_ok_condition_for_parallel"
-CONF_PV_POWER_BALANCE = "pv_power_balance"
 
 TYPES = {
     CONF_OUTPUT_SOURCE_PRIORITY_UTILITY: ("POP00", None),

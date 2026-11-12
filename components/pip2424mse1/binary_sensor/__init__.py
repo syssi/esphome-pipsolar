@@ -3,12 +3,14 @@ from esphome.components import binary_sensor
 import esphome.config_validation as cv
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
+from ..const import (
+    CONF_ADD_SBU_PRIORITY_VERSION,
+    CONF_CONFIGURATION_STATUS,
+    CONF_SCC_FIRMWARE_VERSION,
+)
 
 DEPENDENCIES = ["uart"]
 
-CONF_ADD_SBU_PRIORITY_VERSION = "add_sbu_priority_version"
-CONF_CONFIGURATION_STATUS = "configuration_status"
-CONF_SCC_FIRMWARE_VERSION = "scc_firmware_version"
 CONF_LOAD_STATUS = "load_status"
 CONF_BATTERY_VOLTAGE_TO_STEADY_WHILE_CHARGING = (
     "battery_voltage_to_steady_while_charging"

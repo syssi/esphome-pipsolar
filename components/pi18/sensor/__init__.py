@@ -28,7 +28,18 @@ from esphome.const import (
 )
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
-from ..const import CONF_SOLAR_POWER_PRIORITY
+from ..const import (
+    CONF_BATTERY_BULK_VOLTAGE,
+    CONF_BATTERY_FLOAT_VOLTAGE,
+    CONF_BATTERY_UNDER_VOLTAGE,
+    CONF_CHARGER_SOURCE_PRIORITY,
+    CONF_CURRENT_MAX_AC_CHARGING_CURRENT,
+    CONF_CURRENT_MAX_CHARGING_CURRENT,
+    CONF_INPUT_VOLTAGE_RANGE,
+    CONF_MACHINE_TYPE,
+    CONF_OUTPUT_SOURCE_PRIORITY,
+    CONF_SOLAR_POWER_PRIORITY,
+)
 
 DEPENDENCIES = ["uart"]
 
@@ -64,17 +75,8 @@ CONF_AC_OUTPUT_RATING_ACTIVE_POWER = "ac_output_rating_active_power"
 CONF_BATTERY_RATING_VOLTAGE = "battery_rating_voltage"
 CONF_BATTERY_RECHARGE_VOLTAGE = "battery_recharge_voltage"
 CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
-CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
-CONF_BATTERY_BULK_VOLTAGE = "battery_bulk_voltage"
-CONF_BATTERY_FLOAT_VOLTAGE = "battery_float_voltage"
 CONF_BATTERY_TYPE = "battery_type"
-CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
-CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
-CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
-CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
-CONF_CHARGER_SOURCE_PRIORITY = "charger_source_priority"
 CONF_PARALLEL_MAX_NUM = "parallel_max_num"
-CONF_MACHINE_TYPE = "machine_type"
 CONF_TOPOLOGY = "topology"
 CONF_OUTPUT_MODE = "output_mode"
 CONF_MPPT_STRING = "mppt_string"

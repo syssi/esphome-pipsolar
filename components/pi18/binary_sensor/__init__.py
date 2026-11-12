@@ -3,6 +3,17 @@ from esphome.components import binary_sensor
 import esphome.config_validation as cv
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
+from ..const import (
+    CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT,
+    CONF_BACKLIGHT_ON,
+    CONF_FAULT_CODE_RECORD,
+    CONF_LCD_ESCAPE_TO_DEFAULT,
+    CONF_OVER_TEMPERATURE_RESTART_FUNCTION,
+    CONF_OVERLOAD_BYPASS_FUNCTION,
+    CONF_OVERLOAD_RESTART_FUNCTION,
+    CONF_POWER_SAVING,
+    CONF_SILENCE_BUZZER_OPEN_BUZZER,
+)
 
 DEPENDENCIES = ["uart"]
 
@@ -10,15 +21,6 @@ DEPENDENCIES = ["uart"]
 CONF_SETTING_VALUE_CONFIGURATION_STATE = "setting_value_configuration_state"
 
 # P007FLAG binary sensors
-CONF_SILENCE_BUZZER_OPEN_BUZZER = "silence_buzzer_open_buzzer"
-CONF_OVERLOAD_BYPASS_FUNCTION = "overload_bypass_function"
-CONF_LCD_ESCAPE_TO_DEFAULT = "lcd_escape_to_default"
-CONF_OVERLOAD_RESTART_FUNCTION = "overload_restart_function"
-CONF_OVER_TEMPERATURE_RESTART_FUNCTION = "over_temperature_restart_function"
-CONF_BACKLIGHT_ON = "backlight_on"
-CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
-CONF_FAULT_CODE_RECORD = "fault_code_record"
-CONF_POWER_SAVING = "power_saving"
 
 # P005FWS binary sensors
 CONF_WARNING_LINE_FAIL = "warning_line_fail"

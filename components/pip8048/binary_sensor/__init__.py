@@ -3,12 +3,17 @@ from esphome.components import binary_sensor
 import esphome.config_validation as cv
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, deprecated_renames
+from ..const import (
+    CONF_ADD_SBU_PRIORITY_VERSION,
+    CONF_CONFIGURATION_STATUS,
+    CONF_FAULT_CODE_RECORD,
+    CONF_LCD_ESCAPE_TO_DEFAULT,
+    CONF_POWER_SAVING,
+    CONF_SCC_FIRMWARE_VERSION,
+)
 
 DEPENDENCIES = ["uart"]
 
-CONF_ADD_SBU_PRIORITY_VERSION = "add_sbu_priority_version"
-CONF_CONFIGURATION_STATUS = "configuration_status"
-CONF_SCC_FIRMWARE_VERSION = "scc_firmware_version"
 CONF_LOAD_STATUS = "load_status"
 CONF_BATTERY_VOLTAGE_TO_STEADY_WHILE_CHARGING = (
     "battery_voltage_to_steady_while_charging"
@@ -21,13 +26,10 @@ CONF_SWITCH_ON = "switch_on"
 CONF_DUSTPROOF_INSTALLED = "dustproof_installed"
 CONF_SILENCE_BUZZER_OPEN_BUZZER = "silence_buzzer_open_buzzer"
 CONF_OVERLOAD_BYPASS_FUNCTION = "overload_bypass_function"
-CONF_LCD_ESCAPE_TO_DEFAULT = "lcd_escape_to_default"
 CONF_OVERLOAD_RESTART_FUNCTION = "overload_restart_function"
 CONF_OVER_TEMPERATURE_RESTART_FUNCTION = "over_temperature_restart_function"
 CONF_BACKLIGHT_ON = "backlight_on"
 CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
-CONF_FAULT_CODE_RECORD = "fault_code_record"
-CONF_POWER_SAVING = "power_saving"
 
 CONF_WARNINGS_PRESENT = "warnings_present"
 CONF_FAULTS_PRESENT = "faults_present"
