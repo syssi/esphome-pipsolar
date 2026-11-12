@@ -32,7 +32,11 @@ from esphome.const import (
 )
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
-from ..const import CONF_CHARGER_SOURCE_PRIORITY, CONF_OUTPUT_SOURCE_PRIORITY
+from ..const import (
+    CONF_CHARGER_SOURCE_PRIORITY,
+    CONF_MAX_DISCHARGING_CURRENT,
+    CONF_OUTPUT_SOURCE_PRIORITY,
+)
 
 DEPENDENCIES = ["uart"]
 
@@ -90,7 +94,6 @@ CONF_SOLAR_FEED_TO_GRID_POWER = "solar_feed_to_grid_power"
 CONF_COUNTRY_CUSTOMIZED_REGULATION = "country_customized_regulation"
 
 CONF_MAX_CHARGING_TIME_AT_CV_STAGE = "max_charging_time_at_cv_stage"
-CONF_MAX_DISCHARGING_CURRENT = "max_discharging_current"
 
 CONF_TOTAL_PV_GENERATED_ENERGY = "total_pv_generated_energy"
 CONF_TOTAL_OUTPUT_LOAD_ENERGY = "total_output_load_energy"

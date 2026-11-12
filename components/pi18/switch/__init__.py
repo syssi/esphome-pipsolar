@@ -4,11 +4,11 @@ import esphome.config_validation as cv
 from esphome.const import ICON_POWER
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
+from ..const import CONF_SOLAR_POWER_PRIORITY
 
 DEPENDENCIES = ["uart"]
 
 CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
-CONF_SOLAR_POWER_PRIORITY = "solar_power_priority"
 CONF_CHARGER_SOURCE_PRIORITY_SOLARFIRST = "charger_source_priority_solarfirst"
 CONF_CHARGER_SOURCE_PRIORITY_UTILITY = "charger_source_priority_utility"
 CONF_CHARGER_SOURCE_PRIORITY_SOLARONLY = "charger_source_priority_solaronly"

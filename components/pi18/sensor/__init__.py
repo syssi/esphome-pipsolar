@@ -28,6 +28,7 @@ from esphome.const import (
 )
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
+from ..const import CONF_SOLAR_POWER_PRIORITY
 
 DEPENDENCIES = ["uart"]
 
@@ -76,7 +77,6 @@ CONF_PARALLEL_MAX_NUM = "parallel_max_num"
 CONF_MACHINE_TYPE = "machine_type"
 CONF_TOPOLOGY = "topology"
 CONF_OUTPUT_MODE = "output_mode"
-CONF_SOLAR_POWER_PRIORITY = "solar_power_priority"
 CONF_MPPT_STRING = "mppt_string"
 
 # P007PGS0 sensors
