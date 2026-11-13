@@ -535,15 +535,19 @@ TEST(Pi18Lv5048Test, P007piriPollErrorInventsNoStates) {
   inv.set_charger_source_priority_solarfirst_switch(&solarfirst);
   inv.set_charger_source_priority_utility_switch(&utility);
   inv.set_charger_source_priority_solaronly_switch(&solaronly);
-  inv.handle_p007piri_(LV5048_P007PIRI_BANANNAJOE);  // charger priority 2 = solar first
+  inv.handle_p007piri_(LV5048_P007PIRI_BANANNAJOE);  // charger source priority 2
+  const bool solarfirst_before = solarfirst.state;
+  const bool utility_before = utility.state;
+  const bool solaronly_before = solaronly.state;
   inv.handle_poll_error_(POLLING_P007PIRI);
   EXPECT_TRUE(std::isnan(under_v.state));
   EXPECT_TRUE(std::isnan(bat_type.state));
   EXPECT_TRUE(std::isnan(max_ac_chg.state));
   EXPECT_TRUE(std::isnan(chg_prio.state));
-  EXPECT_TRUE(solarfirst.state);
-  EXPECT_FALSE(utility.state);
-  EXPECT_FALSE(solaronly.state);
+  // A missing field must not be read as priority 0, which flips the switches
+  EXPECT_EQ(solarfirst.state, solarfirst_before);
+  EXPECT_EQ(utility.state, utility_before);
+  EXPECT_EQ(solaronly.state, solaronly_before);
 }
 
 // ── Robustness ────────────────────────────────────────────────────────────────
