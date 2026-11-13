@@ -476,6 +476,80 @@ TEST(Pi18Lv5048Test, P007pgs0TotalLoadAndChargingCurrent) {
   EXPECT_FLOAT_EQ(chg_a.state, 337.0f);
 }
 
+// ── Poll errors (timeout, NAK, CRC mismatch) ──────────────────────────────────
+//
+// A failed poll is decoded as an empty message. Missing fields must not be
+// reported as 0: numeric sensors and binary sensors become unknown, entities
+// that cannot be invalidated (text sensors, switches, selects) keep their state.
+
+TEST(Pi18Lv5048Test, P005gsPollErrorInventsNoStates) {
+  TestablePipsolar inv;
+  sensor::Sensor grid_v;
+  binary_sensor::BinarySensor config_state;
+  text_sensor::TextSensor mppt1, mppt2, load, bat_dir, dc_ac, line;
+  inv.set_grid_voltage(&grid_v);
+  inv.set_setting_value_configuration_state(&config_state);
+  inv.set_mppt1_charger_status(&mppt1);
+  inv.set_mppt2_charger_status(&mppt2);
+  inv.set_load_connection(&load);
+  inv.set_battery_power_direction(&bat_dir);
+  inv.set_dc_ac_power_direction(&dc_ac);
+  inv.set_line_power_direction(&line);
+  inv.handle_poll_error_(POLLING_P005GS);
+  EXPECT_TRUE(std::isnan(grid_v.state));
+  EXPECT_FALSE(config_state.has_state());
+  EXPECT_FALSE(mppt1.has_state());
+  EXPECT_FALSE(mppt2.has_state());
+  EXPECT_FALSE(load.has_state());
+  EXPECT_FALSE(bat_dir.has_state());
+  EXPECT_FALSE(dc_ac.has_state());
+  EXPECT_FALSE(line.has_state());
+}
+
+TEST(Pi18Lv5048Test, P005gsPollErrorKeepsLastTextStates) {
+  TestablePipsolar inv;
+  binary_sensor::BinarySensor config_state;
+  text_sensor::TextSensor mppt1, load, bat_dir, dc_ac;
+  inv.set_setting_value_configuration_state(&config_state);
+  inv.set_mppt1_charger_status(&mppt1);
+  inv.set_load_connection(&load);
+  inv.set_battery_power_direction(&bat_dir);
+  inv.set_dc_ac_power_direction(&dc_ac);
+  inv.handle_p005gs_(LV5048_P005GS_ACTIVE);
+  inv.handle_poll_error_(POLLING_P005GS);
+  EXPECT_FALSE(config_state.has_state());
+  EXPECT_STREQ(mppt1.state.c_str(), "charging");
+  EXPECT_STREQ(load.state.c_str(), "connect");
+  EXPECT_STREQ(bat_dir.state.c_str(), "charge");
+  EXPECT_STREQ(dc_ac.state.c_str(), "DC-AC");
+}
+
+TEST(Pi18Lv5048Test, P007piriPollErrorInventsNoStates) {
+  TestablePipsolar inv;
+  sensor::Sensor under_v, bat_type, max_ac_chg, chg_prio;
+  TestSwitch solarfirst, utility, solaronly;
+  inv.set_battery_under_voltage(&under_v);
+  inv.set_battery_type(&bat_type);
+  inv.set_current_max_ac_charging_current(&max_ac_chg);
+  inv.set_charger_source_priority(&chg_prio);
+  inv.set_charger_source_priority_solarfirst_switch(&solarfirst);
+  inv.set_charger_source_priority_utility_switch(&utility);
+  inv.set_charger_source_priority_solaronly_switch(&solaronly);
+  inv.handle_p007piri_(LV5048_P007PIRI_BANANNAJOE);  // charger source priority 2
+  const bool solarfirst_before = solarfirst.state;
+  const bool utility_before = utility.state;
+  const bool solaronly_before = solaronly.state;
+  inv.handle_poll_error_(POLLING_P007PIRI);
+  EXPECT_TRUE(std::isnan(under_v.state));
+  EXPECT_TRUE(std::isnan(bat_type.state));
+  EXPECT_TRUE(std::isnan(max_ac_chg.state));
+  EXPECT_TRUE(std::isnan(chg_prio.state));
+  // A missing field must not be read as priority 0, which flips the switches
+  EXPECT_EQ(solarfirst.state, solarfirst_before);
+  EXPECT_EQ(utility.state, utility_before);
+  EXPECT_EQ(solaronly.state, solaronly_before);
+}
+
 // ── Robustness ────────────────────────────────────────────────────────────────
 
 TEST(Pi18Lv5048Test, NullSensorsDoNotCrash) {

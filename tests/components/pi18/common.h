@@ -12,6 +12,13 @@ class TestablePipsolar : public Pipsolar {
   using Pipsolar::handle_p007flag_;
   using Pipsolar::handle_p007pgs0_;
   using Pipsolar::handle_p007piri_;
+  using Pipsolar::handle_poll_error_;
+};
+
+// switch_::Switch is abstract; tests only need publish_state()
+class TestSwitch : public switch_::Switch {
+ protected:
+  void write_state(bool state) override {}
 };
 
 }  // namespace esphome::pi18::testing

@@ -309,23 +309,28 @@ void Pipsolar::handle_p005gs_(const char *message) {
   read_sensor_(message, &pos, this->pv1_input_voltage_, 0.1f);
   read_sensor_(message, &pos, this->pv2_input_voltage_, 0.1f);
 
-  const int config_state = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int mppt1_status = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int mppt2_status = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int load_conn = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int bat_dir = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int dc_ac_dir = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int line_dir = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
+  // Missing fields (failed poll) stay empty instead of defaulting to 0, which would
+  // publish "abnormal", "disconnect" and "donothing" for an inverter that is not answering.
+  const auto config_state = this->read_int_(message, &pos);
+  const auto mppt1_status = this->read_int_(message, &pos);
+  const auto mppt2_status = this->read_int_(message, &pos);
+  const auto load_conn = this->read_int_(message, &pos);
+  const auto bat_dir = this->read_int_(message, &pos);
+  const auto dc_ac_dir = this->read_int_(message, &pos);
+  const auto line_dir = this->read_int_(message, &pos);
 
-  this->publish_binary_sensor_(config_state != 0, this->setting_value_configuration_state_);
+  esphome::optional<bool> config_changed;
+  if (config_state.has_value())
+    config_changed = *config_state != 0;
+  this->publish_binary_sensor_(config_changed, this->setting_value_configuration_state_);
   this->publish_mppt_status_(this->mppt1_charger_status_, mppt1_status);
   this->publish_mppt_status_(this->mppt2_charger_status_, mppt2_status);
 
-  if (this->load_connection_)
-    this->load_connection_->publish_state(load_conn == 1 ? "connect" : "disconnect");
+  if (this->load_connection_ && load_conn.has_value())
+    this->load_connection_->publish_state(*load_conn == 1 ? "connect" : "disconnect");
 
-  if (this->battery_power_direction_) {
-    switch (bat_dir) {
+  if (this->battery_power_direction_ && bat_dir.has_value()) {
+    switch (*bat_dir) {
       case 0:
         this->battery_power_direction_->publish_state("donothing");
         break;
@@ -339,8 +344,8 @@ void Pipsolar::handle_p005gs_(const char *message) {
         break;
     }
   }
-  if (this->dc_ac_power_direction_) {
-    switch (dc_ac_dir) {
+  if (this->dc_ac_power_direction_ && dc_ac_dir.has_value()) {
+    switch (*dc_ac_dir) {
       case 0:
         this->dc_ac_power_direction_->publish_state("donothing");
         break;
@@ -375,87 +380,58 @@ void Pipsolar::handle_p007piri_(const char *message) {
   read_sensor_(message, &pos, this->battery_recharge_voltage_, 0.1f);
   read_sensor_(message, &pos, this->battery_redischarge_voltage_, 0.1f);
 
-  const int bat_under_v_raw = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  if (this->battery_under_voltage_)
-    this->battery_under_voltage_->publish_state(bat_under_v_raw * 0.1f);
+  // Missing fields (failed poll) must not become 0: that would report 0 V / 0 A settings
+  // and flip the charger priority switches to "utility" (code 0).
+  const auto bat_under_v_raw = this->read_int_(message, &pos);
+  this->publish_sensor_(this->battery_under_voltage_, bat_under_v_raw, 0.1f);
 
   read_sensor_(message, &pos, this->battery_bulk_voltage_, 0.1f);
   read_sensor_(message, &pos, this->battery_float_voltage_, 0.1f);
 
-  const int bat_type = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int max_ac_charging_i = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int max_charging_i = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int input_v_range = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int out_src_priority = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int charger_src_priority = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int parallel_max = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int machine_type = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int topology = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int output_mode = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int solar_priority = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  const int mppt_string = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
+  const auto bat_type = this->read_int_(message, &pos);
+  const auto max_ac_charging_i = this->read_int_(message, &pos);
+  const auto max_charging_i = this->read_int_(message, &pos);
+  const auto input_v_range = this->read_int_(message, &pos);
+  const auto out_src_priority = this->read_int_(message, &pos);
+  const auto charger_src_priority = this->read_int_(message, &pos);
+  const auto parallel_max = this->read_int_(message, &pos);
+  const auto machine_type = this->read_int_(message, &pos);
+  const auto topology = this->read_int_(message, &pos);
+  const auto output_mode = this->read_int_(message, &pos);
+  const auto solar_priority = this->read_int_(message, &pos);
+  const auto mppt_string = this->read_int_(message, &pos);
 
-  if (this->battery_type_)
-    this->battery_type_->publish_state(bat_type);
-  if (this->current_max_ac_charging_current_)
-    this->current_max_ac_charging_current_->publish_state(max_ac_charging_i);
-  if (this->current_max_charging_current_)
-    this->current_max_charging_current_->publish_state(max_charging_i);
-  if (this->input_voltage_range_)
-    this->input_voltage_range_->publish_state(input_v_range);
-  if (this->output_source_priority_)
-    this->output_source_priority_->publish_state(out_src_priority);
-  if (this->charger_source_priority_)
-    this->charger_source_priority_->publish_state(charger_src_priority);
-  if (this->parallel_max_num_)
-    this->parallel_max_num_->publish_state(parallel_max);
-  if (this->machine_type_)
-    this->machine_type_->publish_state(machine_type);
-  if (this->topology_)
-    this->topology_->publish_state(topology);
-  if (this->output_mode_)
-    this->output_mode_->publish_state(output_mode);
-  if (this->solar_power_priority_)
-    this->solar_power_priority_->publish_state(solar_priority);
-  if (this->mppt_string_)
-    this->mppt_string_->publish_state(mppt_string);
+  this->publish_sensor_(this->battery_type_, bat_type);
+  this->publish_sensor_(this->current_max_ac_charging_current_, max_ac_charging_i);
+  this->publish_sensor_(this->current_max_charging_current_, max_charging_i);
+  this->publish_sensor_(this->input_voltage_range_, input_v_range);
+  this->publish_sensor_(this->output_source_priority_, out_src_priority);
+  this->publish_sensor_(this->charger_source_priority_, charger_src_priority);
+  this->publish_sensor_(this->parallel_max_num_, parallel_max);
+  this->publish_sensor_(this->machine_type_, machine_type);
+  this->publish_sensor_(this->topology_, topology);
+  this->publish_sensor_(this->output_mode_, output_mode);
+  this->publish_sensor_(this->solar_power_priority_, solar_priority);
+  this->publish_sensor_(this->mppt_string_, mppt_string);
 
-  std::string out_src_str = std::to_string(out_src_priority);             // NOLINT
-  std::string charger_src_str = std::to_string(charger_src_priority);     // NOLINT
-  std::string solar_prio_str = std::to_string(solar_priority);            // NOLINT
-  std::string input_v_range_str = std::to_string(input_v_range);          // NOLINT
-  std::string machine_type_str = std::to_string(machine_type);            // NOLINT
-  std::string max_charging_i_str = std::to_string(max_charging_i);        // NOLINT
-  std::string max_ac_charging_i_str = std::to_string(max_ac_charging_i);  // NOLINT
-  std::string bat_under_v_str = std::to_string(bat_under_v_raw);          // NOLINT
+  this->publish_select_(this->output_source_priority_select_, out_src_priority);
+  this->publish_select_(this->charger_source_priority_select_, charger_src_priority);
+  this->publish_select_(this->solar_power_priority_select_, solar_priority);
+  this->publish_select_(this->input_voltage_range_select_, input_v_range);
+  this->publish_select_(this->machine_type_select_, machine_type);
+  this->publish_select_(this->current_max_charging_current_select_, max_charging_i);
+  this->publish_select_(this->current_max_ac_charging_current_select_, max_ac_charging_i);
+  this->publish_select_(this->battery_under_voltage_select_, bat_under_v_raw);
 
-  if (this->output_source_priority_select_)
-    this->output_source_priority_select_->map_and_publish(out_src_str);
-  if (this->charger_source_priority_select_)
-    this->charger_source_priority_select_->map_and_publish(charger_src_str);
-  if (this->solar_power_priority_select_)
-    this->solar_power_priority_select_->map_and_publish(solar_prio_str);
-  if (this->input_voltage_range_select_)
-    this->input_voltage_range_select_->map_and_publish(input_v_range_str);
-  if (this->machine_type_select_)
-    this->machine_type_select_->map_and_publish(machine_type_str);
-  if (this->current_max_charging_current_select_)
-    this->current_max_charging_current_select_->map_and_publish(max_charging_i_str);
-  if (this->current_max_ac_charging_current_select_)
-    this->current_max_ac_charging_current_select_->map_and_publish(max_ac_charging_i_str);
-  if (this->battery_under_voltage_select_)
-    this->battery_under_voltage_select_->map_and_publish(bat_under_v_str);
-
-  if (this->output_source_priority_switch_)
-    this->output_source_priority_switch_->publish_state(out_src_priority != 0);
-  if (this->solar_power_priority_switch_)
-    this->solar_power_priority_switch_->publish_state(solar_priority == 1);
-  if (this->charger_source_priority_solarfirst_switch_)
-    this->charger_source_priority_solarfirst_switch_->publish_state(charger_src_priority == 2);
-  if (this->charger_source_priority_utility_switch_)
-    this->charger_source_priority_utility_switch_->publish_state(charger_src_priority == 0);
-  if (this->charger_source_priority_solaronly_switch_)
-    this->charger_source_priority_solaronly_switch_->publish_state(charger_src_priority == 3);
+  if (out_src_priority.has_value())
+    this->publish_switch_(this->output_source_priority_switch_, *out_src_priority != 0);
+  if (solar_priority.has_value())
+    this->publish_switch_(this->solar_power_priority_switch_, *solar_priority == 1);
+  if (charger_src_priority.has_value()) {
+    this->publish_switch_(this->charger_source_priority_solarfirst_switch_, *charger_src_priority == 2);
+    this->publish_switch_(this->charger_source_priority_utility_switch_, *charger_src_priority == 0);
+    this->publish_switch_(this->charger_source_priority_solaronly_switch_, *charger_src_priority == 3);
+  }
 }
 
 void Pipsolar::handle_p006mod_(const char *message) {
@@ -565,10 +541,10 @@ void Pipsolar::handle_p005et_(const char *message) {
   read_sensor_(message, &pos, this->total_generated_energy_);
 }
 
-void Pipsolar::publish_mppt_status_(text_sensor::TextSensor *sensor, int value) {
-  if (!sensor)
+void Pipsolar::publish_mppt_status_(text_sensor::TextSensor *sensor, esphome::optional<int32_t> value) {
+  if (!sensor || !value.has_value())
     return;
-  switch (value) {
+  switch (*value) {
     case 0:
       sensor->publish_state("abnormal");
       break;
@@ -583,10 +559,10 @@ void Pipsolar::publish_mppt_status_(text_sensor::TextSensor *sensor, int value) 
   }
 }
 
-void Pipsolar::publish_direction_(text_sensor::TextSensor *sensor, int value) {
-  if (!sensor)
+void Pipsolar::publish_direction_(text_sensor::TextSensor *sensor, esphome::optional<int32_t> value) {
+  if (!sensor || !value.has_value())
     return;
-  switch (value) {
+  switch (*value) {
     case 0:
       sensor->publish_state("donothing");
       break;
@@ -609,6 +585,23 @@ void Pipsolar::publish_binary_sensor_(esphome::optional<bool> b, binary_sensor::
       sensor->invalidate_state();
     }
   }
+}
+
+void Pipsolar::publish_sensor_(sensor::Sensor *sensor, esphome::optional<int32_t> value, float scale) {
+  if (sensor)
+    sensor->publish_state(value.has_value() ? *value * scale : NAN);
+}
+
+void Pipsolar::publish_select_(PipsolarSelect *select, esphome::optional<int32_t> value) {
+  if (select == nullptr || !value.has_value())
+    return;
+  std::string mapped = std::to_string(*value);  // NOLINT
+  select->map_and_publish(mapped);
+}
+
+void Pipsolar::publish_switch_(switch_::Switch *sw, bool state) {
+  if (sw)
+    sw->publish_state(state);
 }
 
 void Pipsolar::dump_config() {
@@ -701,6 +694,10 @@ std::string Pipsolar::read_field_(const char *message, size_t *pos) {
   if (message[*pos] == ',')
     (*pos)++;
   return field;
+}
+
+esphome::optional<int32_t> Pipsolar::read_int_(const char *message, size_t *pos) {
+  return parse_number<int32_t>(this->read_field_(message, pos));
 }
 
 void Pipsolar::read_sensor_(const char *message, size_t *pos, sensor::Sensor *sensor, float scale) {
