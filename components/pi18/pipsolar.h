@@ -226,13 +226,19 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void handle_p005et_(const char *message);
   void handle_p007pgs0_(const char *message);
 
-  void publish_mppt_status_(text_sensor::TextSensor *sensor, int value);
-  void publish_direction_(text_sensor::TextSensor *sensor, int value);
+  void publish_mppt_status_(text_sensor::TextSensor *sensor, esphome::optional<int32_t> value);
+  void publish_direction_(text_sensor::TextSensor *sensor, esphome::optional<int32_t> value);
   void publish_binary_sensor_(esphome::optional<bool> b, binary_sensor::BinarySensor *sensor);
+  // Publishes NAN when the value is missing (failed poll or empty field)
+  void publish_sensor_(sensor::Sensor *sensor, esphome::optional<int32_t> value, float scale = 1.0f);
+  // Does nothing when the value is missing: selects and switches cannot be invalidated
+  void publish_select_(PipsolarSelect *select, esphome::optional<int32_t> value);
+  void publish_switch_(switch_::Switch *sw, bool state);
 
   void skip_start_(const char *message, size_t *pos);
   void skip_field_(const char *message, size_t *pos);
   std::string read_field_(const char *message, size_t *pos);
+  esphome::optional<int32_t> read_int_(const char *message, size_t *pos);
   void read_sensor_(const char *message, size_t *pos, sensor::Sensor *sensor, float scale = 1.0f);
 
   std::string command_queue_[COMMAND_QUEUE_LENGTH];
