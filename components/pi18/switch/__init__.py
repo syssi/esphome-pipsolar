@@ -4,23 +4,25 @@ import esphome.config_validation as cv
 from esphome.const import ICON_POWER
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
+from ..const import (
+    CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT,
+    CONF_BACKLIGHT_ON,
+    CONF_FAULT_CODE_RECORD,
+    CONF_LCD_ESCAPE_TO_DEFAULT,
+    CONF_OUTPUT_SOURCE_PRIORITY,
+    CONF_OVER_TEMPERATURE_RESTART_FUNCTION,
+    CONF_OVERLOAD_BYPASS_FUNCTION,
+    CONF_OVERLOAD_RESTART_FUNCTION,
+    CONF_POWER_SAVING,
+    CONF_SILENCE_BUZZER_OPEN_BUZZER,
+    CONF_SOLAR_POWER_PRIORITY,
+)
 
 DEPENDENCIES = ["uart"]
 
-CONF_OUTPUT_SOURCE_PRIORITY = "output_source_priority"
-CONF_SOLAR_POWER_PRIORITY = "solar_power_priority"
 CONF_CHARGER_SOURCE_PRIORITY_SOLARFIRST = "charger_source_priority_solarfirst"
 CONF_CHARGER_SOURCE_PRIORITY_UTILITY = "charger_source_priority_utility"
 CONF_CHARGER_SOURCE_PRIORITY_SOLARONLY = "charger_source_priority_solaronly"
-CONF_SILENCE_BUZZER_OPEN_BUZZER = "silence_buzzer_open_buzzer"
-CONF_OVERLOAD_BYPASS_FUNCTION = "overload_bypass_function"
-CONF_LCD_ESCAPE_TO_DEFAULT = "lcd_escape_to_default"
-CONF_OVERLOAD_RESTART_FUNCTION = "overload_restart_function"
-CONF_OVER_TEMPERATURE_RESTART_FUNCTION = "over_temperature_restart_function"
-CONF_BACKLIGHT_ON = "backlight_on"
-CONF_ALARM_ON_WHEN_PRIMARY_SOURCE_INTERRUPT = "alarm_on_when_primary_source_interrupt"
-CONF_FAULT_CODE_RECORD = "fault_code_record"
-CONF_POWER_SAVING = "power_saving"
 
 TYPES = {
     CONF_OUTPUT_SOURCE_PRIORITY: ("^S007POP1", "^S007POP0"),

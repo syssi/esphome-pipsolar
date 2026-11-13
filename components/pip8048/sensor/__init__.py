@@ -32,7 +32,22 @@ from esphome.const import (
 )
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA
-from ..const import CONF_CHARGER_SOURCE_PRIORITY, CONF_OUTPUT_SOURCE_PRIORITY
+from ..const import (
+    CONF_BATTERY_BULK_VOLTAGE,
+    CONF_BATTERY_FLOAT_VOLTAGE,
+    CONF_BATTERY_RECHARGE_VOLTAGE,
+    CONF_BATTERY_REDISCHARGE_VOLTAGE,
+    CONF_BATTERY_TYPE,
+    CONF_BATTERY_UNDER_VOLTAGE,
+    CONF_CHARGER_SOURCE_PRIORITY,
+    CONF_CURRENT_MAX_AC_CHARGING_CURRENT,
+    CONF_CURRENT_MAX_CHARGING_CURRENT,
+    CONF_INPUT_VOLTAGE_RANGE,
+    CONF_MAX_DISCHARGING_CURRENT,
+    CONF_OUTPUT_SOURCE_PRIORITY,
+    CONF_PV_OK_CONDITION_FOR_PARALLEL,
+    CONF_PV_POWER_BALANCE,
+)
 
 DEPENDENCIES = ["uart"]
 
@@ -46,21 +61,10 @@ CONF_AC_OUTPUT_RATING_CURRENT = "ac_output_rating_current"
 CONF_AC_OUTPUT_RATING_APPARENT_POWER = "ac_output_rating_apparent_power"
 CONF_AC_OUTPUT_RATING_ACTIVE_POWER = "ac_output_rating_active_power"
 CONF_BATTERY_RATING_VOLTAGE = "battery_rating_voltage"
-CONF_BATTERY_RECHARGE_VOLTAGE = "battery_recharge_voltage"
-CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
-CONF_BATTERY_BULK_VOLTAGE = "battery_bulk_voltage"
-CONF_BATTERY_FLOAT_VOLTAGE = "battery_float_voltage"
-CONF_BATTERY_TYPE = "battery_type"
-CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
-CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
-CONF_INPUT_VOLTAGE_RANGE = "input_voltage_range"
 CONF_PARALLEL_MAX_NUM = "parallel_max_num"
 CONF_MACHINE_TYPE = "machine_type"
 CONF_TOPOLOGY = "topology"
 CONF_OUTPUT_MODE = "output_mode"
-CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
-CONF_PV_OK_CONDITION_FOR_PARALLEL = "pv_ok_condition_for_parallel"
-CONF_PV_POWER_BALANCE = "pv_power_balance"
 
 CONF_GRID_VOLTAGE = "grid_voltage"
 CONF_GRID_FREQUENCY = "grid_frequency"
@@ -76,9 +80,6 @@ CONF_PV1_INPUT_CURRENT = "pv1_input_current"
 CONF_PV1_INPUT_VOLTAGE = "pv1_input_voltage"
 CONF_BATTERY_VOLTAGE_SCC = "battery_voltage_scc"
 CONF_BATTERY_DISCHARGE_CURRENT = "battery_discharge_current"
-CONF_ADD_SBU_PRIORITY_VERSION = "add_sbu_priority_version"
-CONF_CONFIGURATION_STATUS = "configuration_status"
-CONF_SCC_FIRMWARE_VERSION = "scc_firmware_version"
 CONF_BATTERY_VOLTAGE_OFFSET_FOR_FANS_ON = "battery_voltage_offset_for_fans_on"
 CONF_EEPROM_VERSION = "eeprom_version"
 CONF_PV1_CHARGING_POWER = "pv1_charging_power"
@@ -90,7 +91,6 @@ CONF_SOLAR_FEED_TO_GRID_POWER = "solar_feed_to_grid_power"
 CONF_COUNTRY_CUSTOMIZED_REGULATION = "country_customized_regulation"
 
 CONF_MAX_CHARGING_TIME_AT_CV_STAGE = "max_charging_time_at_cv_stage"
-CONF_MAX_DISCHARGING_CURRENT = "max_discharging_current"
 
 CONF_TOTAL_PV_GENERATED_ENERGY = "total_pv_generated_energy"
 CONF_TOTAL_OUTPUT_LOAD_ENERGY = "total_output_load_energy"

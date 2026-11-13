@@ -5,7 +5,18 @@ import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_VALUE
 
 from .. import CONF_PIPSOLAR_ID, PIPSOLAR_COMPONENT_SCHEMA, pipsolar_ns
-from ..const import CONF_CHARGER_SOURCE_PRIORITY, CONF_OUTPUT_SOURCE_PRIORITY
+from ..const import (
+    CONF_BATTERY_BULK_VOLTAGE,
+    CONF_BATTERY_FLOAT_VOLTAGE,
+    CONF_BATTERY_RECHARGE_VOLTAGE,
+    CONF_BATTERY_REDISCHARGE_VOLTAGE,
+    CONF_BATTERY_TYPE,
+    CONF_BATTERY_UNDER_VOLTAGE,
+    CONF_CHARGER_SOURCE_PRIORITY,
+    CONF_CURRENT_MAX_AC_CHARGING_CURRENT,
+    CONF_CURRENT_MAX_CHARGING_CURRENT,
+    CONF_OUTPUT_SOURCE_PRIORITY,
+)
 
 DEPENDENCIES = ["pip2424mse1"]
 
@@ -30,14 +41,6 @@ CONF_POSSIBLE_VALUES = "possible_values"
 #                               24V unit: 00.0V/24V/24.5V/25V/25.5V/26V/26.5V/27V/27.5V/28V/28.5V/29V
 #                               48V unit: 00.0V48V/49V/50V/51V/52V/53V/54V/55V/56V/57V/58V
 
-CONF_BATTERY_BULK_VOLTAGE = "battery_bulk_voltage"
-CONF_BATTERY_RECHARGE_VOLTAGE = "battery_recharge_voltage"
-CONF_BATTERY_UNDER_VOLTAGE = "battery_under_voltage"
-CONF_BATTERY_FLOAT_VOLTAGE = "battery_float_voltage"
-CONF_BATTERY_TYPE = "battery_type"
-CONF_CURRENT_MAX_AC_CHARGING_CURRENT = "current_max_ac_charging_current"
-CONF_CURRENT_MAX_CHARGING_CURRENT = "current_max_charging_current"
-CONF_BATTERY_REDISCHARGE_VOLTAGE = "battery_redischarge_voltage"
 
 TYPES = {
     CONF_BATTERY_BULK_VOLTAGE: (
