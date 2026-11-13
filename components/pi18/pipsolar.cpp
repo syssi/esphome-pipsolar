@@ -450,12 +450,13 @@ void Pipsolar::handle_p007piri_(const char *message) {
     this->output_source_priority_switch_->publish_state(out_src_priority != 0);
   if (this->solar_power_priority_switch_)
     this->solar_power_priority_switch_->publish_state(solar_priority == 1);
+  // Charger source priority: 0 = solar first, 1 = solar and utility, 2 = only solar (^S009PCP0,n)
   if (this->charger_source_priority_solarfirst_switch_)
-    this->charger_source_priority_solarfirst_switch_->publish_state(charger_src_priority == 2);
+    this->charger_source_priority_solarfirst_switch_->publish_state(charger_src_priority == 0);
   if (this->charger_source_priority_utility_switch_)
-    this->charger_source_priority_utility_switch_->publish_state(charger_src_priority == 0);
+    this->charger_source_priority_utility_switch_->publish_state(charger_src_priority == 1);
   if (this->charger_source_priority_solaronly_switch_)
-    this->charger_source_priority_solaronly_switch_->publish_state(charger_src_priority == 3);
+    this->charger_source_priority_solaronly_switch_->publish_state(charger_src_priority == 2);
 }
 
 void Pipsolar::handle_p006mod_(const char *message) {

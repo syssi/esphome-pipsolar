@@ -241,7 +241,46 @@ TEST(Pi18Lv5048Test, P007piriSourcePrioritiesBanannaJoe) {
   inv.set_charger_source_priority(&chg_prio);
   inv.handle_p007piri_(LV5048_P007PIRI_BANANNAJOE);
   EXPECT_FLOAT_EQ(out_prio.state, 0.0f);  // 0=utility
-  EXPECT_FLOAT_EQ(chg_prio.state, 2.0f);  // 2=solar first
+  EXPECT_FLOAT_EQ(chg_prio.state, 2.0f);  // 2=only solar
+}
+
+// Charger source priority codes in ^P007PIRI (PI18 protocol): 0 = solar first,
+// 1 = solar and utility, 2 = only solar. The switches send ^S009PCP0,0/1/2 and
+// must report the same codes back.
+class ChargerPrioritySwitch : public switch_::Switch {
+ protected:
+  void write_state(bool state) override {}
+};
+
+// BanannaJoe's frame with the charger source priority field (19) set to 0 and 1
+static const char PIRI_CHARGER_SOLAR_FIRST[] =
+    "^D0892300,243,2300,500,243,5600,5600,480,500,520,480,554,540,2,010,060,0,0,0,9,1,0,0,0,1,00";
+static const char PIRI_CHARGER_SOLAR_AND_UTILITY[] =
+    "^D0892300,243,2300,500,243,5600,5600,480,500,520,480,554,540,2,010,060,0,0,1,9,1,0,0,0,1,00";
+
+TEST(Pi18Lv5048Test, P007piriChargerPrioritySwitchesMatchProtocolCodes) {
+  struct Case {
+    const char *frame;
+    bool solar_first;
+    bool solar_and_utility;
+    bool only_solar;
+  };
+  const Case cases[] = {
+      {PIRI_CHARGER_SOLAR_FIRST, true, false, false},
+      {PIRI_CHARGER_SOLAR_AND_UTILITY, false, true, false},
+      {LV5048_P007PIRI_BANANNAJOE, false, false, true},
+  };
+  for (const auto &c : cases) {
+    TestablePipsolar inv;
+    ChargerPrioritySwitch solar_first, utility, only_solar;
+    inv.set_charger_source_priority_solarfirst_switch(&solar_first);
+    inv.set_charger_source_priority_utility_switch(&utility);
+    inv.set_charger_source_priority_solaronly_switch(&only_solar);
+    inv.handle_p007piri_(c.frame);
+    EXPECT_EQ(solar_first.state, c.solar_first) << c.frame;
+    EXPECT_EQ(utility.state, c.solar_and_utility) << c.frame;
+    EXPECT_EQ(only_solar.state, c.only_solar) << c.frame;
+  }
 }
 
 TEST(Pi18Lv5048Test, P007piriUntestedFieldsBanannaJoe) {
