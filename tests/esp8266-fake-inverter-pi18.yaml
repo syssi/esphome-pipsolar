@@ -64,10 +64,10 @@ uart:
             uint8_t cmd1     = (bytes.size() > 6) ? bytes[6] : 0;
             if (len_digit == 0x35) {           // "005"
               if      (cmd0 == 0x47)           id(pending_cmd) = 1;  // ^P005GS
-              else if (cmd0 == 0x46)           id(pending_cmd) = 5;  // ^P005FWS
               else if (cmd0 == 0x45)           id(pending_cmd) = 6;  // ^P005ET
             } else if (len_digit == 0x36) {    // "006"
-              /* only ^P006MOD */               id(pending_cmd) = 3;  // ^P006MOD
+              if      (cmd0 == 0x4D)           id(pending_cmd) = 3;  // ^P006MOD
+              else if (cmd0 == 0x46)           id(pending_cmd) = 5;  // ^P006FWS
             } else if (len_digit == 0x37) {    // "007"
               if (cmd0 == 0x50) {              // P…
                 if      (cmd1 == 0x49)         id(pending_cmd) = 2;  // ^P007PIRI
@@ -107,8 +107,8 @@ uart:
             0x5E, 0x44, 0x30, 0x32, 0x30, 0x31, 0x2C, 0x31, 0x2C, 0x31, 0x2C, 0x30, 0x2C, 0x30, 0x2C,
             0x31, 0x2C, 0x30, 0x2C, 0x31, 0x2C, 0x30, 0xF6, 0x3D, 0x0D,
           };
-          // ^P005FWS — fault/warning status: no faults, eeprom warning only
-          static const uint8_t resp_p005fws[] = {
+          // ^P006FWS — fault/warning status: no faults, eeprom warning only
+          static const uint8_t resp_p006fws[] = {
             0x5E, 0x44, 0x30, 0x33, 0x39, 0x30, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30,
             0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x31, 0x2C, 0x30, 0x2C, 0x30, 0x2C,
             0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0x2C, 0x30, 0xA6, 0x7C, 0x0D,
@@ -141,8 +141,8 @@ uart:
               id(uart_0).write_array(resp_p007flag, sizeof(resp_p007flag));
               break;
             case 5:
-              ESP_LOGD("fake_inv", "Responding to ^P005FWS (%d bytes)", sizeof(resp_p005fws));
-              id(uart_0).write_array(resp_p005fws, sizeof(resp_p005fws));
+              ESP_LOGD("fake_inv", "Responding to ^P006FWS (%d bytes)", sizeof(resp_p006fws));
+              id(uart_0).write_array(resp_p006fws, sizeof(resp_p006fws));
               break;
             case 6:
               ESP_LOGD("fake_inv", "Responding to ^P005ET (%d bytes)", sizeof(resp_p005et));

@@ -22,7 +22,7 @@ CONF_SETTING_VALUE_CONFIGURATION_STATE = "setting_value_configuration_state"
 
 # P007FLAG binary sensors
 
-# P005FWS binary sensors
+# P006FWS binary sensors
 CONF_WARNING_LINE_FAIL = "warning_line_fail"
 CONF_WARNING_OUTPUT_CIRCUIT_SHORT = "warning_output_circuit_short"
 CONF_WARNING_OVER_TEMPERATURE = "warning_over_temperature"

@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include <cmath>
+#include <string>
+#include <vector>
 #include "common.h"
 #include "esphome/components/pi18/pipsolar_select.h"
 #include "frames_lv5048.h"
@@ -393,20 +396,20 @@ TEST(Pi18Lv5048Test, P007flagDisabledFlags) {
   EXPECT_FALSE(power_save.state);
 }
 
-// ── P005FWS ───────────────────────────────────────────────────────────────────
+// ── P006FWS ───────────────────────────────────────────────────────────────────
 
-TEST(Pi18Lv5048Test, P005fwsEepromWarningActive) {
+TEST(Pi18Lv5048Test, P006fwsEepromWarningActive) {
   TestablePipsolar inv;
   binary_sensor::BinarySensor eeprom;
   sensor::Sensor fault_code;
   inv.set_warning_eeprom_failed(&eeprom);
   inv.set_fault_code(&fault_code);
-  inv.handle_p005fws_(LV5048_P005FWS_EEPROM_WARN);
+  inv.handle_p006fws_(LV5048_P006FWS_EEPROM_WARN);
   EXPECT_TRUE(eeprom.state);
   EXPECT_FLOAT_EQ(fault_code.state, 0.0f);
 }
 
-TEST(Pi18Lv5048Test, P005fwsAllOtherWarningsClear) {
+TEST(Pi18Lv5048Test, P006fwsAllOtherWarningsClear) {
   TestablePipsolar inv;
   binary_sensor::BinarySensor line_fail, output_short, over_temp, fan_lock;
   binary_sensor::BinarySensor bat_high, bat_low, bat_shutdown, overload;
@@ -427,7 +430,7 @@ TEST(Pi18Lv5048Test, P005fwsAllOtherWarningsClear) {
   inv.set_warning_mppt2_overload(&mppt2_ovld);
   inv.set_warning_scc1_battery_too_low_to_charge(&scc1_low);
   inv.set_warning_scc2_battery_too_low_to_charge(&scc2_low);
-  inv.handle_p005fws_(LV5048_P005FWS_EEPROM_WARN);
+  inv.handle_p006fws_(LV5048_P006FWS_EEPROM_WARN);
   EXPECT_FALSE(line_fail.state);
   EXPECT_FALSE(output_short.state);
   EXPECT_FALSE(over_temp.state);
@@ -445,15 +448,15 @@ TEST(Pi18Lv5048Test, P005fwsAllOtherWarningsClear) {
   EXPECT_FALSE(scc2_low.state);
 }
 
-TEST(Pi18Lv5048Test, P005fwsMultiFaultNonZeroFaultCode) {
+TEST(Pi18Lv5048Test, P006fwsMultiFaultNonZeroFaultCode) {
   TestablePipsolar inv;
   sensor::Sensor fault_code;
   inv.set_fault_code(&fault_code);
-  inv.handle_p005fws_(LV5048_P005FWS_MULTI_FAULT);
+  inv.handle_p006fws_(LV5048_P006FWS_MULTI_FAULT);
   EXPECT_FLOAT_EQ(fault_code.state, 5.0f);
 }
 
-TEST(Pi18Lv5048Test, P005fwsMultiFaultWarningsTrue) {
+TEST(Pi18Lv5048Test, P006fwsMultiFaultWarningsTrue) {
   TestablePipsolar inv;
   binary_sensor::BinarySensor line_fail, output_short, over_temp, fan_lock, bat_high;
   binary_sensor::BinarySensor bat_low, bat_shutdown, overload;
@@ -465,7 +468,7 @@ TEST(Pi18Lv5048Test, P005fwsMultiFaultWarningsTrue) {
   inv.set_warning_battery_low_alarm(&bat_low);
   inv.set_warning_battery_under_shutdown(&bat_shutdown);
   inv.set_warning_over_load(&overload);
-  inv.handle_p005fws_(LV5048_P005FWS_MULTI_FAULT);
+  inv.handle_p006fws_(LV5048_P006FWS_MULTI_FAULT);
   EXPECT_TRUE(line_fail.state);
   EXPECT_TRUE(output_short.state);
   EXPECT_TRUE(over_temp.state);
@@ -624,25 +627,55 @@ TEST(Pi18Lv5048Test, P007flagShortFrameLeavesMissingFlagsUnknown) {
   EXPECT_FALSE(power_saving.has_state());
 }
 
-TEST(Pi18Lv5048Test, P005fwsShortFrameLeavesMissingWarningsUnknown) {
+TEST(Pi18Lv5048Test, P006fwsShortFrameLeavesMissingWarningsUnknown) {
   TestablePipsolar inv;
   sensor::Sensor fault_code;
   binary_sensor::BinarySensor line_fail, scc2_low;
   inv.set_fault_code(&fault_code);
   inv.set_warning_line_fail(&line_fail);
   inv.set_warning_scc2_battery_too_low_to_charge(&scc2_low);
-  inv.handle_p005fws_("^D02705,1,0,0,0,0,0,0,0,0,0");  // fault code + 10 of 16 warnings
+  inv.handle_p006fws_("^D02705,1,0,0,0,0,0,0,0,0,0");  // fault code + 10 of 16 warnings
   EXPECT_FLOAT_EQ(fault_code.state, 5.0f);
   EXPECT_TRUE(line_fail.state);
   EXPECT_FALSE(scc2_low.has_state());
 }
 
-TEST(Pi18Lv5048Test, P005fwsMissingFaultCodeIsNotZero) {
+TEST(Pi18Lv5048Test, P006fwsMissingFaultCodeIsNotZero) {
   TestablePipsolar inv;
   sensor::Sensor fault_code;
   inv.set_fault_code(&fault_code);
-  inv.handle_p005fws_("^D003,");
+  inv.handle_p006fws_("^D003,");
   EXPECT_TRUE(std::isnan(fault_code.state));
+}
+
+// ── Poll commands ─────────────────────────────────────────────────────────────
+
+// The 3-digit length counts the payload plus 2 CRC bytes and the CR. SolarPower
+// sends ^P006FWS; the LV2424 answers ^P005FWS with no data.
+TEST(Pi18Lv5048Test, PollCommandsCarryTheirLength) {
+  TestablePipsolar inv;
+  sensor::Sensor grid_v, rating_v, mode_id, fault_code, energy, total_power;
+  binary_sensor::BinarySensor backlight;
+  inv.set_grid_voltage(&grid_v);
+  inv.set_grid_rating_voltage(&rating_v);
+  inv.set_device_mode_id(&mode_id);
+  inv.set_backlight_on(&backlight);
+  inv.set_fault_code(&fault_code);
+  inv.set_total_generated_energy(&energy);
+  inv.set_total_ac_output_active_power(&total_power);
+
+  std::vector<std::string> commands;
+  for (size_t i = 0; i < TestablePipsolar::POLLING_COMMANDS_MAX; i++) {
+    const std::string command = inv.polling_command(i);
+    if (command.empty())
+      continue;
+    commands.push_back(command);
+    ASSERT_GT(command.size(), 5u) << command;
+    EXPECT_EQ(command.substr(0, 2), "^P") << command;
+    EXPECT_EQ(std::stoi(command.substr(2, 3)), static_cast<int>(command.size() - 5 + 3)) << command;
+  }
+  EXPECT_EQ(commands.size(), 7u);
+  EXPECT_NE(std::find(commands.begin(), commands.end(), "^P006FWS"), commands.end());
 }
 
 // ── Robustness ────────────────────────────────────────────────────────────────
@@ -653,8 +686,8 @@ TEST(Pi18Lv5048Test, NullSensorsDoNotCrash) {
   inv.handle_p007piri_(LV5048_P007PIRI_BANANNAJOE);
   inv.handle_p006mod_(LV5048_P006MOD_HYBRID);
   inv.handle_p007flag_(LV5048_P007FLAG);
-  inv.handle_p005fws_(LV5048_P005FWS_EEPROM_WARN);
-  inv.handle_p005fws_(LV5048_P005FWS_MULTI_FAULT);
+  inv.handle_p006fws_(LV5048_P006FWS_EEPROM_WARN);
+  inv.handle_p006fws_(LV5048_P006FWS_MULTI_FAULT);
   inv.handle_p005et_(LV5048_P005ET_BANANNAJOE);
   inv.handle_p007pgs0_(LV5048_P007PGS0_ACTIVE);
 }
@@ -667,7 +700,7 @@ TEST(Pi18Lv5048Test, EmptyMessageDoesNotCrash) {
   inv.handle_p007piri_("");
   inv.handle_p006mod_("");
   inv.handle_p007flag_("");
-  inv.handle_p005fws_("");
+  inv.handle_p006fws_("");
   inv.handle_p005et_("");
   inv.handle_p007pgs0_("");
 }

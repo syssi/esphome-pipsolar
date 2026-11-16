@@ -153,7 +153,7 @@ sensor:
     # ^P005ET
     total_generated_energy:
       name: "total generated energy"
-    # ^P005FWS
+    # ^P006FWS
     fault_code:
       name: "fault code"
     # ^P007PGS0 — parallel unit aggregate (only relevant for parallel setups)
@@ -224,7 +224,7 @@ binary_sensor:
       name: "fault code record"
     power_saving:
       name: "power saving"
-    # ^P005FWS
+    # ^P006FWS
     warning_line_fail:
       name: "warning line fail"
     warning_output_circuit_short:

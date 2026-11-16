@@ -263,8 +263,8 @@ void Pipsolar::handle_poll_response_(ENUMPollingCommand polling_command, const c
     case POLLING_P007FLAG:
       handle_p007flag_(message);
       break;
-    case POLLING_P005FWS:
-      handle_p005fws_(message);
+    case POLLING_P006FWS:
+      handle_p006fws_(message);
       break;
     case POLLING_P005ET:
       handle_p005et_(message);
@@ -492,7 +492,7 @@ void Pipsolar::handle_p007flag_(const char *message) {
     this->publish_binary_sensor_(this->read_flag_(message, &pos), sensor);
 }
 
-void Pipsolar::handle_p005fws_(const char *message) {
+void Pipsolar::handle_p006fws_(const char *message) {
   if (this->last_p005fws_)
     this->last_p005fws_->publish_state(message);
   if (strlen(message) < 6)
