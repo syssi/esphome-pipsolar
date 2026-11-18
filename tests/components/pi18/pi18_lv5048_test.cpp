@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include "common.h"
+#include "esphome/components/pi18/pipsolar_select.h"
 #include "frames_lv5048.h"
 
 namespace esphome::pi18::testing {
@@ -587,6 +588,23 @@ TEST(Pi18Lv5048Test, P007piriPollErrorInventsNoStates) {
   EXPECT_EQ(solarfirst.state, solarfirst_before);
   EXPECT_EQ(utility.state, utility_before);
   EXPECT_EQ(solaronly.state, solaronly_before);
+}
+
+TEST(Pi18Lv5048Test, P007piriPollErrorKeepsSelectOption) {
+  TestablePipsolar inv;
+  PipsolarSelect chg_prio;
+  chg_prio.traits.set_options({"Solar first", "Solar and utility", "Only solar"});
+  chg_prio.add_status_mapping("0", "Solar first");
+  chg_prio.add_status_mapping("1", "Solar and utility");
+  chg_prio.add_status_mapping("2", "Only solar");
+  inv.set_charger_source_priority_select(&chg_prio);
+  inv.handle_p007piri_(LV5048_P007PIRI_BANANNAJOE);  // charger source priority 2
+  ASSERT_TRUE(chg_prio.active_index().has_value());
+  EXPECT_EQ(*chg_prio.active_index(), 2u);
+  // A missing field must not be mapped as code 0 ("Solar first")
+  inv.handle_poll_error_(POLLING_P007PIRI);
+  ASSERT_TRUE(chg_prio.active_index().has_value());
+  EXPECT_EQ(*chg_prio.active_index(), 2u);
 }
 
 // ── Short frames (firmware reporting fewer fields) ────────────────────────────
