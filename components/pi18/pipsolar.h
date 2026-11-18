@@ -19,7 +19,7 @@ enum ENUMPollingCommand {
   POLLING_P005GS = 1,
   POLLING_P006MOD = 2,
   POLLING_P007FLAG = 3,
-  POLLING_P005FWS = 4,
+  POLLING_P006FWS = 4,
   POLLING_P005ET = 5,
   POLLING_P007PGS0 = 6,
 };
@@ -134,24 +134,24 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_BINARY_SENSOR(fault_code_record, P007FLAG)
   PIPSOLAR_BINARY_SENSOR(power_saving, P007FLAG)
 
-  // ^P005FWS — fault/warning status
-  PIPSOLAR_SENSOR(fault_code, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_line_fail, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_output_circuit_short, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_over_temperature, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_fan_lock, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_battery_voltage_high, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_battery_low_alarm, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_battery_under_shutdown, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_over_load, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_eeprom_failed, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_power_limit, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_pv1_voltage_high, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_pv2_voltage_high, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_mppt1_overload, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_mppt2_overload, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_scc1_battery_too_low_to_charge, P005FWS)
-  PIPSOLAR_BINARY_SENSOR(warning_scc2_battery_too_low_to_charge, P005FWS)
+  // ^P006FWS — fault/warning status
+  PIPSOLAR_SENSOR(fault_code, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_line_fail, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_output_circuit_short, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_over_temperature, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_fan_lock, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_battery_voltage_high, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_battery_low_alarm, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_battery_under_shutdown, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_over_load, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_eeprom_failed, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_power_limit, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_pv1_voltage_high, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_pv2_voltage_high, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_mppt1_overload, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_mppt2_overload, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_scc1_battery_too_low_to_charge, P006FWS)
+  PIPSOLAR_BINARY_SENSOR(warning_scc2_battery_too_low_to_charge, P006FWS)
 
   // ^P005ET — total generated energy (8-digit, kWh)
   PIPSOLAR_SENSOR(total_generated_energy, P005ET)
@@ -167,7 +167,8 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   PIPSOLAR_TEXT_SENSOR(last_p007piri, P007PIRI)
   PIPSOLAR_TEXT_SENSOR(last_p006mod, P006MOD)
   PIPSOLAR_TEXT_SENSOR(last_p007flag, P007FLAG)
-  PIPSOLAR_TEXT_SENSOR(last_p005fws, P005FWS)
+  // The YAML key keeps its old name so existing configs still validate
+  PIPSOLAR_TEXT_SENSOR(last_p005fws, P006FWS)
   PIPSOLAR_TEXT_SENSOR(last_p005et, P005ET)
 
   // Selects — user defines optionsmap/statusmap in YAML with ^S commands
@@ -222,7 +223,7 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void handle_p007piri_(const char *message);
   void handle_p006mod_(const char *message);
   void handle_p007flag_(const char *message);
-  void handle_p005fws_(const char *message);
+  void handle_p006fws_(const char *message);
   void handle_p005et_(const char *message);
   void handle_p007pgs0_(const char *message);
 

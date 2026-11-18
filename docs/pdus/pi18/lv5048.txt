@@ -118,7 +118,10 @@
 >>> 5E:50:30:30:37:46:4C:41:47:F5:E9:0D
 <<< 5E:44:30:32:30:31:2C:31:2C:31:2C:30:2C:30:2C:31:2C:30:2C:31:2C:30:F6:3D:0D
 
-# --- ^P005FWS (Fault/Warning Status) ---
+# --- ^P006FWS (Fault/Warning Status) ---
+#
+# The request recorded below reads ^P005FWS, with a length one short, and its CRC
+# doesn't verify. SolarPower sends ^P006FWS, and the LV2424 returns no data for ^P005FWS.
 #
 # Response: ^D039<fault_code_2digits>,<w1>,<w2>,...,<w17>
 # Warnings: line_fail, output_short, over_temp, fan_lock, bat_high, bat_low_alarm,

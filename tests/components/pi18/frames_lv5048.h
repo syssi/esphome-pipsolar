@@ -66,10 +66,10 @@ static const char LV5048_P007PGS0_ACTIVE[] = "^D1131,0,00,0000,171,0000,000,0000
 //              over_temp_restart=0, backlight=1, alarm=0, fault_record=1, power_saving=0
 static const char LV5048_P007FLAG[] = "^D0201,1,1,0,0,1,0,1,0";
 
-// ── ^P005FWS responses ────────────────────────────────────────────────────────
+// ── ^P006FWS responses ────────────────────────────────────────────────────────
 //
 // No active faults; eeprom warning active (w9=1, zero-indexed w[8])
-static const char LV5048_P005FWS_EEPROM_WARN[] = "^D03900,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0";
+static const char LV5048_P006FWS_EEPROM_WARN[] = "^D03900,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0";
 
 // ── ^P005ET responses ─────────────────────────────────────────────────────────
 //
@@ -87,17 +87,17 @@ static const char LV5048_P005ET_BANANNAJOE[] = "^D01100320400";
 // BeckoPopov — 2023-03-20 11:46:13
 static const char LV5048_P004T[] = "^D01720230320114613";
 
-// ── ^P005ACCT responses ───────────────────────────────────────────────────────
+// ── ^P007ACCT responses ───────────────────────────────────────────────────────
 //
-// >>> ^P005ACCT  (AC charger time totals)
+// >>> ^P007ACCT  (AC charger time totals)
 // <<< ^D012<charge_time>,<load_time>  (unit unknown, likely minutes)
 //
 // Both zero on a freshly configured system
 static const char LV5048_P005ACCT[] = "^D0120000,0000";
 
-// ── ^P005ACLT responses ───────────────────────────────────────────────────────
+// ── ^P007ACLT responses ───────────────────────────────────────────────────────
 //
-// >>> ^P005ACLT  (AC load time totals)
+// >>> ^P007ACLT  (AC load time totals)
 // <<< ^D012<load_time_1>,<load_time_2>
 //
 // Both zero on a freshly configured system
@@ -164,11 +164,11 @@ static const char LV5048_P007PRI_UNIT1[] = "^D0401,00,0\x02"
 // BeckoPopov — 12 steps: 10 A – 120 A in 10 A increments
 static const char LV5048_P009MCHGCR[] = "^D050010,020,030,040,050,060,070,080,090,100,110,120";
 
-// ── ^P005FWS (synthetic test vector) ─────────────────────────────────────────
+// ── ^P006FWS (synthetic test vector) ─────────────────────────────────────────
 //
 // Not a captured frame — exercises non-zero fault_code and true paths for
 // w[0..4]: line_fail, output_short, over_temp, fan_lock, bat_voltage_high.
-static const char LV5048_P005FWS_MULTI_FAULT[] = "^D03905,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0";
+static const char LV5048_P006FWS_MULTI_FAULT[] = "^D03905,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0";
 
 // ── Unsupported-command responses ─────────────────────────────────────────────
 //

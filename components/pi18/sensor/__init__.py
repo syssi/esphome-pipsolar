@@ -93,7 +93,7 @@ CONF_DEVICE_MODE_ID = "device_mode_id"
 # P005ET sensor
 CONF_TOTAL_GENERATED_ENERGY = "total_generated_energy"
 
-# P005FWS sensor
+# P006FWS sensor
 CONF_FAULT_CODE = "fault_code"
 
 TYPES = {

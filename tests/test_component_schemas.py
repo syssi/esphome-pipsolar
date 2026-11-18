@@ -247,7 +247,7 @@ class TestPi18SensorTypes:
         assert pi18_sensor.CONF_SOLAR_POWER_PRIORITY in pi18_sensor.TYPES
         assert pi18_sensor.CONF_MPPT_STRING in pi18_sensor.TYPES
 
-    def test_p005fws_sensor_present(self):
+    def test_p006fws_sensor_present(self):
         assert pi18_sensor.CONF_FAULT_CODE in pi18_sensor.TYPES
 
     def test_p005et_sensor_present(self):
@@ -284,7 +284,7 @@ class TestPi18BinarySensorTypes:
         assert pi18_bs.CONF_FAULT_CODE_RECORD in pi18_bs.TYPES
         assert pi18_bs.CONF_POWER_SAVING in pi18_bs.TYPES
 
-    def test_p005fws_binary_sensors_present(self):
+    def test_p006fws_binary_sensors_present(self):
         assert pi18_bs.CONF_WARNING_LINE_FAIL in pi18_bs.TYPES
         assert pi18_bs.CONF_WARNING_OUTPUT_CIRCUIT_SHORT in pi18_bs.TYPES
         assert pi18_bs.CONF_WARNING_OVER_TEMPERATURE in pi18_bs.TYPES
