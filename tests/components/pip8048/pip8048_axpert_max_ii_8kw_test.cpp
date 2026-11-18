@@ -308,6 +308,46 @@ TEST(Pip8048Axpert8kwTest, QflagSwitchDisabledFlags) {
   EXPECT_FALSE(alarm.state);
 }
 
+// ── Poll errors (timeout, NAK, CRC mismatch) ─────────────────────────────────
+//
+// A failed poll is decoded as an empty message. Binary sensors become unknown,
+// text sensors keep their last value.
+
+TEST(Pip8048Axpert8kwTest, QpiwsPollErrorLeavesSummariesUnknown) {
+  TestablePipsolar inv;
+  binary_sensor::BinarySensor warnings, faults;
+  inv.set_warnings_present(&warnings);
+  inv.set_faults_present(&faults);
+  inv.handle_qpiws_("(00000000000000000000000000000000000");
+  EXPECT_FALSE(warnings.state);
+  EXPECT_FALSE(faults.state);
+  inv.handle_poll_error_(POLLING_QPIWS);
+  EXPECT_FALSE(warnings.has_state());
+  EXPECT_FALSE(faults.has_state());
+}
+
+TEST(Pip8048Axpert8kwTest, QpiriPollErrorKeepsOperationLogic) {
+  TestablePipsolar inv;
+  text_sensor::TextSensor logic;
+  inv.set_operation_logic(&logic);
+  inv.handle_qpiri_(AXPERT_8KW_QPIRI);
+  const std::string before = logic.state;
+  ASSERT_FALSE(before.empty());
+  inv.handle_poll_error_(POLLING_QPIRI);
+  EXPECT_EQ(logic.state, before);
+}
+
+TEST(Pip8048Axpert8kwTest, Q1PollErrorKeepsInverterChargeStatus) {
+  TestablePipsolar inv;
+  text_sensor::TextSensor status;
+  inv.set_inverter_charge_status(&status);
+  inv.handle_q1_(
+      "(00000 00000 01 01 00 029 028 025 024 00 00 000 0040 0000 0000 49.95 10 0 060 030 100 030 58.40 000 120 0 0000");
+  EXPECT_EQ(status.state, "10");
+  inv.handle_poll_error_(POLLING_Q1);
+  EXPECT_EQ(status.state, "10");
+}
+
 // ── Robustness ───────────────────────────────────────────────────────────────
 
 TEST(Pip8048Axpert8kwTest, NullSensorsDoNotCrash) {

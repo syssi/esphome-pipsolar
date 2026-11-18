@@ -257,6 +257,21 @@ TEST(Pip2424mse1Easun5500wTest, QflagAllOtherFlagsDisabled) {
   EXPECT_FALSE(alarm.state);
 }
 
+// ── Poll errors (timeout, NAK, CRC mismatch) ─────────────────────────────────
+
+TEST(Pip2424mse1Easun5500wTest, QpiwsPollErrorLeavesSummariesUnknown) {
+  TestablePipsolar inv;
+  binary_sensor::BinarySensor warnings, faults;
+  inv.set_warnings_present(&warnings);
+  inv.set_faults_present(&faults);
+  inv.handle_qpiws_("(00000000000000000000000000000000");
+  EXPECT_FALSE(warnings.state);
+  EXPECT_FALSE(faults.state);
+  inv.handle_poll_error_(POLLING_QPIWS);
+  EXPECT_FALSE(warnings.has_state());
+  EXPECT_FALSE(faults.has_state());
+}
+
 // ── Robustness ───────────────────────────────────────────────────────────────
 
 TEST(Pip2424mse1Easun5500wTest, NullSensorsDoNotCrash) {

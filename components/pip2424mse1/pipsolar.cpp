@@ -687,8 +687,14 @@ void Pipsolar::handle_qpiws_(const char *message) {
     }
   }
 
-  this->publish_binary_sensor_(value_warnings_present, this->warnings_present_);
-  this->publish_binary_sensor_(value_faults_present, this->faults_present_);
+  // A failed poll has no flags at all: the summaries are unknown, not "no warnings" / "no faults"
+  if (flags.empty()) {
+    this->publish_binary_sensor_({}, this->warnings_present_);
+    this->publish_binary_sensor_({}, this->faults_present_);
+  } else {
+    this->publish_binary_sensor_(value_warnings_present, this->warnings_present_);
+    this->publish_binary_sensor_(value_faults_present, this->faults_present_);
+  }
 
   if (this->fault_code_) {
     if (flags.length() < 33) {
