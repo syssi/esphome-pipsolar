@@ -239,6 +239,8 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void skip_field_(const char *message, size_t *pos);
   std::string read_field_(const char *message, size_t *pos);
   esphome::optional<int32_t> read_int_(const char *message, size_t *pos);
+  // Missing field -> empty optional; otherwise non-zero -> true
+  esphome::optional<bool> read_flag_(const char *message, size_t *pos);
   void read_sensor_(const char *message, size_t *pos, sensor::Sensor *sensor, float scale = 1.0f);
 
   std::string command_queue_[COMMAND_QUEUE_LENGTH];

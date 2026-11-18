@@ -589,6 +589,44 @@ TEST(Pi18Lv5048Test, P007piriPollErrorInventsNoStates) {
   EXPECT_EQ(solaronly.state, solaronly_before);
 }
 
+// ── Short frames (firmware reporting fewer fields) ────────────────────────────
+//
+// Fields missing at the end of a frame must leave binary sensors unknown
+// instead of reporting them as off.
+
+TEST(Pi18Lv5048Test, P007flagShortFrameLeavesMissingFlagsUnknown) {
+  TestablePipsolar inv;
+  binary_sensor::BinarySensor buzzer, fault_record, power_saving;
+  inv.set_silence_buzzer_open_buzzer(&buzzer);
+  inv.set_fault_code_record(&fault_record);
+  inv.set_power_saving(&power_saving);
+  inv.handle_p007flag_("^D0141,1,1,0,0,1,0");  // 7 of 9 flags
+  EXPECT_TRUE(buzzer.state);
+  EXPECT_FALSE(fault_record.has_state());
+  EXPECT_FALSE(power_saving.has_state());
+}
+
+TEST(Pi18Lv5048Test, P005fwsShortFrameLeavesMissingWarningsUnknown) {
+  TestablePipsolar inv;
+  sensor::Sensor fault_code;
+  binary_sensor::BinarySensor line_fail, scc2_low;
+  inv.set_fault_code(&fault_code);
+  inv.set_warning_line_fail(&line_fail);
+  inv.set_warning_scc2_battery_too_low_to_charge(&scc2_low);
+  inv.handle_p005fws_("^D02705,1,0,0,0,0,0,0,0,0,0");  // fault code + 10 of 16 warnings
+  EXPECT_FLOAT_EQ(fault_code.state, 5.0f);
+  EXPECT_TRUE(line_fail.state);
+  EXPECT_FALSE(scc2_low.has_state());
+}
+
+TEST(Pi18Lv5048Test, P005fwsMissingFaultCodeIsNotZero) {
+  TestablePipsolar inv;
+  sensor::Sensor fault_code;
+  inv.set_fault_code(&fault_code);
+  inv.handle_p005fws_("^D003,");
+  EXPECT_TRUE(std::isnan(fault_code.state));
+}
+
 // ── Robustness ────────────────────────────────────────────────────────────────
 
 TEST(Pi18Lv5048Test, NullSensorsDoNotCrash) {

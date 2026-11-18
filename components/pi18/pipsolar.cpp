@@ -311,7 +311,7 @@ void Pipsolar::handle_p005gs_(const char *message) {
 
   // Missing fields (failed poll) stay empty instead of defaulting to 0, which would
   // publish "abnormal", "disconnect" and "donothing" for an inverter that is not answering.
-  const auto config_state = this->read_int_(message, &pos);
+  const auto config_state = this->read_flag_(message, &pos);
   const auto mppt1_status = this->read_int_(message, &pos);
   const auto mppt2_status = this->read_int_(message, &pos);
   const auto load_conn = this->read_int_(message, &pos);
@@ -319,10 +319,7 @@ void Pipsolar::handle_p005gs_(const char *message) {
   const auto dc_ac_dir = this->read_int_(message, &pos);
   const auto line_dir = this->read_int_(message, &pos);
 
-  esphome::optional<bool> config_changed;
-  if (config_state.has_value())
-    config_changed = *config_state != 0;
-  this->publish_binary_sensor_(config_changed, this->setting_value_configuration_state_);
+  this->publish_binary_sensor_(config_state, this->setting_value_configuration_state_);
   this->publish_mppt_status_(this->mppt1_charger_status_, mppt1_status);
   this->publish_mppt_status_(this->mppt2_charger_status_, mppt2_status);
 
@@ -493,8 +490,9 @@ void Pipsolar::handle_p007flag_(const char *message) {
       this->fault_code_record_,
       this->power_saving_,
   };
+  // Firmwares that report fewer flags leave the remaining sensors unknown instead of off
   for (auto *sensor : flag_sensors)
-    this->publish_binary_sensor_(parse_number<int32_t>(read_field_(message, &pos)).value_or(0) != 0, sensor);
+    this->publish_binary_sensor_(this->read_flag_(message, &pos), sensor);
 }
 
 void Pipsolar::handle_p005fws_(const char *message) {
@@ -506,9 +504,8 @@ void Pipsolar::handle_p005fws_(const char *message) {
   size_t pos = 0;
   skip_start_(message, &pos);
 
-  const int fault_code = parse_number<int32_t>(read_field_(message, &pos)).value_or(0);
-  if (this->fault_code_)
-    this->fault_code_->publish_state(fault_code);
+  // A missing fault code must not read as 0 ("no fault")
+  this->publish_sensor_(this->fault_code_, this->read_int_(message, &pos));
 
   binary_sensor::BinarySensor *warn_sensors[] = {
       this->warning_line_fail_,
@@ -528,8 +525,9 @@ void Pipsolar::handle_p005fws_(const char *message) {
       this->warning_scc1_battery_too_low_to_charge_,
       this->warning_scc2_battery_too_low_to_charge_,
   };
+  // Firmwares that report fewer warnings leave the remaining sensors unknown instead of off
   for (auto *sensor : warn_sensors)
-    this->publish_binary_sensor_(parse_number<int32_t>(read_field_(message, &pos)).value_or(0) != 0, sensor);
+    this->publish_binary_sensor_(this->read_flag_(message, &pos), sensor);
 }
 
 void Pipsolar::handle_p005et_(const char *message) {
@@ -699,6 +697,13 @@ std::string Pipsolar::read_field_(const char *message, size_t *pos) {
 
 esphome::optional<int32_t> Pipsolar::read_int_(const char *message, size_t *pos) {
   return parse_number<int32_t>(this->read_field_(message, pos));
+}
+
+esphome::optional<bool> Pipsolar::read_flag_(const char *message, size_t *pos) {
+  const auto value = this->read_int_(message, pos);
+  if (!value.has_value())
+    return {};
+  return *value != 0;
 }
 
 void Pipsolar::read_sensor_(const char *message, size_t *pos, sensor::Sensor *sensor, float scale) {
