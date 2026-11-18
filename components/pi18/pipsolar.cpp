@@ -420,16 +420,13 @@ void Pipsolar::handle_p007piri_(const char *message) {
   this->publish_select_(this->current_max_ac_charging_current_select_, max_ac_charging_i);
   this->publish_select_(this->battery_under_voltage_select_, bat_under_v_raw);
 
-  if (out_src_priority.has_value())
-    this->publish_switch_(this->output_source_priority_switch_, *out_src_priority != 0);
-  if (solar_priority.has_value())
-    this->publish_switch_(this->solar_power_priority_switch_, *solar_priority == 1);
-  // Charger source priority: 0 = solar first, 1 = solar and utility, 2 = only solar (^S009PCP0,n)
-  if (charger_src_priority.has_value()) {
-    this->publish_switch_(this->charger_source_priority_solarfirst_switch_, *charger_src_priority == 0);
-    this->publish_switch_(this->charger_source_priority_utility_switch_, *charger_src_priority == 1);
-    this->publish_switch_(this->charger_source_priority_solaronly_switch_, *charger_src_priority == 2);
-  }
+  // Each switch is on when the field holds the code it writes when turned on (^S007POP1, ^S007PSP1, ^S009PCP0,n)
+  this->publish_switch_(this->output_source_priority_switch_, out_src_priority, 1);
+  this->publish_switch_(this->solar_power_priority_switch_, solar_priority, 1);
+  // Charger source priority: 0 = solar first, 1 = solar and utility, 2 = only solar
+  this->publish_switch_(this->charger_source_priority_solarfirst_switch_, charger_src_priority, 0);
+  this->publish_switch_(this->charger_source_priority_utility_switch_, charger_src_priority, 1);
+  this->publish_switch_(this->charger_source_priority_solaronly_switch_, charger_src_priority, 2);
 }
 
 void Pipsolar::handle_p006mod_(const char *message) {
@@ -598,9 +595,9 @@ void Pipsolar::publish_select_(PipsolarSelect *select, esphome::optional<int32_t
   select->map_and_publish(mapped);
 }
 
-void Pipsolar::publish_switch_(switch_::Switch *sw, bool state) {
-  if (sw)
-    sw->publish_state(state);
+void Pipsolar::publish_switch_(switch_::Switch *sw, esphome::optional<int32_t> value, int32_t on_value) {
+  if (sw && value.has_value())
+    sw->publish_state(*value == on_value);
 }
 
 void Pipsolar::dump_config() {

@@ -233,7 +233,8 @@ class Pipsolar : public uart::UARTDevice, public PollingComponent {
   void publish_sensor_(sensor::Sensor *sensor, esphome::optional<int32_t> value, float scale = 1.0f);
   // Does nothing when the value is missing: selects and switches cannot be invalidated
   void publish_select_(PipsolarSelect *select, esphome::optional<int32_t> value);
-  void publish_switch_(switch_::Switch *sw, bool state);
+  // On when value equals on_value; does nothing when the value is missing
+  void publish_switch_(switch_::Switch *sw, esphome::optional<int32_t> value, int32_t on_value);
 
   void skip_start_(const char *message, size_t *pos);
   void skip_field_(const char *message, size_t *pos);
