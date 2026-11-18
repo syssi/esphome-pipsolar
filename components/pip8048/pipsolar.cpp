@@ -439,7 +439,8 @@ void Pipsolar::handle_qpiri_(const char *message) {
     this->pv_power_balance_switch_->publish_state(pv_power_balance.value() == 1);
   }
 
-  if (this->operation_logic_) {
+  // Text sensors cannot be invalidated: keep the last value when the field is missing (failed poll)
+  if (this->operation_logic_ && !operation_logic_str.empty()) {
     this->operation_logic_->publish_state(operation_logic_str);
   }
   if (this->max_discharging_current_) {
@@ -804,8 +805,14 @@ void Pipsolar::handle_qpiws_(const char *message) {
     }
   }
 
-  this->publish_binary_sensor_(value_warnings_present, this->warnings_present_);
-  this->publish_binary_sensor_(value_faults_present, this->faults_present_);
+  // A failed poll has no flags at all: the summaries are unknown, not "no warnings" / "no faults"
+  if (flags.empty()) {
+    this->publish_binary_sensor_({}, this->warnings_present_);
+    this->publish_binary_sensor_({}, this->faults_present_);
+  } else {
+    this->publish_binary_sensor_(value_warnings_present, this->warnings_present_);
+    this->publish_binary_sensor_(value_faults_present, this->faults_present_);
+  }
 
   if (this->fault_code_) {
     if (flags.length() < 35) {
@@ -1014,7 +1021,8 @@ void Pipsolar::handle_q1_(const char *message) {
   }
   this->read_float_sensor_(message, &pos, this->sync_frequency_);
   std::string inverter_charge_status_str = this->read_field_(message, &pos);
-  if (this->inverter_charge_status_) {
+  // Text sensors cannot be invalidated: keep the last value when the field is missing (failed poll)
+  if (this->inverter_charge_status_ && !inverter_charge_status_str.empty()) {
     this->inverter_charge_status_->publish_state(inverter_charge_status_str);
   }
   this->skip_field_(message, &pos);
