@@ -8,6 +8,7 @@ class TestablePipsolar : public Pipsolar {
   using Pipsolar::handle_qbatcd_;
   using Pipsolar::handle_qflag_;
   using Pipsolar::handle_qmod_;
+  using Pipsolar::handle_poll_error_;
   using Pipsolar::handle_qpigs_;
   using Pipsolar::handle_qpiri_;
   using Pipsolar::handle_qpiws_;

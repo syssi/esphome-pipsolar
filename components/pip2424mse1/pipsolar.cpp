@@ -460,14 +460,12 @@ void Pipsolar::handle_qpigs_(const char *message) {
 }
 
 void Pipsolar::handle_qmod_(const char *message) {
-  std::string mode;
-  char device_mode = char(message[1]);
   if (this->last_qmod_) {
     this->last_qmod_->publish_state(message);
   }
-  if (this->device_mode_) {
-    mode = device_mode;
-    this->device_mode_->publish_state(mode);
+  // '(B': a failed poll passes an empty message, which has no mode character to read
+  if (this->device_mode_ && strlen(message) >= 2) {
+    this->device_mode_->publish_state(std::string(1, message[1]));
   }
 }
 

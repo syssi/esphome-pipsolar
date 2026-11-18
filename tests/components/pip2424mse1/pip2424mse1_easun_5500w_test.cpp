@@ -216,6 +216,15 @@ TEST(Pip2424mse1Easun5500wTest, QmodBatteryMode) {
   EXPECT_STREQ(mode.state.c_str(), "B");
 }
 
+TEST(Pip2424mse1Easun5500wTest, QmodPollErrorKeepsDeviceMode) {
+  TestablePipsolar inv;
+  text_sensor::TextSensor mode;
+  inv.set_device_mode(&mode);
+  inv.handle_qmod_(EASUN_5500W_QMOD);
+  inv.handle_poll_error_(POLLING_QMOD);
+  EXPECT_STREQ(mode.state.c_str(), "B");
+}
+
 // ── QFLAG ────────────────────────────────────────────────────────────────────
 
 TEST(Pip2424mse1Easun5500wTest, QflagOnlyFaultRecordEnabled) {
