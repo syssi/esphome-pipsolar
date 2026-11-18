@@ -740,8 +740,7 @@ void Pipsolar::handle_qbatcd_(const char *message) {
     }
   }
   if (this->charging_discharging_control_select_) {
-    std::string tmp = message;
-    this->charging_discharging_control_select_->map_and_publish(tmp);
+    this->charging_discharging_control_select_->map_and_publish(message);
   }
 }
 

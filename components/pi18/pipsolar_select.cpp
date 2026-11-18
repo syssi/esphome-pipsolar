@@ -14,13 +14,13 @@ void PipsolarSelect::dump_config() { LOG_SELECT(TAG, "PI18 Controller Select", t
 
 void PipsolarSelect::control(const std::string &value) {
   ESP_LOGD(TAG, "got option: %s", value.c_str());
-  if (this->mapping_.contains(value)) {
-    ESP_LOGD(TAG, "found mapped option %s for option %s", this->mapping_[value].c_str(), value.c_str());
-    this->parent_->queue_command(this->mapping_[value]);
-  } else {
+  const auto it = this->mapping_.find(value);
+  if (it == this->mapping_.end()) {
     ESP_LOGD(TAG, "could not find option %s in mapping", value.c_str());
     return;
   }
+  ESP_LOGD(TAG, "found mapped option %s for option %s", it->second.c_str(), value.c_str());
+  this->parent_->queue_command(it->second);
   if (this->optimistic_)
     this->publish_state(value);
 }

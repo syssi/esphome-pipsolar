@@ -884,8 +884,7 @@ void Pipsolar::handle_qbatcd_(const char *message) {
     }
   }
   if (this->charging_discharging_control_select_) {
-    std::string tmp = message;
-    this->charging_discharging_control_select_->map_and_publish(tmp);
+    this->charging_discharging_control_select_->map_and_publish(message);
   }
 }
 
@@ -1041,7 +1040,7 @@ void Pipsolar::handle_qbms_(const char *message) {
     this->last_qbms_->publish_state(message);
   }
   if (this->bms_values_select_) {
-    this->bms_values_select_->map_and_publish(std::string(message));
+    this->bms_values_select_->map_and_publish(message);
   }
 }
 
