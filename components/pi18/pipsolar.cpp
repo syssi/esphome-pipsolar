@@ -591,8 +591,7 @@ void Pipsolar::publish_sensor_(sensor::Sensor *sensor, esphome::optional<int32_t
 void Pipsolar::publish_select_(PipsolarSelect *select, esphome::optional<int32_t> value) {
   if (select == nullptr || !value.has_value())
     return;
-  std::string mapped = std::to_string(*value);  // NOLINT
-  select->map_and_publish(mapped);
+  select->map_and_publish(std::to_string(*value));  // NOLINT
 }
 
 void Pipsolar::publish_switch_(switch_::Switch *sw, esphome::optional<int32_t> value, int32_t on_value) {

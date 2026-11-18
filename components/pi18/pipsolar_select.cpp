@@ -25,14 +25,15 @@ void PipsolarSelect::control(const std::string &value) {
     this->publish_state(value);
 }
 
-void PipsolarSelect::map_and_publish(std::string &value) {
+void PipsolarSelect::map_and_publish(const std::string &value) {
   ESP_LOGD(TAG, "got value: %s", value.c_str());
-  if (this->status_mapping_.contains(value)) {
-    ESP_LOGD(TAG, "found mapped option %s for option %s", this->status_mapping_[value].c_str(), value.c_str());
-    this->publish_state(this->status_mapping_[value]);
-  } else {
+  const auto it = this->status_mapping_.find(value);
+  if (it == this->status_mapping_.end()) {
     ESP_LOGD(TAG, "could not find option %s in mapping", value.c_str());
+    return;
   }
+  ESP_LOGD(TAG, "found mapped option %s for option %s", it->second.c_str(), value.c_str());
+  this->publish_state(it->second);
 }
 
 }  // namespace esphome::pi18
