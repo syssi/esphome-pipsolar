@@ -14,6 +14,7 @@ class TestablePipsolar : public Pipsolar {
   using Pipsolar::handle_qflag_;
   using Pipsolar::handle_qmchgcr_;
   using Pipsolar::handle_qmod_;
+  using Pipsolar::handle_poll_error_;
   using Pipsolar::handle_qmuchgcr_;
   using Pipsolar::handle_qpigs_;
   using Pipsolar::handle_qpigs2_;
