@@ -1,5 +1,4 @@
 #include "pipsolar_output.h"
-#include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
 
 // Fallback for ESPHome < 2026.10.0
