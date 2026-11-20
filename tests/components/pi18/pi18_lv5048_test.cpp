@@ -396,6 +396,39 @@ TEST(Pi18Lv5048Test, P007flagDisabledFlags) {
   EXPECT_FALSE(power_save.state);
 }
 
+TEST(Pi18Lv5048Test, P007flagUpdatesFlagSwitches) {
+  TestablePipsolar inv;
+  TestSwitch buzzer, bypass, lcd, overload_restart, over_temp, backlight, alarm, fault_rec;
+  inv.set_silence_buzzer_open_buzzer_switch(&buzzer);
+  inv.set_overload_bypass_function_switch(&bypass);
+  inv.set_lcd_escape_to_default_switch(&lcd);
+  inv.set_overload_restart_function_switch(&overload_restart);
+  inv.set_over_temperature_restart_function_switch(&over_temp);
+  inv.set_backlight_on_switch(&backlight);
+  inv.set_alarm_on_when_primary_source_interrupt_switch(&alarm);
+  inv.set_fault_code_record_switch(&fault_rec);
+
+  inv.handle_p007flag_(LV5048_P007FLAG);  // 1,1,1,0,0,1,0,1,0
+  EXPECT_TRUE(buzzer.state);
+  EXPECT_TRUE(bypass.state);
+  EXPECT_TRUE(lcd.state);
+  EXPECT_FALSE(overload_restart.state);
+  EXPECT_FALSE(over_temp.state);
+  EXPECT_TRUE(backlight.state);
+  EXPECT_FALSE(alarm.state);
+  EXPECT_TRUE(fault_rec.state);
+
+  inv.handle_p007flag_("^D0200,0,0,1,1,0,1,0,1");  // every flag inverted
+  EXPECT_FALSE(buzzer.state);
+  EXPECT_FALSE(bypass.state);
+  EXPECT_FALSE(lcd.state);
+  EXPECT_TRUE(overload_restart.state);
+  EXPECT_TRUE(over_temp.state);
+  EXPECT_FALSE(backlight.state);
+  EXPECT_TRUE(alarm.state);
+  EXPECT_FALSE(fault_rec.state);
+}
+
 // ── P006FWS ───────────────────────────────────────────────────────────────────
 
 TEST(Pi18Lv5048Test, P006fwsEepromWarningActive) {
@@ -625,6 +658,18 @@ TEST(Pi18Lv5048Test, P007flagShortFrameLeavesMissingFlagsUnknown) {
   EXPECT_TRUE(buzzer.state);
   EXPECT_FALSE(fault_record.has_state());
   EXPECT_FALSE(power_saving.has_state());
+}
+
+TEST(Pi18Lv5048Test, P007flagShortFrameKeepsMissingFlagSwitches) {
+  TestablePipsolar inv;
+  TestSwitch buzzer, fault_record;
+  inv.set_silence_buzzer_open_buzzer_switch(&buzzer);
+  inv.set_fault_code_record_switch(&fault_record);
+  inv.handle_p007flag_(LV5048_P007FLAG);       // buzzer and fault code record enabled
+  inv.handle_p007flag_("^D0160,0,0,0,0,0,0");  // 7 of 9 flags, all disabled
+  EXPECT_FALSE(buzzer.state);
+  // A missing flag must not switch the fault code record off
+  EXPECT_TRUE(fault_record.state);
 }
 
 TEST(Pi18Lv5048Test, P006fwsShortFrameLeavesMissingWarningsUnknown) {

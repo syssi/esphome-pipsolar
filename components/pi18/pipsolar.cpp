@@ -476,20 +476,28 @@ void Pipsolar::handle_p007flag_(const char *message) {
   size_t pos = 0;
   skip_start_(message, &pos);
 
-  binary_sensor::BinarySensor *flag_sensors[] = {
-      this->silence_buzzer_open_buzzer_,
-      this->overload_bypass_function_,
-      this->lcd_escape_to_default_,
-      this->overload_restart_function_,
-      this->over_temperature_restart_function_,
-      this->backlight_on_,
-      this->alarm_on_when_primary_source_interrupt_,
-      this->fault_code_record_,
-      this->power_saving_,
+  struct Flag {
+    binary_sensor::BinarySensor *sensor;
+    switch_::Switch *sw;
   };
-  // Firmwares that report fewer flags leave the remaining sensors unknown instead of off
-  for (auto *sensor : flag_sensors)
-    this->publish_binary_sensor_(this->read_flag_(message, &pos), sensor);
+  const Flag flags[] = {
+      {this->silence_buzzer_open_buzzer_, this->silence_buzzer_open_buzzer_switch_},
+      {this->overload_bypass_function_, this->overload_bypass_function_switch_},
+      {this->lcd_escape_to_default_, this->lcd_escape_to_default_switch_},
+      {this->overload_restart_function_, this->overload_restart_function_switch_},
+      {this->over_temperature_restart_function_, this->over_temperature_restart_function_switch_},
+      {this->backlight_on_, this->backlight_on_switch_},
+      {this->alarm_on_when_primary_source_interrupt_, this->alarm_on_when_primary_source_interrupt_switch_},
+      {this->fault_code_record_, this->fault_code_record_switch_},
+      {this->power_saving_, nullptr},
+  };
+  // Firmwares that report fewer flags leave the remaining sensors unknown and switches unchanged
+  for (const auto &flag : flags) {
+    const auto enabled = this->read_flag_(message, &pos);
+    this->publish_binary_sensor_(enabled, flag.sensor);
+    if (flag.sw != nullptr && enabled.has_value())
+      flag.sw->publish_state(*enabled);
+  }
 }
 
 void Pipsolar::handle_p006fws_(const char *message) {
